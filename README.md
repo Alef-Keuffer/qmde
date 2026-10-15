@@ -1,3 +1,41 @@
+# QMDE: Quantum Model-Driven Engineering (TACS 2026/27, project A3)
+
+## Installing BESSER (fork)
+
+BESSER does **not** live inside this repository. The teachers' fork is cloned into a sibling folder and installed in editable mode into this project's virtual environment:
+
+```
+workspace/
+├── BESSER/      <- teachers' fork (do not modify anything here)
+└── qmde/        <- this repository
+```
+
+```bash
+# 1. Clone both repositories side by side
+git clone https://github.com/jacomecunha/BESSER.git
+git clone <URL-of-this-repository> qmde
+cd qmde
+ 
+# 2. Create and activate the virtual environment
+python3.12 -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+ 
+# 3. Install BESSER (fork) in editable mode, plus Qiskit
+pip install -e ../BESSER
+pip install qiskit qiskit-aer
+```
+
+### Checking that the fork is being used
+
+With the virtual environment active, inside this repository:
+
+```bash
+python -c "import besser; print(besser.__file__)"
+```
+
+It should point to `.../BESSER/besser/__init__.py`, and **not** to `.venv/.../site-packages`.
+
+
 # Background and Goal
 
 Quantum computers promise advantages for some classes of problems, such as combinatorial optimization, simulation of physical systems, search, sampling and certain machine-learning tasks. However, programming them today means working almost directly at the level of circuits: qubits, gates and measurements. This is the equivalent of writing assembly, and it creates a large gap between the people who have the problems (logisticians, financial analysts, physicists, data scientists) and the people who can write quantum programs.
