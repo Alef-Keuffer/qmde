@@ -28,9 +28,9 @@ LinearTerm_coefficient: Property = Property(name="coefficient", type=FloatType)
 LinearTerm.attributes={LinearTerm_coefficient}
 
 # Variable class attributes and methods
-Variable_Index: Property = Property(name="Index", type=IntegerType)
+Variable_index: Property = Property(name="index", type=IntegerType)
 Variable_label: Property = Property(name="label", type=StringType)
-Variable.attributes={Variable_Index, Variable_label}
+Variable.attributes={Variable_index, Variable_label}
 
 # Penalty class attributes and methods
 Penalty_weight: Property = Property(name="weight", type=FloatType)
@@ -115,6 +115,13 @@ constraint_not_empty: Constraint = Constraint(
     language="OCL",
     description="Constraint is not null"
 )
+non_negative_index: Constraint = Constraint(
+    name="non_negative_index",
+    context=Variable,
+    expression="context Variable inv non_negative_index: self.index >= 0",
+    language="OCL",
+    description="There are no negatives indexes"
+)
 unique_index: Constraint = Constraint(
     name="unique_index",
     context=Variable,
@@ -142,7 +149,7 @@ domain_model = DomainModel(
     name="Class_Diagram",
     types={QUBO, LinearTerm, Variable, Penalty, QuadraticTerm},
     associations={Variable_QuadraticTerm, Variable_LinearTerm, Penalty_LinearTerm, Penalty_QuadraticTerm, Variable_QUBO, QuadraticTerm_QUBO, LinearTerm_QUBO, Penalty_QUBO},
-    constraints={positive_weight, constraint_not_empty, unique_index, label_not_empty, two_distinct_variables},
+    constraints={positive_weight, constraint_not_empty, non_negative_index, unique_index, label_not_empty, two_distinct_variables},
     generalizations=set(),
     metadata=None
 )

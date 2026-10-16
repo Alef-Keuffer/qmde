@@ -135,7 +135,7 @@
               },
               "15460382-c07f-4fe2-a77d-f0a5fdcbb76b": {
                 "id": "15460382-c07f-4fe2-a77d-f0a5fdcbb76b",
-                "name": "Index",
+                "name": "index",
                 "type": "ClassAttribute",
                 "owner": "d9894a11-1645-4de7-b95a-736380661b59",
                 "bounds": {
@@ -1031,7 +1031,7 @@
             },
             "assessments": {}
           },
-          "lastUpdate": "2026-10-16T20:12:13.261Z"
+          "lastUpdate": "2026-10-16T20:24:00.550Z"
         }
       ]
     },
@@ -1054,7 +1054,7 @@
       }
     }
   },
-  "exportedAt": "2026-10-16T20:12:54.936Z",
+  "exportedAt": "2026-10-16T20:24:10.742Z",
   "version": "2.0.0",
   "besserVersion": "8.1.0",
   "editorVersion": "1.0.0"
