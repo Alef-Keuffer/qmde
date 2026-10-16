@@ -483,7 +483,7 @@
                 "bounds": {
                   "x": 180,
                   "y": -190,
-                  "width": 241.70000076293945,
+                  "width": 223.89999961853027,
                   "height": 70
                 },
                 "path": [
@@ -511,7 +511,7 @@
                 "source": {
                   "direction": "Up",
                   "element": "0ecb68db-1194-478d-853c-03be86f192b8",
-                  "multiplicity": "0..1",
+                  "multiplicity": "1",
                   "role": "",
                   "navigable": true
                 },
@@ -1031,7 +1031,7 @@
             },
             "assessments": {}
           },
-          "lastUpdate": "2026-10-16T19:35:38.683Z"
+          "lastUpdate": "2026-10-16T20:12:13.261Z"
         }
       ]
     },
@@ -1054,7 +1054,7 @@
       }
     }
   },
-  "exportedAt": "2026-10-16T20:00:29.895Z",
+  "exportedAt": "2026-10-16T20:12:54.936Z",
   "version": "2.0.0",
   "besserVersion": "8.1.0",
   "editorVersion": "1.0.0"

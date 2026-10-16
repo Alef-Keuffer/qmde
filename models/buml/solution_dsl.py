@@ -59,7 +59,7 @@ Variable_LinearTerm: BinaryAssociation = BinaryAssociation(
 Penalty_LinearTerm: BinaryAssociation = BinaryAssociation(
     name="Penalty_LinearTerm",
     ends={
-        Property(name="penalty", type=Penalty, multiplicity=Multiplicity(0, 1)),
+        Property(name="penalty", type=Penalty, multiplicity=Multiplicity(1, 1)),
         Property(name="linearterm", type=LinearTerm, multiplicity=Multiplicity(0, 9999))
     }
 )
