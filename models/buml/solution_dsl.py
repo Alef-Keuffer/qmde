@@ -46,14 +46,14 @@ Variable_QuadraticTerm: BinaryAssociation = BinaryAssociation(
     name="Variable_QuadraticTerm",
     ends={
         Property(name="variable", type=Variable, multiplicity=Multiplicity(2, 2)),
-        Property(name="quadraticterm", type=QuadraticTerm, multiplicity=Multiplicity(0, 9999), is_composite=True)
+        Property(name="quadraticterm", type=QuadraticTerm, multiplicity=Multiplicity(0, 9999))
     }
 )
 Variable_LinearTerm: BinaryAssociation = BinaryAssociation(
     name="Variable_LinearTerm",
     ends={
         Property(name="variable", type=Variable, multiplicity=Multiplicity(1, 1)),
-        Property(name="linearterm", type=LinearTerm, multiplicity=Multiplicity(0, 9999), is_composite=True)
+        Property(name="linearterm", type=LinearTerm, multiplicity=Multiplicity(1, 1))
     }
 )
 Penalty_LinearTerm: BinaryAssociation = BinaryAssociation(
@@ -99,11 +99,50 @@ Penalty_QUBO: BinaryAssociation = BinaryAssociation(
     }
 )
 
+
+# OCL Constraints
+positive_weight: Constraint = Constraint(
+    name="positive_weight",
+    context=Penalty,
+    expression="context Penalty inv positive_weight: self.weight >0",
+    language="OCL",
+    description="Weight gotta be higher than zero"
+)
+constraint_not_empty: Constraint = Constraint(
+    name="constraint_not_empty",
+    context=Penalty,
+    expression="context Penalty inv constraint_not_empty: self.constraint.size() > 0",
+    language="OCL",
+    description="Constraint is not null"
+)
+unique_index: Constraint = Constraint(
+    name="unique_index",
+    context=Variable,
+    expression="context Variable inv unique_index: Variable.allInstances()->isUnique(index)",
+    language="OCL",
+    description="Index is unique"
+)
+label_not_empty: Constraint = Constraint(
+    name="label_not_empty",
+    context=Variable,
+    expression="context Variable inv label_not_empty: self.label.size() > 0",
+    language="OCL",
+    description="Label is not null"
+)
+two_distinct_variables: Constraint = Constraint(
+    name="two_distinct_variables",
+    context=QuadraticTerm,
+    expression="context QuadraticTerm inv two_distinct_variables: self.variable->size() = 2",
+    language="OCL",
+    description="QuadraticTerm has two distinct variables"
+)
+
 # Domain Model
 domain_model = DomainModel(
     name="Class_Diagram",
     types={QUBO, LinearTerm, Variable, Penalty, QuadraticTerm},
     associations={Variable_QuadraticTerm, Variable_LinearTerm, Penalty_LinearTerm, Penalty_QuadraticTerm, Variable_QUBO, QuadraticTerm_QUBO, LinearTerm_QUBO, Penalty_QUBO},
+    constraints={positive_weight, constraint_not_empty, unique_index, label_not_empty, two_distinct_variables},
     generalizations=set(),
     metadata=None
 )
