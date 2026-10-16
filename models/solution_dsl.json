@@ -1,0 +1,684 @@
+{
+  "project": {
+    "id": "560b29ab-3d7f-451e-a5bf-97e816d68974",
+    "type": "Project",
+    "schemaVersion": 5,
+    "name": "New_Project",
+    "description": "Modern workspace project for UML, GUI and quantum modeling.",
+    "owner": "BESSER User",
+    "createdAt": "2026-09-24T09:57:21.514Z",
+    "currentDiagramType": "ClassDiagram",
+    "currentDiagramIndices": {
+      "ClassDiagram": 0,
+      "ObjectDiagram": 0,
+      "StateMachineDiagram": 0,
+      "AgentDiagram": 0,
+      "UserDiagram": 0,
+      "GUINoCodeDiagram": 0,
+      "QuantumCircuitDiagram": 0,
+      "NNDiagram": 0,
+      "BPMN": 0,
+      "ComponentDiagram": 0,
+      "DeploymentDiagram": 0
+    },
+    "diagrams": {
+      "ClassDiagram": [
+        {
+          "id": "b69a73d9-6ccb-46f9-8399-c5962e27778c",
+          "title": "Class Diagram",
+          "model": {
+            "version": "3.0.0",
+            "type": "ClassDiagram",
+            "size": {
+              "width": 1060,
+              "height": 530
+            },
+            "interactive": {
+              "elements": {},
+              "relationships": {}
+            },
+            "elements": {
+              "88c45db6-afaa-4e48-a56b-c6e7741a442d": {
+                "id": "88c45db6-afaa-4e48-a56b-c6e7741a442d",
+                "name": "QUBO",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -230,
+                  "y": 110,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "8f1da085-11ce-4007-b8be-6238ca9ddadf"
+                ],
+                "methods": []
+              },
+              "8f1da085-11ce-4007-b8be-6238ca9ddadf": {
+                "id": "8f1da085-11ce-4007-b8be-6238ca9ddadf",
+                "name": "offset",
+                "type": "ClassAttribute",
+                "owner": "88c45db6-afaa-4e48-a56b-c6e7741a442d",
+                "bounds": {
+                  "x": -229.5,
+                  "y": 150.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "float",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "db6a4ebd-2ec9-4abb-96fc-2d78685599e1": {
+                "id": "db6a4ebd-2ec9-4abb-96fc-2d78685599e1",
+                "name": "LinearTerm",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": 20,
+                  "y": -200,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "303bf3db-dd85-41bb-9ba0-e1bdf36442a3"
+                ],
+                "methods": []
+              },
+              "303bf3db-dd85-41bb-9ba0-e1bdf36442a3": {
+                "id": "303bf3db-dd85-41bb-9ba0-e1bdf36442a3",
+                "name": "coefficient",
+                "type": "ClassAttribute",
+                "owner": "db6a4ebd-2ec9-4abb-96fc-2d78685599e1",
+                "bounds": {
+                  "x": 20.5,
+                  "y": -159.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "float",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "d9894a11-1645-4de7-b95a-736380661b59": {
+                "id": "d9894a11-1645-4de7-b95a-736380661b59",
+                "name": "Variable",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -230,
+                  "y": -140,
+                  "width": 160,
+                  "height": 100
+                },
+                "attributes": [
+                  "15460382-c07f-4fe2-a77d-f0a5fdcbb76b",
+                  "34031364-9542-419a-a623-9ece9af7bea1"
+                ],
+                "methods": []
+              },
+              "15460382-c07f-4fe2-a77d-f0a5fdcbb76b": {
+                "id": "15460382-c07f-4fe2-a77d-f0a5fdcbb76b",
+                "name": "Index",
+                "type": "ClassAttribute",
+                "owner": "d9894a11-1645-4de7-b95a-736380661b59",
+                "bounds": {
+                  "x": -229.5,
+                  "y": -99.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "34031364-9542-419a-a623-9ece9af7bea1": {
+                "id": "34031364-9542-419a-a623-9ece9af7bea1",
+                "name": "label",
+                "type": "ClassAttribute",
+                "owner": "d9894a11-1645-4de7-b95a-736380661b59",
+                "bounds": {
+                  "x": -229.5,
+                  "y": -69.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "0ecb68db-1194-478d-853c-03be86f192b8": {
+                "id": "0ecb68db-1194-478d-853c-03be86f192b8",
+                "name": "Penalty",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": 310,
+                  "y": -150,
+                  "width": 160,
+                  "height": 100
+                },
+                "attributes": [
+                  "770d940c-2bbc-4b8b-9e61-e00f6e0d1aad",
+                  "6c4e42bd-0197-45aa-ab2b-0a7bc480d648"
+                ],
+                "methods": []
+              },
+              "770d940c-2bbc-4b8b-9e61-e00f6e0d1aad": {
+                "id": "770d940c-2bbc-4b8b-9e61-e00f6e0d1aad",
+                "name": "weight",
+                "type": "ClassAttribute",
+                "owner": "0ecb68db-1194-478d-853c-03be86f192b8",
+                "bounds": {
+                  "x": 310.5,
+                  "y": -109.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "float",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "6c4e42bd-0197-45aa-ab2b-0a7bc480d648": {
+                "id": "6c4e42bd-0197-45aa-ab2b-0a7bc480d648",
+                "name": "constraint",
+                "type": "ClassAttribute",
+                "owner": "0ecb68db-1194-478d-853c-03be86f192b8",
+                "bounds": {
+                  "x": 310.5,
+                  "y": -79.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "bae618be-ee46-4804-a442-bef8c8ddb6fb": {
+                "id": "bae618be-ee46-4804-a442-bef8c8ddb6fb",
+                "name": "QuadraticTerm",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": 20,
+                  "y": -60,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "bf6c8fbb-74d2-4651-b90b-caf660c866e4"
+                ],
+                "methods": []
+              },
+              "bf6c8fbb-74d2-4651-b90b-caf660c866e4": {
+                "id": "bf6c8fbb-74d2-4651-b90b-caf660c866e4",
+                "name": "coefficient",
+                "type": "ClassAttribute",
+                "owner": "bae618be-ee46-4804-a442-bef8c8ddb6fb",
+                "bounds": {
+                  "x": 20.5,
+                  "y": -19.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "float",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              }
+            },
+            "relationships": {
+              "a6c41951-e8c4-4ccd-8de0-537d3cd26b83": {
+                "id": "a6c41951-e8c4-4ccd-8de0-537d3cd26b83",
+                "name": "",
+                "type": "ClassComposition",
+                "owner": null,
+                "bounds": {
+                  "x": -70,
+                  "y": -100,
+                  "width": 90,
+                  "height": 120
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 10
+                  },
+                  {
+                    "x": 45,
+                    "y": 10
+                  },
+                  {
+                    "x": 45,
+                    "y": 75
+                  },
+                  {
+                    "x": 90,
+                    "y": 75
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "d9894a11-1645-4de7-b95a-736380661b59",
+                  "multiplicity": "2",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "bae618be-ee46-4804-a442-bef8c8ddb6fb",
+                  "multiplicity": "0..*",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "9830b10e-2a96-40c8-81e6-3a363fbd273f": {
+                "id": "9830b10e-2a96-40c8-81e6-3a363fbd273f",
+                "name": "",
+                "type": "ClassComposition",
+                "owner": null,
+                "bounds": {
+                  "x": -155,
+                  "y": -180,
+                  "width": 175,
+                  "height": 60
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 40
+                  },
+                  {
+                    "x": 5,
+                    "y": 0
+                  },
+                  {
+                    "x": 130,
+                    "y": 0
+                  },
+                  {
+                    "x": 130,
+                    "y": 15
+                  },
+                  {
+                    "x": 175,
+                    "y": 15
+                  }
+                ],
+                "source": {
+                  "direction": "Up",
+                  "element": "d9894a11-1645-4de7-b95a-736380661b59",
+                  "multiplicity": "1",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "db6a4ebd-2ec9-4abb-96fc-2d78685599e1",
+                  "multiplicity": "0..*",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "a52c6057-912d-4c03-9a81-49e40ff3fd35": {
+                "id": "a52c6057-912d-4c03-9a81-49e40ff3fd35",
+                "name": "",
+                "type": "ClassBidirectional",
+                "owner": null,
+                "bounds": {
+                  "x": 180,
+                  "y": -190,
+                  "width": 241.70000076293945,
+                  "height": 70
+                },
+                "path": [
+                  {
+                    "x": 210,
+                    "y": 40
+                  },
+                  {
+                    "x": 210,
+                    "y": 0
+                  },
+                  {
+                    "x": 65,
+                    "y": 0
+                  },
+                  {
+                    "x": 65,
+                    "y": 25
+                  },
+                  {
+                    "x": 0,
+                    "y": 25
+                  }
+                ],
+                "source": {
+                  "direction": "Up",
+                  "element": "0ecb68db-1194-478d-853c-03be86f192b8",
+                  "multiplicity": "0..1",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Right",
+                  "element": "db6a4ebd-2ec9-4abb-96fc-2d78685599e1",
+                  "multiplicity": "*",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "de4d10b7-5764-45e1-b53d-f6d658b32483": {
+                "id": "de4d10b7-5764-45e1-b53d-f6d658b32483",
+                "name": "",
+                "type": "ClassBidirectional",
+                "owner": null,
+                "bounds": {
+                  "x": 180,
+                  "y": -50,
+                  "width": 241.70000076293945,
+                  "height": 70
+                },
+                "path": [
+                  {
+                    "x": 210,
+                    "y": 0
+                  },
+                  {
+                    "x": 210,
+                    "y": 40
+                  },
+                  {
+                    "x": 65,
+                    "y": 40
+                  },
+                  {
+                    "x": 65,
+                    "y": 25
+                  },
+                  {
+                    "x": 0,
+                    "y": 25
+                  }
+                ],
+                "source": {
+                  "direction": "Down",
+                  "element": "0ecb68db-1194-478d-853c-03be86f192b8",
+                  "multiplicity": "0..1",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Right",
+                  "element": "bae618be-ee46-4804-a442-bef8c8ddb6fb",
+                  "multiplicity": "*",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "e258ebd5-8d50-4aef-8160-add81a20d5e4": {
+                "id": "e258ebd5-8d50-4aef-8160-add81a20d5e4",
+                "name": "",
+                "type": "ClassComposition",
+                "owner": null,
+                "bounds": {
+                  "x": -155,
+                  "y": -40,
+                  "width": 34.016666412353516,
+                  "height": 150
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 0
+                  },
+                  {
+                    "x": 5,
+                    "y": 150
+                  }
+                ],
+                "source": {
+                  "direction": "Down",
+                  "element": "d9894a11-1645-4de7-b95a-736380661b59",
+                  "multiplicity": "1..*",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Up",
+                  "element": "88c45db6-afaa-4e48-a56b-c6e7741a442d",
+                  "multiplicity": "1",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "6f1f745f-41d4-400f-8638-f6562b8409d6": {
+                "id": "6f1f745f-41d4-400f-8638-f6562b8409d6",
+                "name": "",
+                "type": "ClassComposition",
+                "owner": null,
+                "bounds": {
+                  "x": -70,
+                  "y": 10,
+                  "width": 199.01666641235352,
+                  "height": 180
+                },
+                "path": [
+                  {
+                    "x": 170,
+                    "y": 0
+                  },
+                  {
+                    "x": 170,
+                    "y": 135
+                  },
+                  {
+                    "x": 0,
+                    "y": 135
+                  }
+                ],
+                "source": {
+                  "direction": "Down",
+                  "element": "bae618be-ee46-4804-a442-bef8c8ddb6fb",
+                  "multiplicity": "1..*",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Right",
+                  "element": "88c45db6-afaa-4e48-a56b-c6e7741a442d",
+                  "multiplicity": "1",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "0f96d7b4-3aaf-4179-bd99-1069b216cbf0": {
+                "id": "0f96d7b4-3aaf-4179-bd99-1069b216cbf0",
+                "name": "",
+                "type": "ClassComposition",
+                "owner": null,
+                "bounds": {
+                  "x": -270,
+                  "y": -240,
+                  "width": 399.0166664123535,
+                  "height": 430
+                },
+                "path": [
+                  {
+                    "x": 370,
+                    "y": 40
+                  },
+                  {
+                    "x": 370,
+                    "y": 0
+                  },
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 0,
+                    "y": 385
+                  },
+                  {
+                    "x": 40,
+                    "y": 385
+                  }
+                ],
+                "source": {
+                  "direction": "Up",
+                  "element": "db6a4ebd-2ec9-4abb-96fc-2d78685599e1",
+                  "multiplicity": "1..*",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "88c45db6-afaa-4e48-a56b-c6e7741a442d",
+                  "multiplicity": "1",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "a69930ed-36a9-4349-8e8b-0b3d0f2ded81": {
+                "id": "a69930ed-36a9-4349-8e8b-0b3d0f2ded81",
+                "name": "",
+                "type": "ClassComposition",
+                "owner": null,
+                "bounds": {
+                  "x": -115,
+                  "y": -85,
+                  "width": 625,
+                  "height": 330
+                },
+                "path": [
+                  {
+                    "x": 585,
+                    "y": 10
+                  },
+                  {
+                    "x": 625,
+                    "y": 10
+                  },
+                  {
+                    "x": 625,
+                    "y": 305
+                  },
+                  {
+                    "x": 5,
+                    "y": 305
+                  },
+                  {
+                    "x": 5,
+                    "y": 265
+                  }
+                ],
+                "source": {
+                  "direction": "Downright",
+                  "element": "0ecb68db-1194-478d-853c-03be86f192b8",
+                  "multiplicity": "0..*",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Bottomright",
+                  "element": "88c45db6-afaa-4e48-a56b-c6e7741a442d",
+                  "multiplicity": "1",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              }
+            },
+            "assessments": {}
+          },
+          "lastUpdate": "2026-10-16T18:31:06.677Z"
+        }
+      ]
+    },
+    "settings": {
+      "defaultDiagramType": "ClassDiagram",
+      "autoSave": true,
+      "collaborationEnabled": false,
+      "perspectives": {
+        "ClassDiagram": true,
+        "ObjectDiagram": true,
+        "StateMachineDiagram": true,
+        "AgentDiagram": true,
+        "UserDiagram": true,
+        "GUINoCodeDiagram": true,
+        "QuantumCircuitDiagram": true,
+        "NNDiagram": true,
+        "BPMN": true,
+        "ComponentDiagram": false,
+        "DeploymentDiagram": false
+      }
+    }
+  },
+  "exportedAt": "2026-10-16T18:31:13.157Z",
+  "version": "2.0.0",
+  "besserVersion": "8.1.0",
+  "editorVersion": "1.0.0"
+}
