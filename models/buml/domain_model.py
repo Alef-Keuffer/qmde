@@ -28,7 +28,8 @@ TimeSlot.attributes={TimeSlot_id}
 
 # Exam class attributes and methods
 Exam_name: Property = Property(name="name", type=StringType)
-Exam.attributes={Exam_name}
+Exam_weight: Property = Property(name="weight", type=FloatType)
+Exam.attributes={Exam_name, Exam_weight}
 
 # Relationships
 Exam_Student: BinaryAssociation = BinaryAssociation(
