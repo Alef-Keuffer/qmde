@@ -1,12 +1,12 @@
 {
   "project": {
-    "id": "project_1792503308708_wn28tsxro",
+    "id": "project_1792504007361_3gbbez3s8",
     "type": "Project",
     "schemaVersion": 5,
     "name": "TACS",
     "description": "Imported from single-diagram BUML file",
     "owner": "Unknown",
-    "createdAt": "2026-10-20T13:35:08.708Z",
+    "createdAt": "2026-10-20T13:46:47.361Z",
     "currentDiagramType": "ObjectDiagram",
     "currentDiagramIndices": {
       "ClassDiagram": 0,
@@ -483,7 +483,7 @@
             },
             "assessments": {}
           },
-          "lastUpdate": "2026-10-20T13:42:14.213Z"
+          "lastUpdate": "2026-10-20T13:46:49.724Z"
         }
       ],
       "ObjectDiagram": [
@@ -716,17 +716,18 @@
                   "x": -10,
                   "y": -250,
                   "width": 160,
-                  "height": 70
+                  "height": 100
                 },
                 "attributes": [
-                  "f2500013-6383-4f17-a792-9c4dd1d6063a"
+                  "1a762f69-e7b9-4509-9871-952cdabacda7",
+                  "18fb2547-8310-4d80-a7a1-7432b9ce3789"
                 ],
                 "methods": [],
                 "classId": "56d98157-88a4-4114-9426-b38a1bae8a30",
                 "className": "Exam"
               },
-              "f2500013-6383-4f17-a792-9c4dd1d6063a": {
-                "id": "f2500013-6383-4f17-a792-9c4dd1d6063a",
+              "1a762f69-e7b9-4509-9871-952cdabacda7": {
+                "id": "1a762f69-e7b9-4509-9871-952cdabacda7",
                 "name": "name = Physics",
                 "type": "ObjectAttribute",
                 "owner": "d762645e-e105-4bf8-9096-c9f515725764",
@@ -746,7 +747,32 @@
                 "isOptional": false,
                 "isDerived": false,
                 "isId": false,
-                "isExternalId": false
+                "isExternalId": false,
+                "attributeId": "a107da96-7b9a-4fb9-b32c-01b9b5073019"
+              },
+              "18fb2547-8310-4d80-a7a1-7432b9ce3789": {
+                "id": "18fb2547-8310-4d80-a7a1-7432b9ce3789",
+                "name": "weight = 4",
+                "type": "ObjectAttribute",
+                "owner": "d762645e-e105-4bf8-9096-c9f515725764",
+                "bounds": {
+                  "x": -9.5,
+                  "y": -179.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false,
+                "attributeId": "2173b539-a450-4240-abbd-4bbce6e66433"
               },
               "bda9d055-51d5-4b33-9234-348b046de565": {
                 "id": "bda9d055-51d5-4b33-9234-348b046de565",
@@ -757,17 +783,18 @@
                   "x": -140,
                   "y": -110,
                   "width": 160,
-                  "height": 70
+                  "height": 100
                 },
                 "attributes": [
-                  "1ad61387-7c96-47c1-b824-b67fb45d5ffa"
+                  "2fc05c9a-816f-432b-bf02-5deb44c983da",
+                  "14a24b97-abea-474d-a898-21d753b112f9"
                 ],
                 "methods": [],
                 "classId": "56d98157-88a4-4114-9426-b38a1bae8a30",
                 "className": "Exam"
               },
-              "1ad61387-7c96-47c1-b824-b67fb45d5ffa": {
-                "id": "1ad61387-7c96-47c1-b824-b67fb45d5ffa",
+              "2fc05c9a-816f-432b-bf02-5deb44c983da": {
+                "id": "2fc05c9a-816f-432b-bf02-5deb44c983da",
                 "name": "name = Math",
                 "type": "ObjectAttribute",
                 "owner": "bda9d055-51d5-4b33-9234-348b046de565",
@@ -787,7 +814,32 @@
                 "isOptional": false,
                 "isDerived": false,
                 "isId": false,
-                "isExternalId": false
+                "isExternalId": false,
+                "attributeId": "a107da96-7b9a-4fb9-b32c-01b9b5073019"
+              },
+              "14a24b97-abea-474d-a898-21d753b112f9": {
+                "id": "14a24b97-abea-474d-a898-21d753b112f9",
+                "name": "weight = 6",
+                "type": "ObjectAttribute",
+                "owner": "bda9d055-51d5-4b33-9234-348b046de565",
+                "bounds": {
+                  "x": -139.5,
+                  "y": -39.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false,
+                "attributeId": "2173b539-a450-4240-abbd-4bbce6e66433"
               },
               "56158037-0372-4a6e-acb4-c7738c8e3670": {
                 "id": "56158037-0372-4a6e-acb4-c7738c8e3670",
@@ -798,17 +850,18 @@
                   "x": -140,
                   "y": 20,
                   "width": 160,
-                  "height": 70
+                  "height": 100
                 },
                 "attributes": [
-                  "7f1208a0-19b2-4530-aa7e-7bc9d1aac810"
+                  "4f67643b-444c-416e-affb-6587e3ad8255",
+                  "83d5e7a6-7e61-4c35-86a8-addd3799235a"
                 ],
                 "methods": [],
                 "classId": "56d98157-88a4-4114-9426-b38a1bae8a30",
                 "className": "Exam"
               },
-              "7f1208a0-19b2-4530-aa7e-7bc9d1aac810": {
-                "id": "7f1208a0-19b2-4530-aa7e-7bc9d1aac810",
+              "4f67643b-444c-416e-affb-6587e3ad8255": {
+                "id": "4f67643b-444c-416e-affb-6587e3ad8255",
                 "name": "name = Chemistry",
                 "type": "ObjectAttribute",
                 "owner": "56158037-0372-4a6e-acb4-c7738c8e3670",
@@ -828,7 +881,32 @@
                 "isOptional": false,
                 "isDerived": false,
                 "isId": false,
-                "isExternalId": false
+                "isExternalId": false,
+                "attributeId": "a107da96-7b9a-4fb9-b32c-01b9b5073019"
+              },
+              "83d5e7a6-7e61-4c35-86a8-addd3799235a": {
+                "id": "83d5e7a6-7e61-4c35-86a8-addd3799235a",
+                "name": "weight = 4",
+                "type": "ObjectAttribute",
+                "owner": "56158037-0372-4a6e-acb4-c7738c8e3670",
+                "bounds": {
+                  "x": -139.5,
+                  "y": 90.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false,
+                "attributeId": "2173b539-a450-4240-abbd-4bbce6e66433"
               },
               "941ef0e4-caab-4e7a-9865-785d6fd46fc0": {
                 "id": "941ef0e4-caab-4e7a-9865-785d6fd46fc0",
@@ -839,17 +917,18 @@
                   "x": -40,
                   "y": 170,
                   "width": 160,
-                  "height": 70
+                  "height": 100
                 },
                 "attributes": [
-                  "25488ca8-7b48-4548-84cb-63898d3a39c5"
+                  "b1de1d27-d188-4ad0-b168-6ce7d6995c8d",
+                  "e8c13ccd-f016-450f-bb74-c91d313d2d68"
                 ],
                 "methods": [],
                 "classId": "56d98157-88a4-4114-9426-b38a1bae8a30",
                 "className": "Exam"
               },
-              "25488ca8-7b48-4548-84cb-63898d3a39c5": {
-                "id": "25488ca8-7b48-4548-84cb-63898d3a39c5",
+              "b1de1d27-d188-4ad0-b168-6ce7d6995c8d": {
+                "id": "b1de1d27-d188-4ad0-b168-6ce7d6995c8d",
                 "name": "name = Biology",
                 "type": "ObjectAttribute",
                 "owner": "941ef0e4-caab-4e7a-9865-785d6fd46fc0",
@@ -869,7 +948,32 @@
                 "isOptional": false,
                 "isDerived": false,
                 "isId": false,
-                "isExternalId": false
+                "isExternalId": false,
+                "attributeId": "a107da96-7b9a-4fb9-b32c-01b9b5073019"
+              },
+              "e8c13ccd-f016-450f-bb74-c91d313d2d68": {
+                "id": "e8c13ccd-f016-450f-bb74-c91d313d2d68",
+                "name": "weight = 3",
+                "type": "ObjectAttribute",
+                "owner": "941ef0e4-caab-4e7a-9865-785d6fd46fc0",
+                "bounds": {
+                  "x": -39.5,
+                  "y": 240.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false,
+                "attributeId": "2173b539-a450-4240-abbd-4bbce6e66433"
               },
               "8ba8847d-5594-44dc-babc-b8ef5a4cd4d0": {
                 "id": "8ba8847d-5594-44dc-babc-b8ef5a4cd4d0",
@@ -1005,7 +1109,7 @@
                   "x": -490,
                   "y": -165,
                   "width": 350,
-                  "height": 90
+                  "height": 105
                 },
                 "path": [
                   {
@@ -1018,11 +1122,11 @@
                   },
                   {
                     "x": 175,
-                    "y": 90
+                    "y": 105
                   },
                   {
                     "x": 350,
-                    "y": 90
+                    "y": 105
                   }
                 ],
                 "source": {
@@ -1042,21 +1146,13 @@
                 "owner": null,
                 "bounds": {
                   "x": -490,
-                  "y": -215,
+                  "y": -175,
                   "width": 480,
-                  "height": 67.5
+                  "height": 1
                 },
                 "path": [
                   {
                     "x": 0,
-                    "y": 67.5
-                  },
-                  {
-                    "x": 240,
-                    "y": 67.5
-                  },
-                  {
-                    "x": 240,
                     "y": 0
                   },
                   {
@@ -1081,18 +1177,18 @@
                 "owner": null,
                 "bounds": {
                   "x": -580,
-                  "y": -75,
+                  "y": -60,
                   "width": 440,
-                  "height": 70
+                  "height": 55
                 },
                 "path": [
                   {
                     "x": 0,
-                    "y": 70
+                    "y": 55
                   },
                   {
                     "x": 220,
-                    "y": 70
+                    "y": 55
                   },
                   {
                     "x": 220,
@@ -1122,7 +1218,7 @@
                   "x": -580,
                   "y": 12.5,
                   "width": 440,
-                  "height": 42.5
+                  "height": 57.5
                 },
                 "path": [
                   {
@@ -1135,11 +1231,11 @@
                   },
                   {
                     "x": 220,
-                    "y": 42.5
+                    "y": 57.5
                   },
                   {
                     "x": 440,
-                    "y": 42.5
+                    "y": 57.5
                   }
                 ],
                 "source": {
@@ -1161,7 +1257,7 @@
                   "x": -370,
                   "y": -305,
                   "width": 360,
-                  "height": 72.5
+                  "height": 80
                 },
                 "path": [
                   {
@@ -1174,11 +1270,11 @@
                   },
                   {
                     "x": 180,
-                    "y": 72.5
+                    "y": 80
                   },
                   {
                     "x": 360,
-                    "y": 72.5
+                    "y": 80
                   }
                 ],
                 "source": {
@@ -1200,7 +1296,7 @@
                   "x": -370,
                   "y": -287.5,
                   "width": 330,
-                  "height": 475
+                  "height": 482.5
                 },
                 "path": [
                   {
@@ -1213,11 +1309,11 @@
                   },
                   {
                     "x": 165,
-                    "y": 475
+                    "y": 482.5
                   },
                   {
                     "x": 330,
-                    "y": 475
+                    "y": 482.5
                   }
                 ],
                 "source": {
@@ -1237,18 +1333,18 @@
                 "owner": null,
                 "bounds": {
                   "x": -470,
-                  "y": 55,
+                  "y": 70,
                   "width": 330,
-                  "height": 100
+                  "height": 85
                 },
                 "path": [
                   {
                     "x": 0,
-                    "y": 100
+                    "y": 85
                   },
                   {
                     "x": 165,
-                    "y": 100
+                    "y": 85
                   },
                   {
                     "x": 165,
@@ -1278,7 +1374,7 @@
                   "x": -470,
                   "y": 172.5,
                   "width": 430,
-                  "height": 32.5
+                  "height": 47.5
                 },
                 "path": [
                   {
@@ -1291,11 +1387,11 @@
                   },
                   {
                     "x": 215,
-                    "y": 32.5
+                    "y": 47.5
                   },
                   {
                     "x": 430,
-                    "y": 32.5
+                    "y": 47.5
                   }
                 ],
                 "source": {
@@ -1315,18 +1411,18 @@
                 "owner": null,
                 "bounds": {
                   "x": -360,
-                  "y": -92.5,
+                  "y": -85,
                   "width": 220,
-                  "height": 387.5
+                  "height": 380
                 },
                 "path": [
                   {
                     "x": 0,
-                    "y": 387.5
+                    "y": 380
                   },
                   {
                     "x": 110,
-                    "y": 387.5
+                    "y": 380
                   },
                   {
                     "x": 110,
@@ -1354,18 +1450,18 @@
                 "owner": null,
                 "bounds": {
                   "x": -360,
-                  "y": 222.5,
+                  "y": 245,
                   "width": 320,
-                  "height": 90
+                  "height": 67.5
                 },
                 "path": [
                   {
                     "x": 0,
-                    "y": 90
+                    "y": 67.5
                   },
                   {
                     "x": 160,
-                    "y": 90
+                    "y": 67.5
                   },
                   {
                     "x": 160,
@@ -1846,7 +1942,7 @@
               "assessments": {}
             }
           },
-          "lastUpdate": "2026-10-20T13:42:17.360Z"
+          "lastUpdate": "2026-10-20T13:47:46.422Z"
         }
       ]
     },
@@ -1869,7 +1965,7 @@
       }
     }
   },
-  "exportedAt": "2026-10-20T13:42:58.510Z",
+  "exportedAt": "2026-10-20T13:48:01.403Z",
   "version": "2.0.0",
   "besserVersion": "8.2.1",
   "editorVersion": "1.0.0"

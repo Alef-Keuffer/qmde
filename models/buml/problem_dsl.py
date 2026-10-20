@@ -86,23 +86,22 @@ domain_model = DomainModel(
 # OBJECT MODEL #
 ################
 alice_obj = Student("Alice").attributes(name="Alice").build()
-biology_obj = Exam("Biology").attributes(name="Biology").build()
+biology_obj = Exam("Biology").attributes(name="Biology", weight=3).build()
 bob_obj = Student("Bob").attributes(name="Bob").build()
 carla_obj = Student("Carla").attributes(name="Carla").build()
-chemistry_obj = Exam("Chemistry").attributes(name="Chemistry").build()
+chemistry_obj = Exam("Chemistry").attributes(name="Chemistry", weight=4).build()
 david_obj = Student("David").attributes(name="David").build()
 eva_obj = Student("Eva").attributes(name="Eva").build()
-math_obj = Exam("Math").attributes(name="Math").build()
+math_obj = Exam("Math").attributes(name="Math", weight=6).build()
 mon_14_00_obj = TimeSlot("Mon 14:00").attributes(id=2).build()
 mon_9_00_obj = TimeSlot("Mon 9:00").attributes(id=1).build()
-physics_obj = Exam("Physics").attributes(name="Physics").build()
+physics_obj = Exam("Physics").attributes(name="Physics", weight=4).build()
 tue_9_00_obj = TimeSlot("Tue 9:00").attributes(id=3).build()
 
-carla_obj.exams = {biology_obj, physics_obj}
-david_obj.exams = {biology_obj, chemistry_obj}
-bob_obj.exams = {chemistry_obj, math_obj}
-alice_obj.exams = {math_obj, physics_obj}
-eva_obj.exams = {biology_obj, math_obj}
+chemistry_obj.students = {bob_obj, david_obj}
+biology_obj.students = {carla_obj, david_obj, eva_obj}
+physics_obj.students = {alice_obj, carla_obj}
+math_obj.students = {alice_obj, bob_obj, eva_obj}
 
 # Object Model instance
 object_model: ObjectModel = ObjectModel(
