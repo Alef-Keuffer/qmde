@@ -124,10 +124,11 @@
                 "x": -440,
                 "y": -130,
                 "width": 160,
-                "height": 70
+                "height": 100
               },
               "attributes": [
-                "e50a5bc2-6e7a-4521-b78f-8f5997c166ae"
+                "e50a5bc2-6e7a-4521-b78f-8f5997c166ae",
+                "57821720-24b1-4451-b1fd-20904c698085"
               ],
               "methods": []
             },
@@ -145,6 +146,29 @@
               "code": "",
               "visibility": "public",
               "attributeType": "str",
+              "implementationType": "none",
+              "stateMachineId": "",
+              "quantumCircuitId": "",
+              "neuralNetworkId": "",
+              "isOptional": false,
+              "isDerived": false,
+              "isId": false,
+              "isExternalId": false
+            },
+            "57821720-24b1-4451-b1fd-20904c698085": {
+              "id": "57821720-24b1-4451-b1fd-20904c698085",
+              "name": "weight",
+              "type": "ClassAttribute",
+              "owner": "47b593b8-4702-4a35-8c9a-40fbfffc4b07",
+              "bounds": {
+                "x": -439.5,
+                "y": -59.5,
+                "width": 159,
+                "height": 30
+              },
+              "code": "",
+              "visibility": "public",
+              "attributeType": "float",
               "implementationType": "none",
               "stateMachineId": "",
               "quantumCircuitId": "",
@@ -219,9 +243,9 @@
               "owner": null,
               "bounds": {
                 "x": -431.953125,
-                "y": -60,
+                "y": -30,
                 "width": 95.3828125,
-                "height": 170.5
+                "height": 140.5
               },
               "path": [
                 {
@@ -230,7 +254,7 @@
                 },
                 {
                   "x": 66.953125,
-                  "y": 160
+                  "y": 130
                 }
               ],
               "source": {
@@ -461,7 +485,7 @@
           },
           "assessments": {}
         },
-        "lastUpdate": "2026-10-20T13:00:59.594Z"
+        "lastUpdate": "2026-10-20T13:02:11.668Z"
       }
     ],
     "ObjectDiagram": [
@@ -1191,12 +1215,184 @@
                   "navigable": true
                 },
                 "isManuallyLayouted": false
+              },
+              "ae647328-99f5-4861-92b9-b5436beed6a3": {
+                "id": "ae647328-99f5-4861-92b9-b5436beed6a3",
+                "name": "",
+                "type": "ClassOCLLink",
+                "owner": null,
+                "bounds": {
+                  "x": -270,
+                  "y": -437.5,
+                  "width": 270,
+                  "height": 63.5
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 42.5
+                  },
+                  {
+                    "x": 135,
+                    "y": 42.5
+                  },
+                  {
+                    "x": 135,
+                    "y": 10
+                  },
+                  {
+                    "x": 270,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "9a420b42-966c-4ba8-bf43-06f2988231f1",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Downleft",
+                  "element": "4518866c-4708-4ef2-9059-ec29c797a144",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "30795027-6b7e-465e-8dc4-91a782d01896": {
+                "id": "30795027-6b7e-465e-8dc4-91a782d01896",
+                "name": "",
+                "type": "ClassOCLLink",
+                "owner": null,
+                "bounds": {
+                  "x": -270,
+                  "y": -387.5,
+                  "width": 270,
+                  "height": 53.5
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 10
+                  },
+                  {
+                    "x": 135,
+                    "y": 10
+                  },
+                  {
+                    "x": 135,
+                    "y": 32.5
+                  },
+                  {
+                    "x": 270,
+                    "y": 32.5
+                  }
+                ],
+                "source": {
+                  "direction": "Downright",
+                  "element": "9a420b42-966c-4ba8-bf43-06f2988231f1",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "3d7cc831-0956-4e7a-98df-a9a568b41de9",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "b6bc6a59-5751-4c2d-a89e-de5fef40fe1a": {
+                "id": "b6bc6a59-5751-4c2d-a89e-de5fef40fe1a",
+                "name": "",
+                "type": "ClassOCLLink",
+                "owner": null,
+                "bounds": {
+                  "x": -280,
+                  "y": -115,
+                  "width": 280,
+                  "height": 31
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 10
+                  },
+                  {
+                    "x": 280,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "47b593b8-4702-4a35-8c9a-40fbfffc4b07",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Downleft",
+                  "element": "eef397b7-73e7-41f8-8b57-8107fa1d4b1e",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "56c6fcce-46b1-4865-bc93-59ed9f3a5b4a": {
+                "id": "56c6fcce-46b1-4865-bc93-59ed9f3a5b4a",
+                "name": "",
+                "type": "ClassOCLLink",
+                "owner": null,
+                "bounds": {
+                  "x": -290,
+                  "y": 125,
+                  "width": 300,
+                  "height": 118.5
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 10
+                  },
+                  {
+                    "x": 150,
+                    "y": 10
+                  },
+                  {
+                    "x": 150,
+                    "y": 97.5
+                  },
+                  {
+                    "x": 300,
+                    "y": 97.5
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "afac7e90-f4b6-4490-8fc3-f856efbe5b39",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Downleft",
+                  "element": "c5e1dd9d-8cb5-4513-9b00-1d1b742a411c",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
               }
             },
             "assessments": {}
           }
         },
-        "lastUpdate": "2026-10-15T18:20:51.273Z"
+        "lastUpdate": "2026-10-20T13:01:11.007Z"
       }
     ],
     "StateMachineDiagram": [
