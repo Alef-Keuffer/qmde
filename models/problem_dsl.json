@@ -1,0 +1,1876 @@
+{
+  "project": {
+    "id": "project_1792503308708_wn28tsxro",
+    "type": "Project",
+    "schemaVersion": 5,
+    "name": "TACS",
+    "description": "Imported from single-diagram BUML file",
+    "owner": "Unknown",
+    "createdAt": "2026-10-20T13:35:08.708Z",
+    "currentDiagramType": "ObjectDiagram",
+    "currentDiagramIndices": {
+      "ClassDiagram": 0,
+      "ObjectDiagram": 0,
+      "StateMachineDiagram": 0,
+      "AgentDiagram": 0,
+      "ComponentDiagram": 0,
+      "DeploymentDiagram": 0,
+      "NNDiagram": 0,
+      "UserDiagram": 0,
+      "GUINoCodeDiagram": 0,
+      "QuantumCircuitDiagram": 0,
+      "BPMN": 0
+    },
+    "diagrams": {
+      "ClassDiagram": [
+        {
+          "id": "0b8039df-899e-4321-9d33-359460022488",
+          "title": "Class Diagram",
+          "model": {
+            "version": "3.0.0",
+            "type": "ClassDiagram",
+            "size": {
+              "width": 1320,
+              "height": 640
+            },
+            "interactive": {
+              "elements": {},
+              "relationships": {}
+            },
+            "elements": {
+              "56d98157-88a4-4114-9426-b38a1bae8a30": {
+                "id": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                "name": "Exam",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -600,
+                  "y": -300,
+                  "width": 160,
+                  "height": 100
+                },
+                "attributes": [
+                  "a107da96-7b9a-4fb9-b32c-01b9b5073019",
+                  "2173b539-a450-4240-abbd-4bbce6e66433"
+                ],
+                "methods": []
+              },
+              "a107da96-7b9a-4fb9-b32c-01b9b5073019": {
+                "id": "a107da96-7b9a-4fb9-b32c-01b9b5073019",
+                "name": "name",
+                "type": "ClassAttribute",
+                "owner": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                "bounds": {
+                  "x": -599.5,
+                  "y": -259.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "2173b539-a450-4240-abbd-4bbce6e66433": {
+                "id": "2173b539-a450-4240-abbd-4bbce6e66433",
+                "name": "weight",
+                "type": "ClassAttribute",
+                "owner": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                "bounds": {
+                  "x": -599.5,
+                  "y": -229.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "37dd5f41-ff76-49a5-8c60-a247955e6351": {
+                "id": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                "name": "Student",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -300,
+                  "y": -300,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "1ecdf7a6-8654-4ee5-8195-a4e371f4a9df"
+                ],
+                "methods": []
+              },
+              "1ecdf7a6-8654-4ee5-8195-a4e371f4a9df": {
+                "id": "1ecdf7a6-8654-4ee5-8195-a4e371f4a9df",
+                "name": "name",
+                "type": "ClassAttribute",
+                "owner": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                "bounds": {
+                  "x": -299.5,
+                  "y": -259.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "98af6ded-614a-40d8-88a1-8d0eddc87406": {
+                "id": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                "name": "TimeSlot",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": 0,
+                  "y": -300,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "067f0c99-8152-4a49-af7a-11e7da93dec5"
+                ],
+                "methods": []
+              },
+              "067f0c99-8152-4a49-af7a-11e7da93dec5": {
+                "id": "067f0c99-8152-4a49-af7a-11e7da93dec5",
+                "name": "id",
+                "type": "ClassAttribute",
+                "owner": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                "bounds": {
+                  "x": 0.5,
+                  "y": -259.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "93472f39-54e5-4a20-9e6b-aa4aaac44467": {
+                "id": "93472f39-54e5-4a20-9e6b-aa4aaac44467",
+                "name": "exam_has_name",
+                "type": "ClassOCLConstraint",
+                "owner": null,
+                "bounds": {
+                  "x": -600,
+                  "y": -100,
+                  "width": 160,
+                  "height": 100
+                },
+                "description": "Exam name can't be empty",
+                "constraint": "context Exam inv exam_has_name: self.name.size() > 0"
+              },
+              "b096e8de-bb89-4290-ab71-c71a3f48f424": {
+                "id": "b096e8de-bb89-4290-ab71-c71a3f48f424",
+                "name": "id_is_unique",
+                "type": "ClassOCLConstraint",
+                "owner": null,
+                "bounds": {
+                  "x": -300,
+                  "y": -100,
+                  "width": 160,
+                  "height": 100
+                },
+                "description": "TimeSlot id must be unique",
+                "constraint": "context TimeSlot inv id_is_unique: TimeSlot.allInstances()->isUnique(id)"
+              },
+              "3981df60-ea6d-43ca-94c5-9f65f18f6912": {
+                "id": "3981df60-ea6d-43ca-94c5-9f65f18f6912",
+                "name": "time_slot_has_non_negative_id",
+                "type": "ClassOCLConstraint",
+                "owner": null,
+                "bounds": {
+                  "x": 0,
+                  "y": -100,
+                  "width": 160,
+                  "height": 100
+                },
+                "description": "TimeSlot Id can't be negative",
+                "constraint": "context TimeSlot inv time_slot_has_non_negative_id: self.id > 0"
+              }
+            },
+            "relationships": {
+              "d79ea10d-bd9e-46c3-80c3-1f91b90e1d95": {
+                "id": "d79ea10d-bd9e-46c3-80c3-1f91b90e1d95",
+                "name": "Exam_Student",
+                "type": "ClassBidirectional",
+                "owner": null,
+                "bounds": {
+                  "x": -440,
+                  "y": -275,
+                  "width": 140,
+                  "height": 48
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 10
+                  },
+                  {
+                    "x": 140,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                  "multiplicity": "1..*",
+                  "role": "exams",
+                  "navigable": true,
+                  "bounds": {
+                    "x": -440,
+                    "y": -265,
+                    "width": 0,
+                    "height": 0
+                  }
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                  "multiplicity": "0..*",
+                  "role": "students",
+                  "navigable": true,
+                  "bounds": {
+                    "x": -300,
+                    "y": -265,
+                    "width": 0,
+                    "height": 0
+                  }
+                },
+                "isManuallyLayouted": false
+              },
+              "a5ba3d6c-f8df-4fbb-b14c-3016408e4ec9": {
+                "id": "a5ba3d6c-f8df-4fbb-b14c-3016408e4ec9",
+                "name": "Exam_TimeSlot",
+                "type": "ClassBidirectional",
+                "owner": null,
+                "bounds": {
+                  "x": -440,
+                  "y": -275,
+                  "width": 440,
+                  "height": 48
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 10
+                  },
+                  {
+                    "x": 440,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                  "multiplicity": "0..*",
+                  "role": "exams",
+                  "navigable": true,
+                  "bounds": {
+                    "x": -440,
+                    "y": -265,
+                    "width": 0,
+                    "height": 0
+                  }
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                  "multiplicity": "1",
+                  "role": "timeSlot",
+                  "navigable": true,
+                  "bounds": {
+                    "x": 0,
+                    "y": -265,
+                    "width": 0,
+                    "height": 0
+                  }
+                },
+                "isManuallyLayouted": false
+              },
+              "f0797481-0293-43d9-a2ca-776f9d5d3e13": {
+                "id": "f0797481-0293-43d9-a2ca-776f9d5d3e13",
+                "name": "",
+                "type": "ClassOCLLink",
+                "owner": null,
+                "bounds": {
+                  "x": -640,
+                  "y": -260,
+                  "width": 240,
+                  "height": 231
+                },
+                "path": [
+                  {
+                    "x": 40,
+                    "y": 210
+                  },
+                  {
+                    "x": 0,
+                    "y": 210
+                  },
+                  {
+                    "x": 0,
+                    "y": 120
+                  },
+                  {
+                    "x": 240,
+                    "y": 120
+                  },
+                  {
+                    "x": 240,
+                    "y": 10
+                  },
+                  {
+                    "x": 200,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Left",
+                  "element": "93472f39-54e5-4a20-9e6b-aa4aaac44467",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Right",
+                  "element": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "c6859d45-83cb-41d6-b5e2-18b70cd35836": {
+                "id": "c6859d45-83cb-41d6-b5e2-18b70cd35836",
+                "name": "",
+                "type": "ClassOCLLink",
+                "owner": null,
+                "bounds": {
+                  "x": -340,
+                  "y": -275,
+                  "width": 540,
+                  "height": 246
+                },
+                "path": [
+                  {
+                    "x": 40,
+                    "y": 225
+                  },
+                  {
+                    "x": 0,
+                    "y": 225
+                  },
+                  {
+                    "x": 0,
+                    "y": 135
+                  },
+                  {
+                    "x": 540,
+                    "y": 135
+                  },
+                  {
+                    "x": 540,
+                    "y": 10
+                  },
+                  {
+                    "x": 500,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Left",
+                  "element": "b096e8de-bb89-4290-ab71-c71a3f48f424",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Right",
+                  "element": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              },
+              "589b0dcd-cf3a-4c98-99b0-8c62b3faf829": {
+                "id": "589b0dcd-cf3a-4c98-99b0-8c62b3faf829",
+                "name": "",
+                "type": "ClassOCLLink",
+                "owner": null,
+                "bounds": {
+                  "x": -40,
+                  "y": -275,
+                  "width": 240,
+                  "height": 246
+                },
+                "path": [
+                  {
+                    "x": 40,
+                    "y": 225
+                  },
+                  {
+                    "x": 0,
+                    "y": 225
+                  },
+                  {
+                    "x": 0,
+                    "y": 135
+                  },
+                  {
+                    "x": 240,
+                    "y": 135
+                  },
+                  {
+                    "x": 240,
+                    "y": 10
+                  },
+                  {
+                    "x": 200,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Left",
+                  "element": "3981df60-ea6d-43ca-94c5-9f65f18f6912",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "target": {
+                  "direction": "Right",
+                  "element": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                  "multiplicity": "",
+                  "role": "",
+                  "navigable": true
+                },
+                "isManuallyLayouted": false
+              }
+            },
+            "assessments": {}
+          },
+          "lastUpdate": "2026-10-20T13:42:14.213Z"
+        }
+      ],
+      "ObjectDiagram": [
+        {
+          "id": "1b03eb70-c6e6-4f7f-bafa-ab83b0df0da3",
+          "title": "Object Diagram",
+          "model": {
+            "version": "3.0.0",
+            "type": "ObjectDiagram",
+            "size": {
+              "width": 1520,
+              "height": 720
+            },
+            "interactive": {
+              "elements": {},
+              "relationships": {}
+            },
+            "elements": {
+              "f1f2dbd6-c9d0-47cc-bd6e-b1f03f0c45f6": {
+                "id": "f1f2dbd6-c9d0-47cc-bd6e-b1f03f0c45f6",
+                "name": "Bob",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": -740,
+                  "y": -40,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "86c9f9f9-270e-4adc-a9a7-75c4e8eb0956"
+                ],
+                "methods": [],
+                "classId": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                "className": "Student"
+              },
+              "86c9f9f9-270e-4adc-a9a7-75c4e8eb0956": {
+                "id": "86c9f9f9-270e-4adc-a9a7-75c4e8eb0956",
+                "name": "name = Bob",
+                "type": "ObjectAttribute",
+                "owner": "f1f2dbd6-c9d0-47cc-bd6e-b1f03f0c45f6",
+                "bounds": {
+                  "x": -739.5,
+                  "y": 0.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "894602fe-642a-4044-994f-4a86d9f55cef": {
+                "id": "894602fe-642a-4044-994f-4a86d9f55cef",
+                "name": "David",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": -630,
+                  "y": 120,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "c179e17b-8fdf-4b55-99a0-330669e78b66"
+                ],
+                "methods": [],
+                "classId": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                "className": "Student"
+              },
+              "c179e17b-8fdf-4b55-99a0-330669e78b66": {
+                "id": "c179e17b-8fdf-4b55-99a0-330669e78b66",
+                "name": "name = David",
+                "type": "ObjectAttribute",
+                "owner": "894602fe-642a-4044-994f-4a86d9f55cef",
+                "bounds": {
+                  "x": -629.5,
+                  "y": 160.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "1fbb1144-e3cc-4c1f-b333-7a2b2e37b50a": {
+                "id": "1fbb1144-e3cc-4c1f-b333-7a2b2e37b50a",
+                "name": "Carla",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": -530,
+                  "y": -340,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "45b08188-f1f1-4562-8771-83fd3e24645f"
+                ],
+                "methods": [],
+                "classId": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                "className": "Student"
+              },
+              "45b08188-f1f1-4562-8771-83fd3e24645f": {
+                "id": "45b08188-f1f1-4562-8771-83fd3e24645f",
+                "name": "name = Carla",
+                "type": "ObjectAttribute",
+                "owner": "1fbb1144-e3cc-4c1f-b333-7a2b2e37b50a",
+                "bounds": {
+                  "x": -529.5,
+                  "y": -299.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "e6582b25-83fc-4662-beeb-34c144c5c478": {
+                "id": "e6582b25-83fc-4662-beeb-34c144c5c478",
+                "name": "Alice",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": -650,
+                  "y": -200,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "b5817857-3692-4da9-9232-e7dcbdafa76b"
+                ],
+                "methods": [],
+                "classId": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                "className": "Student"
+              },
+              "b5817857-3692-4da9-9232-e7dcbdafa76b": {
+                "id": "b5817857-3692-4da9-9232-e7dcbdafa76b",
+                "name": "name = Alice",
+                "type": "ObjectAttribute",
+                "owner": "e6582b25-83fc-4662-beeb-34c144c5c478",
+                "bounds": {
+                  "x": -649.5,
+                  "y": -159.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "3197c33f-6335-4163-8349-f445b9cb8490": {
+                "id": "3197c33f-6335-4163-8349-f445b9cb8490",
+                "name": "Eva",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": -520,
+                  "y": 260,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "156d1393-9b65-478b-a787-0969b0da0144"
+                ],
+                "methods": [],
+                "classId": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                "className": "Student"
+              },
+              "156d1393-9b65-478b-a787-0969b0da0144": {
+                "id": "156d1393-9b65-478b-a787-0969b0da0144",
+                "name": "name = Eva",
+                "type": "ObjectAttribute",
+                "owner": "3197c33f-6335-4163-8349-f445b9cb8490",
+                "bounds": {
+                  "x": -519.5,
+                  "y": 300.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "d762645e-e105-4bf8-9096-c9f515725764": {
+                "id": "d762645e-e105-4bf8-9096-c9f515725764",
+                "name": "Physics",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": -10,
+                  "y": -250,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "f2500013-6383-4f17-a792-9c4dd1d6063a"
+                ],
+                "methods": [],
+                "classId": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                "className": "Exam"
+              },
+              "f2500013-6383-4f17-a792-9c4dd1d6063a": {
+                "id": "f2500013-6383-4f17-a792-9c4dd1d6063a",
+                "name": "name = Physics",
+                "type": "ObjectAttribute",
+                "owner": "d762645e-e105-4bf8-9096-c9f515725764",
+                "bounds": {
+                  "x": -9.5,
+                  "y": -209.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "bda9d055-51d5-4b33-9234-348b046de565": {
+                "id": "bda9d055-51d5-4b33-9234-348b046de565",
+                "name": "Math",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": -140,
+                  "y": -110,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "1ad61387-7c96-47c1-b824-b67fb45d5ffa"
+                ],
+                "methods": [],
+                "classId": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                "className": "Exam"
+              },
+              "1ad61387-7c96-47c1-b824-b67fb45d5ffa": {
+                "id": "1ad61387-7c96-47c1-b824-b67fb45d5ffa",
+                "name": "name = Math",
+                "type": "ObjectAttribute",
+                "owner": "bda9d055-51d5-4b33-9234-348b046de565",
+                "bounds": {
+                  "x": -139.5,
+                  "y": -69.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "56158037-0372-4a6e-acb4-c7738c8e3670": {
+                "id": "56158037-0372-4a6e-acb4-c7738c8e3670",
+                "name": "Chemistry",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": -140,
+                  "y": 20,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "7f1208a0-19b2-4530-aa7e-7bc9d1aac810"
+                ],
+                "methods": [],
+                "classId": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                "className": "Exam"
+              },
+              "7f1208a0-19b2-4530-aa7e-7bc9d1aac810": {
+                "id": "7f1208a0-19b2-4530-aa7e-7bc9d1aac810",
+                "name": "name = Chemistry",
+                "type": "ObjectAttribute",
+                "owner": "56158037-0372-4a6e-acb4-c7738c8e3670",
+                "bounds": {
+                  "x": -139.5,
+                  "y": 60.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "941ef0e4-caab-4e7a-9865-785d6fd46fc0": {
+                "id": "941ef0e4-caab-4e7a-9865-785d6fd46fc0",
+                "name": "Biology",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": -40,
+                  "y": 170,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "25488ca8-7b48-4548-84cb-63898d3a39c5"
+                ],
+                "methods": [],
+                "classId": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                "className": "Exam"
+              },
+              "25488ca8-7b48-4548-84cb-63898d3a39c5": {
+                "id": "25488ca8-7b48-4548-84cb-63898d3a39c5",
+                "name": "name = Biology",
+                "type": "ObjectAttribute",
+                "owner": "941ef0e4-caab-4e7a-9865-785d6fd46fc0",
+                "bounds": {
+                  "x": -39.5,
+                  "y": 210.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "8ba8847d-5594-44dc-babc-b8ef5a4cd4d0": {
+                "id": "8ba8847d-5594-44dc-babc-b8ef5a4cd4d0",
+                "name": "Mon 9:00",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": 350,
+                  "y": -150,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "de8df040-b17e-4f48-b0a7-def5d37fc70d"
+                ],
+                "methods": [],
+                "classId": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                "className": "TimeSlot"
+              },
+              "de8df040-b17e-4f48-b0a7-def5d37fc70d": {
+                "id": "de8df040-b17e-4f48-b0a7-def5d37fc70d",
+                "name": "id = 1",
+                "type": "ObjectAttribute",
+                "owner": "8ba8847d-5594-44dc-babc-b8ef5a4cd4d0",
+                "bounds": {
+                  "x": 350.5,
+                  "y": -109.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "1bbf308b-4202-4682-88da-49399c0ce2cf": {
+                "id": "1bbf308b-4202-4682-88da-49399c0ce2cf",
+                "name": "Mon 14:00",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": 350,
+                  "y": -50,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "a49b0783-afed-4ef3-83af-48c31c6b3e27"
+                ],
+                "methods": [],
+                "classId": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                "className": "TimeSlot"
+              },
+              "a49b0783-afed-4ef3-83af-48c31c6b3e27": {
+                "id": "a49b0783-afed-4ef3-83af-48c31c6b3e27",
+                "name": "id = 2",
+                "type": "ObjectAttribute",
+                "owner": "1bbf308b-4202-4682-88da-49399c0ce2cf",
+                "bounds": {
+                  "x": 350.5,
+                  "y": -9.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "98d8d2af-e419-4a66-addf-b6a27624da69": {
+                "id": "98d8d2af-e419-4a66-addf-b6a27624da69",
+                "name": "Tue 9:00",
+                "type": "ObjectName",
+                "owner": null,
+                "bounds": {
+                  "x": 340,
+                  "y": 50,
+                  "width": 160,
+                  "height": 70
+                },
+                "attributes": [
+                  "b6f4d1ff-01b4-4f68-9069-85c866c43f12"
+                ],
+                "methods": [],
+                "classId": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                "className": "TimeSlot"
+              },
+              "b6f4d1ff-01b4-4f68-9069-85c866c43f12": {
+                "id": "b6f4d1ff-01b4-4f68-9069-85c866c43f12",
+                "name": "id = 3",
+                "type": "ObjectAttribute",
+                "owner": "98d8d2af-e419-4a66-addf-b6a27624da69",
+                "bounds": {
+                  "x": 340.5,
+                  "y": 90.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "neuralNetworkId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              }
+            },
+            "relationships": {
+              "1cf0a30b-97ce-444b-bcda-09796fa902a7": {
+                "id": "1cf0a30b-97ce-444b-bcda-09796fa902a7",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -490,
+                  "y": -165,
+                  "width": 350,
+                  "height": 90
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 175,
+                    "y": 0
+                  },
+                  {
+                    "x": 175,
+                    "y": 90
+                  },
+                  {
+                    "x": 350,
+                    "y": 90
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "e6582b25-83fc-4662-beeb-34c144c5c478"
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "bda9d055-51d5-4b33-9234-348b046de565"
+                },
+                "isManuallyLayouted": false
+              },
+              "5c75d5d2-5cb4-4487-80f3-0bd8753c8906": {
+                "id": "5c75d5d2-5cb4-4487-80f3-0bd8753c8906",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -490,
+                  "y": -215,
+                  "width": 480,
+                  "height": 67.5
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 67.5
+                  },
+                  {
+                    "x": 240,
+                    "y": 67.5
+                  },
+                  {
+                    "x": 240,
+                    "y": 0
+                  },
+                  {
+                    "x": 480,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Downright",
+                  "element": "e6582b25-83fc-4662-beeb-34c144c5c478"
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "d762645e-e105-4bf8-9096-c9f515725764"
+                },
+                "isManuallyLayouted": false
+              },
+              "e18c9917-c23c-4c5c-8910-8dc069d22a4f": {
+                "id": "e18c9917-c23c-4c5c-8910-8dc069d22a4f",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -580,
+                  "y": -75,
+                  "width": 440,
+                  "height": 70
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 70
+                  },
+                  {
+                    "x": 220,
+                    "y": 70
+                  },
+                  {
+                    "x": 220,
+                    "y": 0
+                  },
+                  {
+                    "x": 440,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "f1f2dbd6-c9d0-47cc-bd6e-b1f03f0c45f6"
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "bda9d055-51d5-4b33-9234-348b046de565"
+                },
+                "isManuallyLayouted": false
+              },
+              "3d1a903f-96fb-4580-b836-954e103dfa69": {
+                "id": "3d1a903f-96fb-4580-b836-954e103dfa69",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -580,
+                  "y": 12.5,
+                  "width": 440,
+                  "height": 42.5
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 220,
+                    "y": 0
+                  },
+                  {
+                    "x": 220,
+                    "y": 42.5
+                  },
+                  {
+                    "x": 440,
+                    "y": 42.5
+                  }
+                ],
+                "source": {
+                  "direction": "Downright",
+                  "element": "f1f2dbd6-c9d0-47cc-bd6e-b1f03f0c45f6"
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "56158037-0372-4a6e-acb4-c7738c8e3670"
+                },
+                "isManuallyLayouted": false
+              },
+              "2d41f2ad-ba87-41ef-8ebb-536741452a97": {
+                "id": "2d41f2ad-ba87-41ef-8ebb-536741452a97",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -370,
+                  "y": -305,
+                  "width": 360,
+                  "height": 72.5
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 180,
+                    "y": 0
+                  },
+                  {
+                    "x": 180,
+                    "y": 72.5
+                  },
+                  {
+                    "x": 360,
+                    "y": 72.5
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "1fbb1144-e3cc-4c1f-b333-7a2b2e37b50a"
+                },
+                "target": {
+                  "direction": "Upleft",
+                  "element": "d762645e-e105-4bf8-9096-c9f515725764"
+                },
+                "isManuallyLayouted": false
+              },
+              "706bccea-da26-45dc-b31f-ac71cdbd8d00": {
+                "id": "706bccea-da26-45dc-b31f-ac71cdbd8d00",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -370,
+                  "y": -287.5,
+                  "width": 330,
+                  "height": 475
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 165,
+                    "y": 0
+                  },
+                  {
+                    "x": 165,
+                    "y": 475
+                  },
+                  {
+                    "x": 330,
+                    "y": 475
+                  }
+                ],
+                "source": {
+                  "direction": "Downright",
+                  "element": "1fbb1144-e3cc-4c1f-b333-7a2b2e37b50a"
+                },
+                "target": {
+                  "direction": "Upleft",
+                  "element": "941ef0e4-caab-4e7a-9865-785d6fd46fc0"
+                },
+                "isManuallyLayouted": false
+              },
+              "1a5119f7-5a7c-43fc-a8ec-ac4d640bacfb": {
+                "id": "1a5119f7-5a7c-43fc-a8ec-ac4d640bacfb",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -470,
+                  "y": 55,
+                  "width": 330,
+                  "height": 100
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 100
+                  },
+                  {
+                    "x": 165,
+                    "y": 100
+                  },
+                  {
+                    "x": 165,
+                    "y": 0
+                  },
+                  {
+                    "x": 330,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "894602fe-642a-4044-994f-4a86d9f55cef"
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "56158037-0372-4a6e-acb4-c7738c8e3670"
+                },
+                "isManuallyLayouted": false
+              },
+              "57687f62-af55-4c31-ad02-f40463481799": {
+                "id": "57687f62-af55-4c31-ad02-f40463481799",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -470,
+                  "y": 172.5,
+                  "width": 430,
+                  "height": 32.5
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 215,
+                    "y": 0
+                  },
+                  {
+                    "x": 215,
+                    "y": 32.5
+                  },
+                  {
+                    "x": 430,
+                    "y": 32.5
+                  }
+                ],
+                "source": {
+                  "direction": "Downright",
+                  "element": "894602fe-642a-4044-994f-4a86d9f55cef"
+                },
+                "target": {
+                  "direction": "Left",
+                  "element": "941ef0e4-caab-4e7a-9865-785d6fd46fc0"
+                },
+                "isManuallyLayouted": false
+              },
+              "2622311f-f54f-4229-9cca-9c0be5d4fc88": {
+                "id": "2622311f-f54f-4229-9cca-9c0be5d4fc88",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -360,
+                  "y": -92.5,
+                  "width": 220,
+                  "height": 387.5
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 387.5
+                  },
+                  {
+                    "x": 110,
+                    "y": 387.5
+                  },
+                  {
+                    "x": 110,
+                    "y": 0
+                  },
+                  {
+                    "x": 220,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Right",
+                  "element": "3197c33f-6335-4163-8349-f445b9cb8490"
+                },
+                "target": {
+                  "direction": "Upleft",
+                  "element": "bda9d055-51d5-4b33-9234-348b046de565"
+                },
+                "isManuallyLayouted": false
+              },
+              "38b7f217-8cb2-4527-8c35-333654919ec1": {
+                "id": "38b7f217-8cb2-4527-8c35-333654919ec1",
+                "name": "",
+                "type": "ObjectLink",
+                "owner": null,
+                "bounds": {
+                  "x": -360,
+                  "y": 222.5,
+                  "width": 320,
+                  "height": 90
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 90
+                  },
+                  {
+                    "x": 160,
+                    "y": 90
+                  },
+                  {
+                    "x": 160,
+                    "y": 0
+                  },
+                  {
+                    "x": 320,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Downright",
+                  "element": "3197c33f-6335-4163-8349-f445b9cb8490"
+                },
+                "target": {
+                  "direction": "Downleft",
+                  "element": "941ef0e4-caab-4e7a-9865-785d6fd46fc0"
+                },
+                "isManuallyLayouted": false
+              }
+            },
+            "assessments": {},
+            "referenceDiagramData": {
+              "version": "3.0.0",
+              "type": "ClassDiagram",
+              "size": {
+                "width": 1320,
+                "height": 640
+              },
+              "interactive": {
+                "elements": {},
+                "relationships": {}
+              },
+              "elements": {
+                "56d98157-88a4-4114-9426-b38a1bae8a30": {
+                  "id": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                  "name": "Exam",
+                  "type": "Class",
+                  "owner": null,
+                  "bounds": {
+                    "x": -600,
+                    "y": -300,
+                    "width": 160,
+                    "height": 100
+                  },
+                  "attributes": [
+                    "a107da96-7b9a-4fb9-b32c-01b9b5073019",
+                    "2173b539-a450-4240-abbd-4bbce6e66433"
+                  ],
+                  "methods": []
+                },
+                "a107da96-7b9a-4fb9-b32c-01b9b5073019": {
+                  "id": "a107da96-7b9a-4fb9-b32c-01b9b5073019",
+                  "name": "name",
+                  "type": "ClassAttribute",
+                  "owner": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                  "bounds": {
+                    "x": -599.5,
+                    "y": -259.5,
+                    "width": 159,
+                    "height": 30
+                  },
+                  "code": "",
+                  "visibility": "public",
+                  "attributeType": "str",
+                  "implementationType": "none",
+                  "stateMachineId": "",
+                  "quantumCircuitId": "",
+                  "neuralNetworkId": "",
+                  "isOptional": false,
+                  "isDerived": false,
+                  "isId": false,
+                  "isExternalId": false
+                },
+                "2173b539-a450-4240-abbd-4bbce6e66433": {
+                  "id": "2173b539-a450-4240-abbd-4bbce6e66433",
+                  "name": "weight",
+                  "type": "ClassAttribute",
+                  "owner": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                  "bounds": {
+                    "x": -599.5,
+                    "y": -229.5,
+                    "width": 159,
+                    "height": 30
+                  },
+                  "code": "",
+                  "visibility": "public",
+                  "attributeType": "int",
+                  "implementationType": "none",
+                  "stateMachineId": "",
+                  "quantumCircuitId": "",
+                  "neuralNetworkId": "",
+                  "isOptional": false,
+                  "isDerived": false,
+                  "isId": false,
+                  "isExternalId": false
+                },
+                "37dd5f41-ff76-49a5-8c60-a247955e6351": {
+                  "id": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                  "name": "Student",
+                  "type": "Class",
+                  "owner": null,
+                  "bounds": {
+                    "x": -300,
+                    "y": -300,
+                    "width": 160,
+                    "height": 70
+                  },
+                  "attributes": [
+                    "1ecdf7a6-8654-4ee5-8195-a4e371f4a9df"
+                  ],
+                  "methods": []
+                },
+                "1ecdf7a6-8654-4ee5-8195-a4e371f4a9df": {
+                  "id": "1ecdf7a6-8654-4ee5-8195-a4e371f4a9df",
+                  "name": "name",
+                  "type": "ClassAttribute",
+                  "owner": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                  "bounds": {
+                    "x": -299.5,
+                    "y": -259.5,
+                    "width": 159,
+                    "height": 30
+                  },
+                  "code": "",
+                  "visibility": "public",
+                  "attributeType": "str",
+                  "implementationType": "none",
+                  "stateMachineId": "",
+                  "quantumCircuitId": "",
+                  "neuralNetworkId": "",
+                  "isOptional": false,
+                  "isDerived": false,
+                  "isId": false,
+                  "isExternalId": false
+                },
+                "98af6ded-614a-40d8-88a1-8d0eddc87406": {
+                  "id": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                  "name": "TimeSlot",
+                  "type": "Class",
+                  "owner": null,
+                  "bounds": {
+                    "x": 0,
+                    "y": -300,
+                    "width": 160,
+                    "height": 70
+                  },
+                  "attributes": [
+                    "067f0c99-8152-4a49-af7a-11e7da93dec5"
+                  ],
+                  "methods": []
+                },
+                "067f0c99-8152-4a49-af7a-11e7da93dec5": {
+                  "id": "067f0c99-8152-4a49-af7a-11e7da93dec5",
+                  "name": "id",
+                  "type": "ClassAttribute",
+                  "owner": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                  "bounds": {
+                    "x": 0.5,
+                    "y": -259.5,
+                    "width": 159,
+                    "height": 30
+                  },
+                  "code": "",
+                  "visibility": "public",
+                  "attributeType": "int",
+                  "implementationType": "none",
+                  "stateMachineId": "",
+                  "quantumCircuitId": "",
+                  "neuralNetworkId": "",
+                  "isOptional": false,
+                  "isDerived": false,
+                  "isId": false,
+                  "isExternalId": false
+                },
+                "93472f39-54e5-4a20-9e6b-aa4aaac44467": {
+                  "id": "93472f39-54e5-4a20-9e6b-aa4aaac44467",
+                  "name": "exam_has_name",
+                  "type": "ClassOCLConstraint",
+                  "owner": null,
+                  "bounds": {
+                    "x": -600,
+                    "y": -100,
+                    "width": 160,
+                    "height": 100
+                  },
+                  "description": "Exam name can't be empty",
+                  "constraint": "context Exam inv exam_has_name: self.name.size() > 0"
+                },
+                "b096e8de-bb89-4290-ab71-c71a3f48f424": {
+                  "id": "b096e8de-bb89-4290-ab71-c71a3f48f424",
+                  "name": "id_is_unique",
+                  "type": "ClassOCLConstraint",
+                  "owner": null,
+                  "bounds": {
+                    "x": -300,
+                    "y": -100,
+                    "width": 160,
+                    "height": 100
+                  },
+                  "description": "TimeSlot id must be unique",
+                  "constraint": "context TimeSlot inv id_is_unique: TimeSlot.allInstances()->isUnique(id)"
+                },
+                "3981df60-ea6d-43ca-94c5-9f65f18f6912": {
+                  "id": "3981df60-ea6d-43ca-94c5-9f65f18f6912",
+                  "name": "time_slot_has_non_negative_id",
+                  "type": "ClassOCLConstraint",
+                  "owner": null,
+                  "bounds": {
+                    "x": 0,
+                    "y": -100,
+                    "width": 160,
+                    "height": 100
+                  },
+                  "description": "TimeSlot Id can't be negative",
+                  "constraint": "context TimeSlot inv time_slot_has_non_negative_id: self.id > 0"
+                }
+              },
+              "relationships": {
+                "d79ea10d-bd9e-46c3-80c3-1f91b90e1d95": {
+                  "id": "d79ea10d-bd9e-46c3-80c3-1f91b90e1d95",
+                  "name": "Exam_Student",
+                  "type": "ClassBidirectional",
+                  "owner": null,
+                  "bounds": {
+                    "x": -440,
+                    "y": -275,
+                    "width": 140,
+                    "height": 48
+                  },
+                  "path": [
+                    {
+                      "x": 0,
+                      "y": 10
+                    },
+                    {
+                      "x": 140,
+                      "y": 10
+                    }
+                  ],
+                  "source": {
+                    "direction": "Right",
+                    "element": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                    "multiplicity": "1..*",
+                    "role": "exams",
+                    "navigable": true,
+                    "bounds": {
+                      "x": -440,
+                      "y": -265,
+                      "width": 0,
+                      "height": 0
+                    }
+                  },
+                  "target": {
+                    "direction": "Left",
+                    "element": "37dd5f41-ff76-49a5-8c60-a247955e6351",
+                    "multiplicity": "0..*",
+                    "role": "students",
+                    "navigable": true,
+                    "bounds": {
+                      "x": -300,
+                      "y": -265,
+                      "width": 0,
+                      "height": 0
+                    }
+                  },
+                  "isManuallyLayouted": false
+                },
+                "a5ba3d6c-f8df-4fbb-b14c-3016408e4ec9": {
+                  "id": "a5ba3d6c-f8df-4fbb-b14c-3016408e4ec9",
+                  "name": "Exam_TimeSlot",
+                  "type": "ClassBidirectional",
+                  "owner": null,
+                  "bounds": {
+                    "x": -440,
+                    "y": -275,
+                    "width": 440,
+                    "height": 48
+                  },
+                  "path": [
+                    {
+                      "x": 0,
+                      "y": 10
+                    },
+                    {
+                      "x": 440,
+                      "y": 10
+                    }
+                  ],
+                  "source": {
+                    "direction": "Right",
+                    "element": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                    "multiplicity": "0..*",
+                    "role": "exams",
+                    "navigable": true,
+                    "bounds": {
+                      "x": -440,
+                      "y": -265,
+                      "width": 0,
+                      "height": 0
+                    }
+                  },
+                  "target": {
+                    "direction": "Left",
+                    "element": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                    "multiplicity": "1",
+                    "role": "timeSlot",
+                    "navigable": true,
+                    "bounds": {
+                      "x": 0,
+                      "y": -265,
+                      "width": 0,
+                      "height": 0
+                    }
+                  },
+                  "isManuallyLayouted": false
+                },
+                "f0797481-0293-43d9-a2ca-776f9d5d3e13": {
+                  "id": "f0797481-0293-43d9-a2ca-776f9d5d3e13",
+                  "name": "",
+                  "type": "ClassOCLLink",
+                  "owner": null,
+                  "bounds": {
+                    "x": -640,
+                    "y": -260,
+                    "width": 240,
+                    "height": 231
+                  },
+                  "path": [
+                    {
+                      "x": 40,
+                      "y": 210
+                    },
+                    {
+                      "x": 0,
+                      "y": 210
+                    },
+                    {
+                      "x": 0,
+                      "y": 120
+                    },
+                    {
+                      "x": 240,
+                      "y": 120
+                    },
+                    {
+                      "x": 240,
+                      "y": 10
+                    },
+                    {
+                      "x": 200,
+                      "y": 10
+                    }
+                  ],
+                  "source": {
+                    "direction": "Left",
+                    "element": "93472f39-54e5-4a20-9e6b-aa4aaac44467",
+                    "multiplicity": "",
+                    "role": "",
+                    "navigable": true
+                  },
+                  "target": {
+                    "direction": "Right",
+                    "element": "56d98157-88a4-4114-9426-b38a1bae8a30",
+                    "multiplicity": "",
+                    "role": "",
+                    "navigable": true
+                  },
+                  "isManuallyLayouted": false
+                },
+                "c6859d45-83cb-41d6-b5e2-18b70cd35836": {
+                  "id": "c6859d45-83cb-41d6-b5e2-18b70cd35836",
+                  "name": "",
+                  "type": "ClassOCLLink",
+                  "owner": null,
+                  "bounds": {
+                    "x": -340,
+                    "y": -275,
+                    "width": 540,
+                    "height": 246
+                  },
+                  "path": [
+                    {
+                      "x": 40,
+                      "y": 225
+                    },
+                    {
+                      "x": 0,
+                      "y": 225
+                    },
+                    {
+                      "x": 0,
+                      "y": 135
+                    },
+                    {
+                      "x": 540,
+                      "y": 135
+                    },
+                    {
+                      "x": 540,
+                      "y": 10
+                    },
+                    {
+                      "x": 500,
+                      "y": 10
+                    }
+                  ],
+                  "source": {
+                    "direction": "Left",
+                    "element": "b096e8de-bb89-4290-ab71-c71a3f48f424",
+                    "multiplicity": "",
+                    "role": "",
+                    "navigable": true
+                  },
+                  "target": {
+                    "direction": "Right",
+                    "element": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                    "multiplicity": "",
+                    "role": "",
+                    "navigable": true
+                  },
+                  "isManuallyLayouted": false
+                },
+                "589b0dcd-cf3a-4c98-99b0-8c62b3faf829": {
+                  "id": "589b0dcd-cf3a-4c98-99b0-8c62b3faf829",
+                  "name": "",
+                  "type": "ClassOCLLink",
+                  "owner": null,
+                  "bounds": {
+                    "x": -40,
+                    "y": -275,
+                    "width": 240,
+                    "height": 246
+                  },
+                  "path": [
+                    {
+                      "x": 40,
+                      "y": 225
+                    },
+                    {
+                      "x": 0,
+                      "y": 225
+                    },
+                    {
+                      "x": 0,
+                      "y": 135
+                    },
+                    {
+                      "x": 240,
+                      "y": 135
+                    },
+                    {
+                      "x": 240,
+                      "y": 10
+                    },
+                    {
+                      "x": 200,
+                      "y": 10
+                    }
+                  ],
+                  "source": {
+                    "direction": "Left",
+                    "element": "3981df60-ea6d-43ca-94c5-9f65f18f6912",
+                    "multiplicity": "",
+                    "role": "",
+                    "navigable": true
+                  },
+                  "target": {
+                    "direction": "Right",
+                    "element": "98af6ded-614a-40d8-88a1-8d0eddc87406",
+                    "multiplicity": "",
+                    "role": "",
+                    "navigable": true
+                  },
+                  "isManuallyLayouted": false
+                }
+              },
+              "assessments": {}
+            }
+          },
+          "lastUpdate": "2026-10-20T13:42:17.360Z"
+        }
+      ]
+    },
+    "settings": {
+      "defaultDiagramType": "ClassDiagram",
+      "autoSave": true,
+      "collaborationEnabled": false,
+      "perspectives": {
+        "ClassDiagram": true,
+        "ObjectDiagram": true,
+        "StateMachineDiagram": true,
+        "AgentDiagram": true,
+        "UserDiagram": true,
+        "GUINoCodeDiagram": true,
+        "QuantumCircuitDiagram": true,
+        "NNDiagram": true,
+        "BPMN": true,
+        "ComponentDiagram": true,
+        "DeploymentDiagram": true
+      }
+    }
+  },
+  "exportedAt": "2026-10-20T13:42:58.510Z",
+  "version": "2.0.0",
+  "besserVersion": "8.2.1",
+  "editorVersion": "1.0.0"
+}
