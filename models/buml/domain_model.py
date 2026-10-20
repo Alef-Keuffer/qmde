@@ -12,16 +12,11 @@ from besser.BUML.metamodel.structural import (
     AnyType, Constraint, AssociationClass, Metadata, MethodImplementationType
 )
 import datetime
-from besser.BUML.metamodel.object import ObjectModel
 
 # Classes
-Exam = Class(name="Exam")
 Student = Class(name="Student")
 TimeSlot = Class(name="TimeSlot")
-
-# Exam class attributes and methods
-Exam_name: Property = Property(name="name", type=StringType)
-Exam.attributes={Exam_name}
+Exam = Class(name="Exam")
 
 # Student class attributes and methods
 Student_name: Property = Property(name="name", type=StringType)
@@ -30,6 +25,10 @@ Student.attributes={Student_name}
 # TimeSlot class attributes and methods
 TimeSlot_id: Property = Property(name="id", type=IntegerType)
 TimeSlot.attributes={TimeSlot_id}
+
+# Exam class attributes and methods
+Exam_name: Property = Property(name="name", type=StringType)
+Exam.attributes={Exam_name}
 
 # Relationships
 Exam_Student: BinaryAssociation = BinaryAssociation(
@@ -43,12 +42,19 @@ Exam_TimeSlot: BinaryAssociation = BinaryAssociation(
     name="Exam_TimeSlot",
     ends={
         Property(name="exams", type=Exam, multiplicity=Multiplicity(0, 9999)),
-        Property(name="timeSlot", type=TimeSlot, multiplicity=Multiplicity(1, 1))
+        Property(name="timeSlot", type=TimeSlot, multiplicity=Multiplicity(0, 1))
     }
 )
 
 
 # OCL Constraints
+time_slot_has_non_negative_id: Constraint = Constraint(
+    name="time_slot_has_non_negative_id",
+    context=TimeSlot,
+    expression="context TimeSlot inv time_slot_has_non_negative_id: self.id > 0",
+    language="OCL",
+    description="TimeSlot Id can\'t be negative"
+)
 exam_has_name: Constraint = Constraint(
     name="exam_has_name",
     context=Exam,
@@ -59,67 +65,24 @@ exam_has_name: Constraint = Constraint(
 id_is_unique: Constraint = Constraint(
     name="id_is_unique",
     context=TimeSlot,
-    expression="context TimeSlot inv id_is_unique: TimeSlot.allInstances()->isUnique(id)",
+    expression="context TimeSlot inv id_is_unique: TimeSlot::allInstances()->forAll(p1, p2| p1.id <> p2.id)",
     language="OCL",
     description="TimeSlot id must be unique"
 )
-time_slot_has_non_negative_id: Constraint = Constraint(
-    name="time_slot_has_non_negative_id",
-    context=TimeSlot,
-    expression="context TimeSlot inv time_slot_has_non_negative_id: self.id > 0",
+student_has_name: Constraint = Constraint(
+    name="student_has_name",
+    context=Student,
+    expression="context Student inv student_has_name: self.name.size() > 0",
     language="OCL",
-    description="TimeSlot Id can\'t be negative"
+    description="Student name can\'t be empty"
 )
 
 # Domain Model
 domain_model = DomainModel(
     name="Problem_DSL",
-    types={Exam, Student, TimeSlot},
+    types={Student, TimeSlot, Exam},
     associations={Exam_Student, Exam_TimeSlot},
-    constraints={exam_has_name, id_is_unique, time_slot_has_non_negative_id},
+    constraints={time_slot_has_non_negative_id, exam_has_name, id_is_unique, student_has_name},
     generalizations=set(),
     metadata=None
-)
-
-################
-# OBJECT MODEL #
-################
-alice_obj = Student("Alice").build()
-biology_obj = Exam("Biology").build()
-bob_obj = Student("Bob").build()
-carla_obj = Student("Carla").build()
-chemistry_obj = Exam("Chemistry").build()
-david_obj = Student("David").build()
-eva_obj = Student("Eva").build()
-math_obj = Exam("Math").build()
-mon_14_00_obj = TimeSlot("Mon 14:00").build()
-mon_9_00_obj = TimeSlot("Mon 9:00").build()
-physics_obj = Exam("Physics").build()
-tue_9_00_obj = TimeSlot("Tue 9:00").build()
-
-biology_obj.students = {carla_obj, david_obj, eva_obj}
-physics_obj.students = {alice_obj, carla_obj}
-math_obj.students = {alice_obj, bob_obj, eva_obj}
-chemistry_obj.students = {bob_obj, david_obj}
-
-# Object Model instance
-object_model: ObjectModel = ObjectModel(
-    name="Object_Diagram",
-    objects={alice_obj, biology_obj, bob_obj, carla_obj, chemistry_obj, david_obj, eva_obj, math_obj, mon_14_00_obj, mon_9_00_obj, physics_obj, tue_9_00_obj}
-)
-
-
-######################
-# PROJECT DEFINITION #
-######################
-
-from besser.BUML.metamodel.project import Project
-from besser.BUML.metamodel.structural.structural import Metadata
-
-metadata = Metadata(description="Example of DSL problem instance")
-project = Project(
-    name="DSL problem instance",
-    models=[domain_model, object_model],
-    owner="Unknown",
-    metadata=metadata
 )
