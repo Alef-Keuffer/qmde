@@ -55,11 +55,27 @@ I also used AI to get a workaround working locally which I can show the professo
 |---------------|--------------------------------------|-----------------------------------------------------------------------------|
 | QUBO          | Offset: Real                         | Arbitrary number of variables, linear terms, quadratic terms, and penalties |
 | Variable      | Index: Integer <br> Label: String    |                                                                             |
-| LinearTerm    | Coefficient: Real                    | One variable, zero or one penalty                                           |
+| LinearTerm    | Coefficient: Real                    | One variable, one penalty                                           |
 | QuadraticTerm | Coefficient: Real                    | Two variables, zero or one penalty                                          |
 | Penalty       | Weight: Real <br> Constraint: String | Arbitrary number of terms it generates                                      |
 
 ![](./imgs/solution-dsl-01.png)
+
+The solution DSL is the language used to describe the mathematical formulation of the problem as a QUBO (Quadratic Unconstrained Binary Optimization). A model in this language represents a cost function
+
+```
+f(x) = c + Σ aᵢxᵢ + Σ bᵢⱼxᵢxⱼ, (compact form)
+```
+
+The central concept is the QUBO, which represents the whole function. It stores the offset (the c in the formula), the constant value that is always paid regardless of the variables, and it owns all the other elements: variables, linear terms, quadratic terms and penalties. If the QUBO is removed, all of these elements cease to exist.
+
+Each Variable represents a yes-or-no decision, meaning that each variable xᵢ can only be 0 or 1. In our problem, it corresponds to “placing exam X in slot Y” (for example, A@1 for x0 and A@2 for x1).
+
+A LinearTerm represents a term aᵢxᵢ of the formula. It has a coefficient and is linked to exactly one variable: its coefficient is added to the cost when that variable is 1. In our problem, every linear term comes from a penalty, so each one is linked to exactly one penalty.
+
+A QuadraticTerm represents a term bᵢⱼxᵢxⱼ. It has a coefficient and is linked to exactly two distinct variables: the coefficient is only added to the cost when both are 1. It is linked to zero or one penalty. When it is linked, it comes from the rule that each exam is placed in exactly one slot, and it connects two slots of the same exam. When it is not linked, it comes from the objective function: it represents a conflict between two exams that share students, placed in the same slot, and its coefficient is the number of those students. Note that, for the system to prefer a conflict between two exams in the same slot over leaving an exam without a slot, the penalty weight λ must be larger than the sum of the conflict coefficients of any single exam. Pairs of variables without a quadratic term have a zero coefficient and are not stored.
+
+A Penalty represents a constraint of the problem. It stores the weight (λ, the cost of violating the rule) and a description of the constraint. The Penalty does not take part in the cost calculation directly. Its role is traceability: it is linked to every term it generated, so for each term it is possible to know which constraint it came from.
 
 ## Example models for one small problem instance
 
