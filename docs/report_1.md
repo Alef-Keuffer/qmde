@@ -1,9 +1,22 @@
-Group: G3
-Problem: A3 (Optimisation with QAOA - Exam-slot assignment)
+- **Group:** G3
+- **Problem:** A3 (Optimisation with QAOA - Exam-slot assignment)
+
+| \# | Class                                                          | Intermediate model (solution DSL) | Quantum algorithm |
+|:---|:---------------------------------------------------------------|:----------------------------------|:------------------|
+| A  | Optimisation with QAOA (graph problems, selection, assignment) | QUBO                              | QAOA              |
+
+| \# | Problem (domain of the problem DSL) | Underlying problem                                                      | Complexity · notes                                                                       |
+|:---|:------------------------------------|:------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------|
+| 3  | Frequency or exam-slot assignment   | Graph colouring with k colours, minimising conflicts (one-hot encoding) | **NP-hard** · k-colourability NP-complete for k ≥ 3; for k \= 2 it is in P, so use k ≥ 3 |
+
+| Layer            | Artefact                                                                                                                                                      | Produced by                                                   |
+|:-----------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------|
+| 1\. Problem DSL  | Abstract syntax (metamodel \+ OCL) for describing problem instances of your class of problems                                                                 | You (Part I)                                                  |
+| 2\. Solution DSL | A mathematical formulation of the problem, defined per class in Annex A: QUBO, Boolean formula (CNF), linear integer constraints, or integer linear programme | You (Part I) M2M transformation T1 from Problem DSL (Part II) |
 
 ## Explanation of the problem
 
-In the Exam-Slot Assignment Problem, a university needs to schedule final exams for a set of courses into a limited number of time slots so that no student has two exams at the same time.
+In the **Exam-Slot Assignment Problem**, a university needs to schedule final exams for a set of courses into a limited number of time slots so that **no student has two exams at the same time**.
 
 As there may be cases with no feasible solution (where no configuration allows every student to take every exam they need), weights are added to each exam to establish priorities and assign a penalty for missing an exam. In these cases, the goal is to minimize the penalties for missed exams (i.e., the lowest possible weights).
 
@@ -14,6 +27,8 @@ As there may be cases with no feasible solution (where no configuration allows e
 | Student  | name: String                     | Has to do 0 or more exams.                                                                                  |
 | Exam     | name: String<br> weight: integer | Must have one or more students.<br> Occupies exactly one time slot (or 0 before being assigned a TimeSlot). |
 | TimeSlot | id: int                          | Has 0 or more exams.                                                                                        |
+
+![](./imgs/30989347-c2ad-44f4-afa0-0b1a36330141.png)
 
 ### OCL Constraints
 
@@ -43,6 +58,8 @@ I also used AI to get a workaround working locally which I can show the professo
 | LinearTerm    | Coefficient: Real                    | One variable, zero or one penalty                                           |
 | QuadraticTerm | Coefficient: Real                    | Two variables, zero or one penalty                                          |
 | Penalty       | Weight: Real <br> Constraint: String | Arbitrary number of terms it generates                                      |
+
+![](./imgs/ff7f0c56-6007-4f0f-89d9-f2a8bf541f56.png)
 
 ## Example models for one small problem instance
 
