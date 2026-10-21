@@ -7,15 +7,32 @@ In the Exam-Slot Assignment Problem, a university needs to schedule final exams 
 
 As there may be cases with no feasible solution (where no configuration allows every student to take every exam they need), weights are added to each exam to establish priorities and assign a penalty for missing an exam. In these cases, the goal is to minimize the penalties for missed exams (i.e., the lowest possible weights).
 
-## Tables with identified classes
-
-### Problem
+## Problem DSL
 
 | Concept  | Intrinsic Properties             | Extrinsic Properties                                                                                        |
 |----------|----------------------------------|-------------------------------------------------------------------------------------------------------------|
-| Student  | Name: String                     | Has to do 0 or more exams.                                                                                  |
-| Exam     | Name: String<br> Weight: integer | Must have one or more students.<br> Occupies exactly one time slot (or 0 before being assigned a TimeSlot). |
-| TimeSlot | Id: uint                         | Has 0 or more exams.                                                                                        |
+| Student  | name: String                     | Has to do 0 or more exams.                                                                                  |
+| Exam     | name: String<br> weight: integer | Must have one or more students.<br> Occupies exactly one time slot (or 0 before being assigned a TimeSlot). |
+| TimeSlot | id: int                          | Has 0 or more exams.                                                                                        |
+
+### OCL Constraints
+
+Here I made use of Gemini/Argon(low) to ask for what OCL examples made sense for my model, I gave the model input as codified in plantuml.
+
+* **`Unique TimeSlot IDs:`** `Every time slot must have a distinct identifier.`
+* **`Non Negative TimeSlot IDs`**
+* **`Unique Exam Names:`** `No two exams should have the exact same course/subject name.`
+* **`Non-Empty Attributes:`** `Names and IDs cannot be empty.`
+
+> Uniqueness can't be checked correctly with this version of B-OCL.
+
+This is something I also figured out using AI:
+
+![ai-trying-to-run-with-uniqueness-constraint](./imgs/7dd2b17f-4c92-4af5-9e28-3d293b139ebc.png)
+
+I also used AI to get a workaround working locally which I can show the professor if he is interested:
+
+![](./imgs/44ee0859-fee5-4451-b532-e86407fa3587.png)
 
 ### Solution
 
