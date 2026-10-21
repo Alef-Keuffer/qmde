@@ -59,7 +59,7 @@ I also used AI to get a workaround working locally which I can show the professo
 | QuadraticTerm | Coefficient: Real                    | Two variables, zero or one penalty                                          |
 | Penalty       | Weight: Real <br> Constraint: String | Arbitrary number of terms it generates                                      |
 
-![](./imgs/ff7f0c56-6007-4f0f-89d9-f2a8bf541f56.png)
+![](./imgs/solution-dsl-01.png)
 
 ## Example models for one small problem instance
 
