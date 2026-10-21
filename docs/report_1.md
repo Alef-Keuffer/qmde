@@ -3,10 +3,11 @@ Problem: A3 (Optimisation with QAOA - Exam-slot assignment)
 
 ## Explanation of the problem
 
-basic explanation of the problem
+In the Exam-Slot Assignment Problem, a university needs to schedule final exams for a set of courses into a limited number of time slots so that no student has two exams at the same time.
 
+As there may be cases with no feasible solution (where no configuration allows every student to take every exam they need), weights are added to each exam to establish priorities and assign a penalty for missing an exam. In these cases, the goal is to minimize the penalties for missed exams (i.e., the lowest possible weights).
 
-## tables with identified classes
+## Tables with identified classes
 
 ### Problem
 
@@ -20,19 +21,20 @@ basic explanation of the problem
 
 | Concept |  Intrinsic Properties |  Extrinsic Properties  |
 |---|---|---|
-|||
-|||
-|||
+| QUBO | Offset: Real | Arbitrary number of variables, linear terms, quadratic terms, and penalties |
+| Variable | Index: Integer <br> Label: String | |
+| LinearTerm | Coefficient: Real | One variable, zero or one penalty |
+| QuadraticTerm | Coefficient: Real | Two variables, zero or one penalty |
+| Penalty | Weight: Real <br> Constraint: String | Arbitrary number of terms it generates |
 
-## explanation of example problem 
+## Explanation of example problem
 
-- reduced exams to a minimum (k=3) because the model for the solution is huge
-
-
-## design decisions
-
-- adding weights to the problem to increae complexity, might remove later
+- Reduced the number of exams to a minimum (k=3) because the solution model is huge.
 
 
-## references
+## Design decisions
 
+- Adding weights to the problem to increase complexity; this might be removed later.
+
+
+## References
