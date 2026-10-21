@@ -38,3 +38,5 @@ As there may be cases with no feasible solution (where no configuration allows e
 
 
 ## References
+
+- Lucas A (2014) Ising formulations of many NP problems. Front. Physics 2:5. doi: 10.3389/fphy.2014.00005
