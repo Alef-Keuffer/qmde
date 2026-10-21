@@ -28,7 +28,7 @@ It helped me formulate the problem:
 
 **Tool:** Claude Agent in PyCharm
 
-![Screenshot of the code-modification discussion](imgs/image.png)
+![Screenshot of the code-modification discussion](imgs/44ee0859-fee5-4451-b532-e86407fa3587.png)
 
 ## 5. Explaining graph colouring
 
