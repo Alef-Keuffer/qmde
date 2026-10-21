@@ -41,4 +41,4 @@ It helped me formulate the problem:
 
 # Mistakes and hallucinations
 
-TODO
+During the OCL constraints, AI suggested uniqueness constraints that I later figured out didn't work in B-OCL.
