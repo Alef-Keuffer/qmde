@@ -22,7 +22,7 @@ It helped me formulate and understand the problem. This is the most important in
 ## 3. Asking for OCL constraints
 
 - **Tool/Model:** Gemini Argon (low)
-- [Conversation link]](https://share.gemini.google/1LXn6OqnG3XA)
+- [Conversation link](https://share.gemini.google/1LXn6OqnG3XA)
 
 I got the suggestion of a few constraints. This led to some trouble later which is described in the [report](./report_1.md) and at [hallucinations](#mistakes-and-hallucinations).
 
