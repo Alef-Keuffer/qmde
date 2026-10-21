@@ -11,21 +11,21 @@ As there may be cases with no feasible solution (where no configuration allows e
 
 ### Problem
 
-| Concept |  Intrinsic Properties |  Extrinsic Properties  |
-|---|---|---|
-| Student |  Name: String |  Has to do 0 or more exams. |
-| Exam  |  Name: String<br> Weight: integer |  Must have one or more students.<br> Occupies exactly one time slot (or 0 before being assigned a TimeSlot). |
-| TimeSlot  | Id: uint  | Has 0 or more exams.  |
+| Concept  | Intrinsic Properties             | Extrinsic Properties                                                                                        |
+|----------|----------------------------------|-------------------------------------------------------------------------------------------------------------|
+| Student  | Name: String                     | Has to do 0 or more exams.                                                                                  |
+| Exam     | Name: String<br> Weight: integer | Must have one or more students.<br> Occupies exactly one time slot (or 0 before being assigned a TimeSlot). |
+| TimeSlot | Id: uint                         | Has 0 or more exams.                                                                                        |
 
 ### Solution
 
-| Concept |  Intrinsic Properties |  Extrinsic Properties  |
-|---|---|---|
-| QUBO | Offset: Real | Arbitrary number of variables, linear terms, quadratic terms, and penalties |
-| Variable | Index: Integer <br> Label: String | |
-| LinearTerm | Coefficient: Real | One variable, zero or one penalty |
-| QuadraticTerm | Coefficient: Real | Two variables, zero or one penalty |
-| Penalty | Weight: Real <br> Constraint: String | Arbitrary number of terms it generates |
+| Concept       | Intrinsic Properties                 | Extrinsic Properties                                                        |
+|---------------|--------------------------------------|-----------------------------------------------------------------------------|
+| QUBO          | Offset: Real                         | Arbitrary number of variables, linear terms, quadratic terms, and penalties |
+| Variable      | Index: Integer <br> Label: String    |                                                                             |
+| LinearTerm    | Coefficient: Real                    | One variable, zero or one penalty                                           |
+| QuadraticTerm | Coefficient: Real                    | Two variables, zero or one penalty                                          |
+| Penalty       | Weight: Real <br> Constraint: String | Arbitrary number of terms it generates                                      |
 
 ## Explanation of example problem
 
@@ -35,21 +35,21 @@ We first attempted 4 exams, but had to reduce the number to 3 (k=3) because the 
 
 ### Students and exams
 
-| Student |  Exams |
-|---|---|
-| Alice | Math, Physics |
-| Bob | Physics, Chemistry |
-| Carla | Math |
-| David | Chemistry |
-| Eva | Physics |
+| Student | Exams              |
+|---------|--------------------|
+| Alice   | Math, Physics      |
+| Bob     | Physics, Chemistry |
+| Carla   | Math               |
+| David   | Chemistry          |
+| Eva     | Physics            |
 
 ### Exam weights
 
-| Exam |  weight |
-|---|---|
-| Math | 6 |
-| Physics | 4 |
-| Chemistry | 3 |
+| Exam      | weight |
+|-----------|--------|
+| Math      | 6      |
+| Physics   | 4      |
+| Chemistry | 3      |
 
 ### Goal
 
@@ -65,11 +65,11 @@ The graph-coloring instance has vertices representing exams, edges representing 
 
 ### A valid solution
 
-| Exam |  Timeslot |
-|---|---|
-| Math | Mon 9:00 |
-| Physics | Mon 14:00 |
-| Chemistry | Mon 9:00 |
+| Exam      | Timeslot  |
+|-----------|-----------|
+| Math      | Mon 9:00  |
+| Physics   | Mon 14:00 |
+| Chemistry | Mon 9:00  |
 
 ## Design decisions
 
