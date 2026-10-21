@@ -111,6 +111,8 @@ The graph-coloring instance has vertices representing exams, edges representing 
 
 ### Solution instance
 
+![](./imgs/solution-instance-01.png)
+
 ## Design decisions
 
 - After first modeling the simplest form of the problem and talking with Professor Jácome, we decided that the models seemed too simple. We added exam weights to increase the problem's complexity; this might be removed later, depending on the problem's future complexity.
