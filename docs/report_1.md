@@ -73,7 +73,7 @@ The graph-coloring instance has vertices representing exams, edges representing 
 
 ## Design decisions
 
-- After first modeling the simplest form of the problem, and talking with proessor Jácome, we decided that the models seemed too simple, and added the exam weights part of the problem to increase complexity; this might be removed later depending on the future complexity of the problem.
+- After first modeling the simplest form of the problem and talking with Professor Jácome, we decided that the models seemed too simple. We added exam weights to increase the problem's complexity; this might be removed later, depending on the problem's future complexity.
 
 
 ## References
