@@ -28,7 +28,7 @@ As there may be cases with no feasible solution (where no configuration allows e
 | Exam     | name: String<br> weight: integer | Must have one or more students.<br> Occupies exactly one time slot (or 0 before being assigned a TimeSlot). |
 | TimeSlot | id: int                          | Has 0 or more exams.                                                                                        |
 
-![](./imgs/30989347-c2ad-44f4-afa0-0b1a36330141.png)
+![](./imgs/problem-dsl-01.png)
 
 ### OCL Constraints
 
@@ -106,6 +106,8 @@ The graph-coloring instance has vertices representing exams, edges representing 
 | Chemistry | Mon 9:00  |
 
 ### Problem instance
+
+![](./imgs/problem-instance-01.png)
 
 ### Solution instance
 
