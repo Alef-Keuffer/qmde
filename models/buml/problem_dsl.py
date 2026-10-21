@@ -57,13 +57,6 @@ exam_has_name: Constraint = Constraint(
     language="OCL",
     description="Exam name can\'t be empty"
 )
-id_is_unique: Constraint = Constraint(
-    name="id_is_unique",
-    context=TimeSlot,
-    expression="context TimeSlot inv id_is_unique: TimeSlot.allInstances()->isUnique(id)",
-    language="OCL",
-    description="TimeSlot id must be unique"
-)
 time_slot_has_non_negative_id: Constraint = Constraint(
     name="time_slot_has_non_negative_id",
     context=TimeSlot,
@@ -71,13 +64,19 @@ time_slot_has_non_negative_id: Constraint = Constraint(
     language="OCL",
     description="TimeSlot Id can\'t be negative"
 )
+student_has_name: Constraint = Constraint(
+    name="student_has_name",
+    context=Student,
+    expression="context Student inv student_has_name: self.name.size() > 0",
+    language="OCL"
+)
 
 # Domain Model
 domain_model = DomainModel(
     name="Class_Diagram",
     types={Exam, Student, TimeSlot},
     associations={Exam_Student, Exam_TimeSlot},
-    constraints={exam_has_name, id_is_unique, time_slot_has_non_negative_id},
+    constraints={exam_has_name, time_slot_has_non_negative_id, student_has_name},
     generalizations=set(),
     metadata=None
 )
@@ -98,10 +97,10 @@ mon_9_00_obj = TimeSlot("Mon 9:00").attributes(id=1).build()
 physics_obj = Exam("Physics").attributes(name="Physics", weight=4).build()
 tue_9_00_obj = TimeSlot("Tue 9:00").attributes(id=3).build()
 
+math_obj.students = {alice_obj, bob_obj, eva_obj}
 chemistry_obj.students = {bob_obj, david_obj}
 biology_obj.students = {carla_obj, david_obj, eva_obj}
 physics_obj.students = {alice_obj, carla_obj}
-math_obj.students = {alice_obj, bob_obj, eva_obj}
 
 # Object Model instance
 object_model: ObjectModel = ObjectModel(
