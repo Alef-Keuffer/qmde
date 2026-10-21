@@ -34,7 +34,7 @@ I also used AI to get a workaround working locally which I can show the professo
 
 ![](./imgs/44ee0859-fee5-4451-b532-e86407fa3587.png)
 
-### Solution
+## Solution DSL
 
 | Concept       | Intrinsic Properties                 | Extrinsic Properties                                                        |
 |---------------|--------------------------------------|-----------------------------------------------------------------------------|
@@ -44,7 +44,7 @@ I also used AI to get a workaround working locally which I can show the professo
 | QuadraticTerm | Coefficient: Real                    | Two variables, zero or one penalty                                          |
 | Penalty       | Weight: Real <br> Constraint: String | Arbitrary number of terms it generates                                      |
 
-## Explanation of example problem
+## Example models for one small problem instance
 
 A small department must schedule 3 exams into 3 time slots (Mon 9:00, Mon 14:00, Tue 9:00). Several students sit more than one exam, and no student can sit two exams in the same time slot.
 
@@ -88,10 +88,13 @@ The graph-coloring instance has vertices representing exams, edges representing 
 | Physics   | Mon 14:00 |
 | Chemistry | Mon 9:00  |
 
+### Problem instance
+
+### Solution instance
+
 ## Design decisions
 
 - After first modeling the simplest form of the problem and talking with Professor Jácome, we decided that the models seemed too simple. We added exam weights to increase the problem's complexity; this might be removed later, depending on the problem's future complexity.
-
 
 ## References
 
