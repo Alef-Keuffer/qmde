@@ -37,13 +37,22 @@ I managed to get uniqueness OCL constraints working locally. This is referenced 
 
 ## 5. Explaining graph colouring
 
-**Tool and model:** Claude Opus 5.5 (extra)
+- used by: Luís
+- **Tool and model:** Claude Opus 5.5 (extra)
 
 > It helped me form a clearer mental picture of the problem.
 
 [Conversation link](https://claude.ai/share/fab1439d-c05f-4e1e-b875-cb1383d9b948)
 
-## 6. Asking for references
+## 6. Explaining QUBO DSL metamodel design
+
+- used by: Luís
+- **Tool and model:** Claude Opus 5.5 (extra)
+- [Conversation Link](https://claude.ai/share/c3edf25c-a275-466d-85bc-73c424b3e196)
+
+> It helped me understand the QUBO cost formula: important concepts, terms, and how to apply it to a problem. 
+
+## 7. Asking for references
 
 - **used by:** Alef
 - **Tool/Model:** Gemini 3.1 Pro (High)
