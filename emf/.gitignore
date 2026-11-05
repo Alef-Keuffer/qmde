@@ -8,3 +8,5 @@ src-gen/
 bin/
 .venv/
 **/model/generated/
+__pycache__/
+/.metadata/

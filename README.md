@@ -36,6 +36,10 @@ python -c "import besser; print(besser.__file__)"
 It should point to `.../BESSER/besser/__init__.py`, and **not** to `.venv/.../site-packages`.
 
 
+## EMF model chain (`emf/`)
+
+`emf/` holds an implementation of the chain for exam-slot assignment in Eclipse EMF (Ecore + OCL, Xtext, ATL, Acceleo), independent of BESSER: a `.exam` problem goes through a Conflict Graph to a generated Python script that builds the reference paper's QUBO with pyqubo and solves it with QAOA or simulated annealing. It has its own build (`emf/build.sh`, needs a JDK 21+ and Python 3.12) and Eclipse setup; see `emf/README.md` and `emf/CONTEXT.md`.
+
 # Background and Goal
 
 Quantum computers promise advantages for some classes of problems, such as combinatorial optimization, simulation of physical systems, search, sampling and certain machine-learning tasks. However, programming them today means working almost directly at the level of circuits: qubits, gates and measurements. This is the equivalent of writing assembly, and it creates a large gap between the people who have the problems (logisticians, financial analysts, physicists, data scientists) and the people who can write quantum programs.

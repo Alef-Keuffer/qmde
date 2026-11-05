@@ -4,7 +4,7 @@ Exam-slot assignment with the reference paper's QUBO formulation, solved by QAOA
 
 ## Run
 
-Requires a JDK 21+ and Python 3.12 (`python3.12`; Qiskit Aer has no wheels for newer Pythons yet). From the repository root:
+Requires a JDK 21+ and Python 3.12 (`python3.12`; Qiskit Aer has no wheels for newer Pythons yet). From this folder (`emf/`):
 
 ```sh
 ./build.sh
@@ -18,7 +18,7 @@ This builds every bundle (generating EMF and Xtext code), runs the chain headles
 ./build.sh verify -Dproblem=$PWD/instances/1-path.exam
 ```
 
-Run it from the repository root: the Xtext generator is given a relative path (see `bundles/pt.up.feup.examschedule.dsl/pom.xml`).
+Run it from `emf/`: the Xtext generator is given a relative path (see `bundles/pt.up.feup.examschedule.dsl/pom.xml`).
 
 ## Writing a problem
 
