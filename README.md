@@ -4,16 +4,18 @@ Exam-slot assignment solved with QAOA, built as an EMF model chain. See `CONTEXT
 
 ## Run
 
-Requires JDK 21+ (`JAVA_HOME`) and Python 3.12 (`python3.12`; Qiskit Aer has no wheels for newer Pythons yet). From the repository root:
+Requires a JDK 21+ and Python 3.12 (`python3.12`; Qiskit Aer has no wheels for newer Pythons yet). From the repository root:
 
 ```sh
-./mvnw verify
+./build.sh
 ```
+
+`build.sh` finds a JDK 21+ (your `JAVA_HOME` if recent enough, else `/usr/libexec/java_home`, `~/Library/Java`, SDKMAN or `/usr/lib/jvm`) and runs `./mvnw verify`; any arguments go to Maven instead (`./build.sh generate-sources`). Plain `./mvnw` works too when `JAVA_HOME` already points to JDK 21+.
 
 This builds every bundle (generating EMF and Xtext code), runs the chain headlessly on every `.exam` file in `instances/`, creates `.venv` with `requirements.txt`, and runs each generated QAOA script. For each problem, `out/<name>/` holds every intermediate model (`problem.xmi`, `solverconfig.xmi`, `conflictgraph.xmi`, `hamiltonian.xmi`, `qubo.xmi`, `ising.xmi`), the generated `qaoa_<name>.py` and the decoded `schedule_<name>.xmi`; the report (schedule, baseline, approximation ratio, P(optimal)) is printed. One problem only:
 
 ```sh
-./mvnw verify -Dproblem=$PWD/instances/1-path.exam
+./build.sh verify -Dproblem=$PWD/instances/1-path.exam
 ```
 
 Run it from the repository root: the Xtext generator is given a relative path (see `bundles/pt.up.feup.examschedule.dsl/pom.xml`).
@@ -31,7 +33,7 @@ Run it from the repository root: the Xtext generator is given a relative path (s
 
 Use Eclipse 2026-09 with Xtext, ATL, Ecore Tools, OCL and Acceleo 4 installed (Acceleo: Help → Install New Software → the 2026-09 release site → Modeling → Acceleo).
 
-1. Run `./mvnw verify` once from the terminal: it generates `src-gen/` (not committed) and `out/`.
+1. Run `./build.sh` once from the terminal: it generates `src-gen/` (not committed) and `out/`.
 2. File → Import → Existing Projects into Workspace, root = this folder, with "Search for nested projects" on. Leave "Copy projects into workspace" off. This imports the six bundles plus `exam-schedule-out` (the generated models) and `exam-schedule-instances`.
 3. Open `releng/emf-claude.target` (File → Open File) and click "Set as Active Target Platform", or use the running platform.
 
