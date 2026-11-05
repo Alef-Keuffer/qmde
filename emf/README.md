@@ -1,6 +1,6 @@
-# emf-claude
+# emf/ — EMF model chain
 
-Exam-slot assignment with the reference paper's QUBO formulation, solved by QAOA or simulated annealing, built as an EMF model chain. See `CONTEXT.md` for the problem and pipeline, `GLOSSARY.md` for vocabulary and `docs/adr/` for decisions.
+The `emf/` folder of `qmde` (originally the standalone `emf-claude` repository, whose name the Eclipse setup keeps). Exam-slot assignment with the reference paper's QUBO formulation, solved by QAOA or simulated annealing, built as an EMF model chain. See `CONTEXT.md` for the problem and pipeline, `GLOSSARY.md` for vocabulary and `docs/adr/` for decisions.
 
 ## Run
 
@@ -27,7 +27,7 @@ Add a `.exam` file to `instances/` (syntax in `CONTEXT.md`, "Textual syntax"); `
 ## Layout
 
 - `bundles/pt.up.feup.examschedule.model`: every metamodel (`model/*.ecore`, with OCL); EMF code generated at build.
-- `bundles/pt.up.feup.examschedule.dsl{,.ide,.ui}`: Xtext syntax for `.exam` files (imports `problem.ecore`).
+- `bundles/pt.up.feup.examschedule.dsl`: Xtext grammar for `.exam` files (imports `problem.ecore` and `solverconfig.ecore`) and its parser; runs headless. `.dsl.ide` and `.dsl.ui`: the `.exam` editor in Eclipse. Xtext's customisation stubs (validator, scoping, labels, outline, quick fixes, content assist) are switched off in `GenerateExam.mwe2`, so Xtext's defaults apply; set that fragment's `generateStub = true` and regenerate to customise one.
 - `bundles/pt.up.feup.examschedule.chain`: headless application: parse, OCL-validate, ATL (`transforms/`), Acceleo (`src/.../codegen/`).
 - `python/examschedule.py`: model-independent runtime the generated scripts import (simulated annealing, QAOA, decoding, baseline, Schedule writer). `python/run_generated.py` runs them all.
 - `instances/`: the test problems.
@@ -45,6 +45,7 @@ Add a `.exam` file to `instances/` (syntax in `CONTEXT.md`, "Textual syntax"); `
 4. Projects page: click **+** (add user projects), catalog `<User>`, browse to `emf-claude.setup` in this folder, OK. Tick **emf-claude**, stream `main`. Next.
 5. Variables page: pick an installation folder and a workspace folder outside the repository and outside any synced folder such as Google Drive (e.g. `~/eclipse`: Eclipse rewrites its workspace files constantly, and both store absolute paths), point **emf-claude repository folder** at this folder, choose a JDK 21+. Next → Finish.
 6. The new Eclipse starts and finishes the setup (importing projects, resolving the target platform); watch the progress in the status bar. From then on start **that** Eclipse (`<installation folder>/Eclipse.app`, not `/Applications/Eclipse.app`): it opens the chosen workspace by default. Help → Perform Setup Tasks reruns the setup.
+7. Turn on Settings → General → Workspace → **Refresh using native hooks or polling**: `./build.sh` regenerates `src-gen/` and `out/` outside Eclipse, and without it Eclipse keeps building against stale files (F5 and Project → Clean fix that by hand).
 
 Without the Installer: install the editors listed above into Eclipse 2026-09, import the projects with File → Import → Existing Projects into Workspace (root = this folder, "Search for nested projects" on, no copying), and activate `releng/emf-claude.target` (open it, "Set as Active Target Platform").
 
