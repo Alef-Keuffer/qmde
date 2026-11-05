@@ -5,3 +5,5 @@ target/
 out/
 src-gen/
 bin/
+.venv/
+**/model/generated/

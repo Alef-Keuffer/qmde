@@ -15,6 +15,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.atl.emftvm.compiler,
  org.eclipse.acceleo.aql,
  org.eclipse.acceleo.query,
- pt.up.feup.examschedule.conflictgraph,
  pt.up.feup.examschedule.dsl,
- pt.up.feup.examschedule.problem
+ pt.up.feup.examschedule.model

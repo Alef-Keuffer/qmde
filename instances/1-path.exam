@@ -1,0 +1,9 @@
+// Q16 (i): four exams whose conflicts form a path, two batches. Feasible (a path is 2-colourable).
+problem path batches 2
+students Ana Rui Eva
+exam Algebra    weight 2 { Ana }
+exam Calculus   weight 3 { Ana Rui }
+exam Physics    weight 1 { Rui Eva }
+exam Chemistry  weight 2 { Eva }
+
+solver { depth 2 optimizer COBYLA iterations 150 shots 2048 seed 7 penalty auto }

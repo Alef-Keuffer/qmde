@@ -17,8 +17,7 @@
   </properties>
 
   <modules>
-    <module>bundles/pt.up.feup.examschedule.problem</module>
-    <module>bundles/pt.up.feup.examschedule.conflictgraph</module>
+    <module>bundles/pt.up.feup.examschedule.model</module>
     <module>bundles/pt.up.feup.examschedule.dsl</module>
     <module>bundles/pt.up.feup.examschedule.dsl.ide</module>
     <module>bundles/pt.up.feup.examschedule.dsl.ui</module>

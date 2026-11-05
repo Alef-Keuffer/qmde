@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="solverconfig" nsURI="https://pt/up/feup/examschedule/solverconfig"
+    nsPrefix="solverconfig">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+  </eAnnotations>
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="How a problem is solved, as opposed to what the problem is (QAOA settings and penalty mode)."/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EEnum" name="Optimizer">
+    <eLiterals name="COBYLA" value="0"/>
+    <eLiterals name="NELDER_MEAD" value="1"/>
+    <eLiterals name="POWELL" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SolverConfig">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Solver Configuration. An absent penaltyCoefficient means automatic: the largest exam weight plus one (ADR-0001)."/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="positiveDepth positiveIterations positiveShots positiveManualPenalty"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="positiveDepth" value="depth &gt;= 1"/>
+      <details key="positiveIterations" value="maxIterations &gt;= 1"/>
+      <details key="positiveShots" value="shots &gt;= 1"/>
+      <details key="positiveManualPenalty" value="penaltyCoefficient = null or penaltyCoefficient &gt; 0"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="depth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optimizer" eType="#//Optimizer" defaultValueLiteral="COBYLA"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxIterations" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="100"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shots" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1024"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="seed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="7"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="penaltyCoefficient" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject"/>
+  </eClassifiers>
+</ecore:EPackage>

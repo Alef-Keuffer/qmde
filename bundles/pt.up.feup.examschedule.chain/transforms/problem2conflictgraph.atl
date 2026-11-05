@@ -1,6 +1,8 @@
 -- @atlcompiler emftvm
 -- @nsURI Problem=https://pt/up/feup/examschedule/problem
 -- @nsURI ConflictGraph=https://pt/up/feup/examschedule/conflictgraph
+-- Problem -> Conflict Graph.
+-- [Paper] = "Hybrid quantum annealing for large-scale exam scheduling", Applied Soft Computing 184.
 module problem2conflictgraph;
 
 create OUT : ConflictGraph from IN : Problem;
@@ -11,8 +13,9 @@ rule Problem2ConflictGraph {
 	to
 		g : ConflictGraph!ConflictGraph (
 			name <- p.name,
-			nBatches <- p.nBatches,
 			exams <- p.exams,
+			-- [Paper §3.2, Eq. (4)]: batches k = 1..M bound the schedule.
+			batches <- thisModule.range(p.nBatches)->collect(k | thisModule.NewBatch(k)),
 			conflicts <- p.exams->collect(a |
 					p.exams->select(b | p.exams->indexOf(a) < p.exams->indexOf(b) and a.sharesStudentWith(b))
 						->collect(b | thisModule.Conflict(a, b)))->flatten()
@@ -29,9 +32,22 @@ rule Exam2Exam {
 		)
 }
 
--- Course conflict matrix C (hybrid quantum annealing paper, §3.1): C[i,j] = 1 iff
--- some student sits both exam i and exam j. Each unordered pair is emitted once,
--- in the order the exams appear in the problem.
+-- Sequence{1, ..., n}.
+helper def : range(n : Integer) : Sequence(Integer) =
+	if n < 1 then Sequence{} else thisModule.range(n - 1)->append(n) endif;
+
+rule NewBatch(k : Integer) {
+	to
+		b : ConflictGraph!Batch (
+			index <- k
+		)
+	do {
+		b;
+	}
+}
+
+-- [Paper §3.2, Algorithm 1]: course conflict matrix C, C[i,j] = 1 iff some student
+-- sits both exam i and exam j. Each unordered pair is emitted once, in problem order.
 helper context Problem!Exam def : sharesStudentWith(other : Problem!Exam) : Boolean =
 	self.students->exists(s | other.students->includes(s));
 

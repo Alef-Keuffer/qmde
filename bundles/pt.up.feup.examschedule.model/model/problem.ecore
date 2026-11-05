@@ -9,10 +9,11 @@
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Problem">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="atLeastOneBatch uniqueExamNames uniqueStudentNames"/>
+      <details key="constraints" value="atLeastOneBatch atLeastOneExam uniqueExamNames uniqueStudentNames"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="atLeastOneBatch" value="nBatches >= 1"/>
+      <details key="atLeastOneExam" value="exams->notEmpty()"/>
       <details key="uniqueExamNames" value="exams->isUnique(name)"/>
       <details key="uniqueStudentNames" value="students->isUnique(name)"/>
     </eAnnotations>

@@ -9,7 +9,7 @@
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>pt.up.feup.examschedule.problem</artifactId>
+  <artifactId>pt.up.feup.examschedule.model</artifactId>
   <packaging>eclipse-plugin</packaging>
 
   <build>
@@ -26,7 +26,7 @@
             </goals>
             <configuration>
               <arguments>
-                <argument>${project.basedir}/workflow/GenerateProblem.mwe2</argument>
+                <argument>${project.basedir}/workflow/GenerateModel.mwe2</argument>
                 <argument>-p</argument>
                 <argument>rootPath=${project.basedir}/..</argument>
               </arguments>

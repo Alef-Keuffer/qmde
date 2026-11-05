@@ -12,12 +12,14 @@
   <artifactId>run</artifactId>
   <packaging>pom</packaging>
 
-  <!-- Runs the model chain headlessly as an Eclipse application (ADR-0003).
-       Override the inputs with -Dproblem=... -Dout=... -->
+  <!-- Runs the model chain headlessly as an Eclipse application (ADR-0003) on every .exam file in
+       instances/, then runs the generated QAOA scripts in a Python virtual environment.
+       Override with -Dproblem=<file or folder> -Dout=<folder>. -->
   <properties>
-    <problem>${maven.multiModuleProjectDirectory}/instances/tiny.exam</problem>
-    <out>${maven.multiModuleProjectDirectory}/out/tiny</out>
-    <python>python3</python>
+    <problem>${maven.multiModuleProjectDirectory}/instances</problem>
+    <out>${maven.multiModuleProjectDirectory}/out</out>
+    <python>python3.12</python>
+    <venv>${maven.multiModuleProjectDirectory}/.venv</venv>
   </properties>
 
   <build>
@@ -72,16 +74,50 @@
         <artifactId>exec-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>run-generated-code</id>
+            <id>create-venv</id>
             <phase>verify</phase>
             <goals>
               <goal>exec</goal>
             </goals>
             <configuration>
               <executable>${python}</executable>
-              <workingDirectory>${out}</workingDirectory>
               <arguments>
-                <argument>qaoa_tiny.py</argument>
+                <argument>-m</argument>
+                <argument>venv</argument>
+                <argument>${venv}</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>install-requirements</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${venv}/bin/python</executable>
+              <arguments>
+                <argument>-m</argument>
+                <argument>pip</argument>
+                <argument>install</argument>
+                <argument>--quiet</argument>
+                <argument>--disable-pip-version-check</argument>
+                <argument>-r</argument>
+                <argument>${maven.multiModuleProjectDirectory}/requirements.txt</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>run-generated-code</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${venv}/bin/python</executable>
+              <arguments>
+                <argument>${maven.multiModuleProjectDirectory}/python/run_generated.py</argument>
+                <argument>${out}</argument>
               </arguments>
             </configuration>
           </execution>

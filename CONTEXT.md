@@ -43,7 +43,7 @@ All modelling artefacts are EMF (Ecore + OCL). No BESSER.
 ```
 .exam file (Xtext, one grammar) ─► Problem.xmi + SolverConfig.xmi
 Problem ─► Conflict Graph ─► Hamiltonian ─► QUBO ─► Ising        (ATL / EMFTVM)
-Ising + QUBO + SolverConfig ─► qaoa_<instance>.py                 (Acceleo 4)
+Ising + SolverConfig + Conflict Graph ─► qaoa_<instance>.py        (Acceleo 4)
 qaoa_<instance>.py: Aer + SciPy optimiser loop
     ─► best feasible bitstring ─► Schedule.xmi + report in domain terms
     + brute-force baseline over Problem-level schedules
@@ -53,7 +53,8 @@ qaoa_<instance>.py: Aer + SciPy optimiser loop
 - **Hamiltonian**: named components — Reward (−Σ wᵢ xᵢₖ), AtMostOneBatch, NoSharedBatch — each citing its source and whether the penalty coefficient applies, written over variables x[Exam, Batch]. Kept separate from the QUBO so the energy stays inspectable.
 - **QUBO**: penalty coefficient multiplied in, like terms merged, variables mapped to integer indices.
 - **Ising**: QUBO under x = (1 − z)/2 — local fields, couplings, offset.
-- **Generated code** (ADR-0004): QAOA circuit built gate by gate from the Ising model (H, then p × [RZ/RZZ cost, RX mixer], measure); energy evaluated from QUBO coefficients; decoding to a Schedule via the qubit → (Exam, Batch) mapping from the QUBO; best measured bitstring that violates no hard constraint is chosen, otherwise the best one is reported as infeasible.
+- **Generated code** (ADR-0004): everything instance-specific is generated — Solver Configuration, Ising coefficients, the qubit → (Exam, Batch) decoding table, problem data for the baseline, and the QAOA layer gate by gate (H, then p × [RZ/RZZ cost, RX mixer], measure). Model-independent machinery (variational loop, sampling, decoding through the generated table, brute-force baseline, Schedule writer) lives in the hand-written `python/examqaoa.py`. The best measured bitstring that violates no hard constraint is chosen, otherwise the best one is reported as infeasible.
+- **Formulation checks** in every run: each feasible measured bitstring's Ising energy must equal −(scheduled weight), and the exhaustive Ising ground state must decode to an optimal schedule (penalty coefficient large enough).
 - Every ATL rule and template section cites the reference it implements.
 - Seven metamodels: Problem, SolverConfig, ConflictGraph, Hamiltonian, QUBO, Ising, Schedule — plus the small Xtext wrapper root for the `.exam` file.
 
@@ -72,4 +73,4 @@ Test instances (qubits = exams × batches, ≤ ~20):
 
 Full Tycho with a pinned target platform (ADR-0003): every project works in the Eclipse IDE and the whole chain runs headlessly from one `mvn` command as an Eclipse application.
 
-First step: a walking skeleton proving the setup end to end — target platform, headless OCL validation, one ATL step via EMFTVM, one Acceleo 4 template, a stub Xtext grammar.
+Run everything with `./mvnw verify` (see README.md).

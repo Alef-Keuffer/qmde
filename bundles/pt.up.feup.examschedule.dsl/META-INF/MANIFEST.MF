@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.emf.ecore,
  org.eclipse.xtext.util,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
- pt.up.feup.examschedule.problem
+ pt.up.feup.examschedule.model,
+ org.eclipse.emf.common
 Export-Package: pt.up.feup.examschedule.dsl,
  pt.up.feup.examschedule.dsl.parser.antlr,
  pt.up.feup.examschedule.dsl.parser.antlr.internal,
@@ -20,5 +21,8 @@ Export-Package: pt.up.feup.examschedule.dsl,
  pt.up.feup.examschedule.dsl.serializer,
  pt.up.feup.examschedule.dsl.services,
  pt.up.feup.examschedule.dsl.validation,
- pt.up.feup.examschedule.dsl.generator
+ pt.up.feup.examschedule.dsl.generator,
+ pt.up.feup.examschedule.dsl.exam,
+ pt.up.feup.examschedule.dsl.exam.impl,
+ pt.up.feup.examschedule.dsl.exam.util
 Import-Package: org.apache.log4j

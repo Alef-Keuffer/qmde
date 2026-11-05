@@ -1,0 +1,81 @@
+-- @atlcompiler emftvm
+-- @nsURI Hamiltonian=https://pt/up/feup/examschedule/hamiltonian
+-- @nsURI QUBO=https://pt/up/feup/examschedule/qubo
+-- Hamiltonian -> QUBO: multiply the penalty coefficient into penalized components
+-- ([Paper §3.2, Eq. (10)] H = lambda H_const1 + gamma H_const2, with lambda = gamma = A), merge like
+-- terms and index the variables [Glover et al., "Quantum Bridge Analytics I", 4OR, 2019, §2].
+module hamiltonian2qubo;
+
+create OUT : QUBO from IN : Hamiltonian;
+
+helper context Hamiltonian!Hamiltonian def : allTerms : Sequence(Hamiltonian!Term) =
+	self.components->collect(c | c.terms)->flatten();
+
+helper context Hamiltonian!Hamiltonian def : quadraticTerms : Sequence(Hamiltonian!Term) =
+	self.allTerms->select(t | t.variables->size() = 2);
+
+helper context Hamiltonian!Term def : effectiveCoefficient : Real =
+	let c : Hamiltonian!Component = self.refImmediateComposite() in
+	if c.penalized then self.coefficient * c.refImmediateComposite().penaltyCoefficient else self.coefficient endif;
+
+helper context Hamiltonian!AssignmentVariable def : hamiltonian : Hamiltonian!Hamiltonian =
+	self.refImmediateComposite();
+
+helper context Hamiltonian!AssignmentVariable def : qubitIndex : Integer =
+	self.hamiltonian.variables->indexOf(self) - 1;
+
+helper context Hamiltonian!AssignmentVariable def : linearCoefficient : Real =
+	self.hamiltonian.allTerms->select(t | t.variables->size() = 1 and t.variables->first() = self)
+		->iterate(t; s : Real = 0.0 | s + t.effectiveCoefficient);
+
+helper context Hamiltonian!AssignmentVariable def : quadraticTermsWith(other : Hamiltonian!AssignmentVariable) : Sequence(Hamiltonian!Term) =
+	self.hamiltonian.quadraticTerms->select(t | t.variables->includes(self) and t.variables->includes(other));
+
+rule Hamiltonian2QUBO {
+	from
+		h : Hamiltonian!Hamiltonian
+	to
+		q : QUBO!QUBO (
+			name <- h.name,
+			offset <- 0.0,
+			variables <- h.variables,
+			linearTerms <- h.variables->collect(v | thisModule.Linear(v)),
+			quadraticTerms <- h.variables->collect(u |
+					h.variables->select(v | u.qubitIndex < v.qubitIndex and u.quadraticTermsWith(v)->notEmpty())
+						->collect(v | thisModule.Quadratic(u, v)))->flatten()
+		)
+}
+
+rule Variable2Variable {
+	from
+		v : Hamiltonian!AssignmentVariable
+	to
+		x : QUBO!Variable (
+			index <- v.qubitIndex,
+			label <- v.name,
+			exam <- v.exam.name,
+			batch <- v.batch.index
+		)
+}
+
+lazy rule Linear {
+	from
+		v : Hamiltonian!AssignmentVariable
+	to
+		t : QUBO!LinearTerm (
+			variable <- v,
+			coefficient <- v.linearCoefficient
+		)
+}
+
+lazy rule Quadratic {
+	from
+		u : Hamiltonian!AssignmentVariable,
+		v : Hamiltonian!AssignmentVariable
+	to
+		t : QUBO!QuadraticTerm (
+			first <- u,
+			second <- v,
+			coefficient <- u.quadraticTermsWith(v)->iterate(t; s : Real = 0.0 | s + t.effectiveCoefficient)
+		)
+}
