@@ -4,6 +4,7 @@ target/
 .polyglot.*
 out/*
 !out/.project
+!out/.settings/
 src-gen/
 bin/
 .venv/

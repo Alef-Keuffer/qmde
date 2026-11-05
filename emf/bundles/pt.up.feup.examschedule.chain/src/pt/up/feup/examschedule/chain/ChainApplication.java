@@ -54,7 +54,7 @@ public class ChainApplication implements IApplication {
 		if (!input.isDirectory()) {
 			return List.of(input);
 		}
-		File[] files = input.listFiles((dir, name) -> name.endsWith(".exam"));
+		File[] files = input.listFiles(file -> file.getName().endsWith(".exam"));
 		List<File> sorted = new ArrayList<>(Arrays.asList(files == null ? new File[0] : files));
 		sorted.sort(null);
 		return sorted;
