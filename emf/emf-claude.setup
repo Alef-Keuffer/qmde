@@ -27,9 +27,9 @@
   <setupTask
       xsi:type="setup:EclipseIniTask"
       option="-Dosgi.instance.area.default"
-      value="${workspace.location}"
+      value="=${workspace.location}"
       vm="true">
-    <description>Open the workspace chosen in the Installer by default, not ~/eclipse-workspace.</description>
+    <description>Open the workspace chosen in the Installer by default, not ~/eclipse-workspace. The value carries the '=': Oomph writes option and value side by side.</description>
   </setupTask>
   <setupTask
       xsi:type="setup:EclipseIniTask"
