@@ -11,7 +11,7 @@
     <details key="documentation" value="How a problem is solved, as opposed to what the problem is (QAOA settings and penalty mode)."/>
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EEnum" name="Optimizer">
-    <eLiterals name="COBYLA" value="0"/>
+    <eLiterals name="COBYLA"/>
     <eLiterals name="NELDER_MEAD" value="1"/>
     <eLiterals name="POWELL" value="2"/>
   </eClassifiers>
@@ -23,16 +23,21 @@
       <details key="constraints" value="positiveDepth positiveIterations positiveShots positiveManualPenalty"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="positiveDepth" value="depth &gt;= 1"/>
-      <details key="positiveIterations" value="maxIterations &gt;= 1"/>
-      <details key="positiveShots" value="shots &gt;= 1"/>
-      <details key="positiveManualPenalty" value="penaltyCoefficient = null or penaltyCoefficient &gt; 0"/>
+      <details key="positiveDepth" value="depth >= 1"/>
+      <details key="positiveIterations" value="maxIterations >= 1"/>
+      <details key="positiveShots" value="shots >= 1"/>
+      <details key="positiveManualPenalty" value="penaltyCoefficient = null or penaltyCoefficient > 0"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="depth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optimizer" eType="#//Optimizer" defaultValueLiteral="COBYLA"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxIterations" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="100"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shots" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1024"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="seed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="7"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="depth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optimizer" eType="#//Optimizer"
+        defaultValueLiteral="COBYLA"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxIterations" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="100"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shots" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="1024"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="seed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="7"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="penaltyCoefficient" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject"/>
   </eClassifiers>
 </ecore:EPackage>
