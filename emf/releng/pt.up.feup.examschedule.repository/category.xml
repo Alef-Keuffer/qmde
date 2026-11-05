@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <bundle id="pt.up.feup.examschedule.model"/>
+   <bundle id="pt.up.feup.examschedule.dsl"/>
+   <bundle id="pt.up.feup.examschedule.chain"/>
+</site>

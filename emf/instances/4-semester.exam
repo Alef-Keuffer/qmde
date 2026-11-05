@@ -1,0 +1,11 @@
+// Q16 (iv): six exams of a semester, three batches. Feasible.
+problem semester batches 3
+students Ana Rui Eva Ivo Lia Tom
+exam Algebra { Ana Rui }
+exam Calculus { Rui Eva Tom }
+exam Physics { Ana Eva }
+exam Chemistry { Ivo Lia }
+exam Programming { Lia Tom }
+exam Databases { Ivo Ana }
+
+solver { method annealing reads 50 sweeps 10000 seed 7 }

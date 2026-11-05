@@ -1,0 +1,9 @@
+// Q16 (i): four exams whose conflicts form a path, two batches. Feasible (a path is 2-colourable).
+problem path batches 2
+students Ana Rui Eva
+exam Algebra { Ana }
+exam Calculus { Ana Rui }
+exam Physics { Rui Eva }
+exam Chemistry { Eva }
+
+solver { method QAOA depth 2 optimizer COBYLA iterations 150 shots 2048 seed 7 }

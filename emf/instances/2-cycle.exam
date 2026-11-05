@@ -1,0 +1,10 @@
+// Q16 (ii): five exams whose conflicts form a 5-cycle, three batches. Feasible (needs 3 batches).
+problem cycle batches 3
+students Ana Rui Eva Ivo Lia
+exam Algebra { Ana Lia }
+exam Calculus { Ana Rui }
+exam Physics { Rui Eva }
+exam Chemistry { Eva Ivo }
+exam Programming { Ivo Lia }
+
+solver { method QAOA depth 2 optimizer COBYLA iterations 150 shots 4096 seed 7 }

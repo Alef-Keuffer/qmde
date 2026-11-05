@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Exam Schedule Transformation Chain
+Bundle-SymbolicName: pt.up.feup.examschedule.chain;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: pt.up.feup.examschedule.chain
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.equinox.app,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.ocl.pivot,
+ org.eclipse.ocl.xtext.essentialocl,
+ org.eclipse.m2m.atl.emftvm,
+ org.eclipse.m2m.atl.emftvm.compiler,
+ org.eclipse.acceleo.aql,
+ org.eclipse.acceleo.query,
+ pt.up.feup.examschedule.dsl,
+ pt.up.feup.examschedule.model

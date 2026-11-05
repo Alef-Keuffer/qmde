@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="conflictgraph" nsURI="https://pt/up/feup/examschedule/conflictgraph"
+    nsPrefix="conflictgraph">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+  </eAnnotations>
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="Exams as nodes and conflicts (shared students) as edges, with the available batches."/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="ConflictGraph">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Conflict Graph of one problem."/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="uniqueExamsNames batchesNumberedFromOne uniqueConflicts"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="uniqueExamsNames" value="exams-&gt;isUnique(name)"/>
+      <details key="batchesNumberedFromOne" value="batches-&gt;forAll(b | b.index = batches-&gt;indexOf(b))"/>
+      <details key="uniqueConflicts" value="conflicts-&gt;forAll(c1, c2 | c1 &lt;&gt; c2 implies not ((c1.first = c2.first and c1.second = c2.second) or (c1.first = c2.second and c1.second = c2.first)))"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exams" upperBound="-1" eType="#//Exam" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="batches" lowerBound="1" upperBound="-1" eType="#//Batch" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conflicts" upperBound="-1" eType="#//Conflict" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Exam">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="An exam node."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Batch">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="One of the available batches, numbered from 1."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Conflict">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Two exams sharing at least one student."/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="distinctExams"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="distinctExams" value="first &lt;&gt; second"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="first" lowerBound="1" eType="#//Exam"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="second" lowerBound="1" eType="#//Exam"/>
+  </eClassifiers>
+</ecore:EPackage>

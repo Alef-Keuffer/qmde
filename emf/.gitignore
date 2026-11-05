@@ -1,0 +1,10 @@
+.DS_Store
+.ipynb_checkpoints/
+target/
+.polyglot.*
+out/*
+!out/.project
+src-gen/
+bin/
+.venv/
+**/model/generated/

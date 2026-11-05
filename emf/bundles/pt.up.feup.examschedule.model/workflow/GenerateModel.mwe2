@@ -1,0 +1,34 @@
+module GenerateModel
+
+import org.eclipse.emf.mwe.utils.*
+import org.eclipse.emf.mwe2.ecore.*
+
+var rootPath = ".."
+var project = "pt.up.feup.examschedule.model"
+
+// Generates the EMF Java code of every metamodel in model/ (one genmodel per .ecore).
+Workflow {
+	bean = StandaloneSetup {
+		scanClassPath = true
+		platformUri = rootPath
+	}
+	component = DirectoryCleaner {
+		directory = "${rootPath}/${project}/src-gen"
+	}
+	component = EcoreGenerator {
+		genModel = "platform:/resource/${project}/model/problem.genmodel"
+		srcPath = "platform:/resource/${project}/src-gen"
+	}
+	component = EcoreGenerator {
+		genModel = "platform:/resource/${project}/model/solverconfig.genmodel"
+		srcPath = "platform:/resource/${project}/src-gen"
+	}
+	component = EcoreGenerator {
+		genModel = "platform:/resource/${project}/model/conflictgraph.genmodel"
+		srcPath = "platform:/resource/${project}/src-gen"
+	}
+	component = EcoreGenerator {
+		genModel = "platform:/resource/${project}/model/schedule.genmodel"
+		srcPath = "platform:/resource/${project}/src-gen"
+	}
+}

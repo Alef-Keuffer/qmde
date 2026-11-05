@@ -1,0 +1,10 @@
+// Q16 (iii): four exams that all conflict, three batches. Infeasible: every sample breaks a
+// constraint, and the report lists the broken ones (ADR-0006).
+problem clique batches 3
+students Ana Rui Eva
+exam Algebra { Ana Rui Eva }
+exam Calculus { Ana Rui Eva }
+exam Physics { Ana Rui Eva }
+exam Statistics { Ana Rui Eva }
+
+solver { method annealing reads 50 sweeps 10000 seed 7 }

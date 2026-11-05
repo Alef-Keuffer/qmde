@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated problem -->
+      <package
+            uri="https://pt/up/feup/examschedule/problem"
+            class="pt.up.feup.examschedule.problem.ProblemPackage"
+            genModel="model/problem.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated solverconfig -->
+      <package
+            uri="https://pt/up/feup/examschedule/solverconfig"
+            class="pt.up.feup.examschedule.solverconfig.SolverConfigPackage"
+            genModel="model/solverconfig.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated conflictgraph -->
+      <package
+            uri="https://pt/up/feup/examschedule/conflictgraph"
+            class="pt.up.feup.examschedule.conflictgraph.ConflictGraphPackage"
+            genModel="model/conflictgraph.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated schedule -->
+      <package
+            uri="https://pt/up/feup/examschedule/schedule"
+            class="pt.up.feup.examschedule.schedule.SchedulePackage"
+            genModel="model/schedule.genmodel"/>
+   </extension>
+
+</plugin>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.ui.externaltools.ProgramLaunchConfigurationType">
+    <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+        <listEntry value="org.eclipse.ui.externaltools.launchGroup"/>
+    </listAttribute>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+        <mapEntry key="JAVA_HOME" value="${system_property:java.home}"/>
+    </mapAttribute>
+    <booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+    <booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="true"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${project_loc:pt.up.feup.examschedule.chain}/../../mvnw"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_REFRESH_SCOPE" value="${workspace}"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-B verify"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${project_loc:pt.up.feup.examschedule.chain}/../.."/>
+</launchConfiguration>
