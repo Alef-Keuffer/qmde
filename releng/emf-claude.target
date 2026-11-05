@@ -10,7 +10,6 @@
       <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.ocl.all.sdk.feature.group" version="0.0.0"/>
       <!-- OCL pivot/OCLinEcore: the OCL SDK feature in the release only has the classic OCL. -->
-      <!-- OCL pivot/OCLinEcore: the OCL SDK feature in the release only has the classic OCL. -->
       <unit id="org.eclipse.ocl.unified.core.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.xtext.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.mwe2.language.sdk.feature.group" version="0.0.0"/>
