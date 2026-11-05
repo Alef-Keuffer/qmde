@@ -1,8 +1,8 @@
-# emf/ — EMF model chain
+# emf
 
 This folder is a self-contained project inside the `qmde` repository: the exam-slot assignment chain built with Eclipse EMF, independent of the BESSER work elsewhere in the repository. Work and run commands from here (`emf/`), not from the repository root.
 
-See `CONTEXT.md` for the problem statement and the DSL pipeline, and `README.md` for building (`./build.sh`) and the Eclipse setup (`emf-claude.setup`).
+See `CONTEXT.md` for the problem statement and the DSL pipeline, and `README.md` for building (`./build.sh`) and the Eclipse setup (`emf.setup`).
 
 ## Agent skills
 

@@ -9,14 +9,14 @@
     xmlns:setup.p2="http://www.eclipse.org/oomph/setup/p2/1.0"
     xmlns:setup.targlets="http://www.eclipse.org/oomph/setup/targlets/1.0"
     xsi:schemaLocation="http://www.eclipse.org/oomph/setup/jdt/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/JDT.ecore http://www.eclipse.org/oomph/setup/projects/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/Projects.ecore http://www.eclipse.org/oomph/setup/targlets/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/SetupTarglets.ecore"
-    name="emf-claude"
-    label="emf-claude (exam-slot assignment, pyqubo + QAOA or annealing)">
+    name="emf"
+    label="emf (exam-slot assignment, pyqubo + QAOA or annealing)">
   <setupTask
       xsi:type="setup:VariableTask"
       type="FOLDER"
-      name="emf-claude.location"
-      label="emf-claude repository folder">
-    <description>The folder of your emf-claude clone (the one containing build.sh). Run ./build.sh there once first, so the generated code exists.</description>
+      name="emf.location"
+      label="emf folder">
+    <description>The emf/ folder of your qmde clone (the one containing build.sh). Run ./build.sh there once first, so the generated code exists.</description>
   </setupTask>
   <setupTask
       xsi:type="jdt:JRETask"
@@ -38,7 +38,7 @@
       vm="true"/>
   <setupTask
       xsi:type="setup.p2:P2Task"
-      label="emf-claude IDE tools">
+      label="emf IDE tools">
     <description>Editors for every artefact of the chain: Ecore (+ Ecore Tools diagrams), OCLinEcore, Xtext, MWE2, ATL, Acceleo 4, plus PDE and m2e.</description>
     <requirement
         name="org.eclipse.jdt.feature.group"/>
@@ -71,14 +71,14 @@
       xsi:type="projects:ProjectsImportTask">
     <description>Imports the bundles plus exam-schedule-out (generated models) and exam-schedule-instances.</description>
     <sourceLocator
-        rootFolder="${emf-claude.location}"
+        rootFolder="${emf.location}"
         locateNestedProjects="true"/>
   </setupTask>
   <setupTask
       xsi:type="setup.targlets:TargletTask">
-    <description>Target platform; keep the units in sync with releng/emf-claude.target (used by the Maven build).</description>
+    <description>Target platform; keep the units in sync with releng/emf.target (used by the Maven build).</description>
     <targlet
-        name="emf-claude"
+        name="emf"
         activeRepositoryList="2026-09">
       <requirement
           name="org.eclipse.equinox.executable.feature.group"/>

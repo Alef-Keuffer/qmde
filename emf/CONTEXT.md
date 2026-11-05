@@ -92,11 +92,11 @@ Test instances (variables = exams × batches):
 
 Full Tycho with a pinned target platform (ADR-0003): every project works in the Eclipse IDE and the whole chain runs headlessly from one `mvn` command as an Eclipse application.
 
-Run everything with `./build.sh` (see README.md); the Eclipse IDE is provisioned by `emf-claude.setup`.
+Run everything with `./build.sh` (see README.md); the Eclipse IDE is provisioned by `emf.setup`.
 
 ## Known limitations
 
-- QAOA is weak on the penalty-only formulation: on cycle (15 variables, depth 2) the optimiser finds angles no better than random guessing, even with an exact statevector objective. The earlier weighted formulation (branch `model-chain-weighted-ising`) reached P(optimal) 0.033 there; its reward terms gave the energy a slope this one lacks.
+- QAOA is weak on the penalty-only formulation: on cycle (15 variables, depth 2) the optimiser finds angles no better than random guessing, even with an exact statevector objective. The earlier weighted formulation (commit `e3c399a`) reached P(optimal) 0.033 there; its reward terms gave the energy a slope this one lacks.
 - The initial QAOA angles are a fixed linear ramp in `python/examschedule.py`, not part of the Solver Configuration.
 - The Schedule written by the generated script is not validated against `schedule.ecore`'s OCL.
 - There are no automated unit tests; correctness rests on OCL validation between steps, the formulation check and the brute-force baseline in every run.

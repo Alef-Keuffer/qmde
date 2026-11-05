@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="emf-claude">
+<target name="emf">
   <locations>
     <!-- Eclipse 2026-09 simultaneous release: EMF, OCL, Xtext, MWE2, ATL, Acceleo 4 (ADR-0003) -->
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="false" type="InstallableUnit">
