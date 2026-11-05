@@ -13,7 +13,9 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.util,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
  pt.up.feup.examschedule.model,
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ org.eclipse.xtext.xtext.generator;resolution:=optional,
+ org.eclipse.emf.mwe2.launch;resolution:=optional
 Export-Package: pt.up.feup.examschedule.dsl,
  pt.up.feup.examschedule.dsl.parser.antlr,
  pt.up.feup.examschedule.dsl.parser.antlr.internal,
