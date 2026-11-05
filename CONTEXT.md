@@ -73,4 +73,4 @@ Test instances (qubits = exams × batches, ≤ ~20):
 
 Full Tycho with a pinned target platform (ADR-0003): every project works in the Eclipse IDE and the whole chain runs headlessly from one `mvn` command as an Eclipse application.
 
-Run everything with `./mvnw verify` (see README.md).
+Run everything with `./build.sh` (see README.md).
