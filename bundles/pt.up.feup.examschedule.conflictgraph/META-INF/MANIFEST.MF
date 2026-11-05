@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Exam Schedule Conflict Graph Metamodel
+Bundle-SymbolicName: pt.up.feup.examschedule.conflictgraph;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: pt.up.feup.examschedule.conflictgraph
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.ocl.pivot

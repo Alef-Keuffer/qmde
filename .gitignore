@@ -1,2 +1,7 @@
 .DS_Store
 .ipynb_checkpoints/
+target/
+.polyglot.*
+out/
+src-gen/
+bin/

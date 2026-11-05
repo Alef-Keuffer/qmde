@@ -1,0 +1,47 @@
+-- @atlcompiler emftvm
+-- @nsURI Problem=https://pt/up/feup/examschedule/problem
+-- @nsURI ConflictGraph=https://pt/up/feup/examschedule/conflictgraph
+module problem2conflictgraph;
+
+create OUT : ConflictGraph from IN : Problem;
+
+rule Problem2ConflictGraph {
+	from
+		p : Problem!Problem
+	to
+		g : ConflictGraph!ConflictGraph (
+			name <- p.name,
+			nBatches <- p.nBatches,
+			exams <- p.exams,
+			conflicts <- p.exams->collect(a |
+					p.exams->select(b | p.exams->indexOf(a) < p.exams->indexOf(b) and a.sharesStudentWith(b))
+						->collect(b | thisModule.Conflict(a, b)))->flatten()
+		)
+}
+
+rule Exam2Exam {
+	from
+		e : Problem!Exam
+	to
+		x : ConflictGraph!Exam (
+			name <- e.name,
+			weight <- e.weight
+		)
+}
+
+-- Course conflict matrix C (hybrid quantum annealing paper, §3.1): C[i,j] = 1 iff
+-- some student sits both exam i and exam j. Each unordered pair is emitted once,
+-- in the order the exams appear in the problem.
+helper context Problem!Exam def : sharesStudentWith(other : Problem!Exam) : Boolean =
+	self.students->exists(s | other.students->includes(s));
+
+lazy rule Conflict {
+	from
+		a : Problem!Exam,
+		b : Problem!Exam
+	to
+		c : ConflictGraph!Conflict (
+			first <- a,
+			second <- b
+		)
+}

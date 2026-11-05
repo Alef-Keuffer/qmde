@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Exam Schedule DSL (ui)
+Bundle-SymbolicName: pt.up.feup.examschedule.dsl.ui;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: pt.up.feup.examschedule.dsl.ui
+Bundle-ActivationPolicy: lazy
+Export-Package: pt.up.feup.examschedule.dsl.ui.internal,
+ pt.up.feup.examschedule.dsl.ui.contentassist,
+ pt.up.feup.examschedule.dsl.ui.quickfix
+Require-Bundle: pt.up.feup.examschedule.dsl,
+ pt.up.feup.examschedule.dsl.ide,
+ org.eclipse.xtext.ide,
+ org.eclipse.ui,
+ org.eclipse.xtext.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.compare,
+ org.eclipse.xtext.builder,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.xtext.ui.shared
+Import-Package: org.apache.log4j
+Bundle-Activator: pt.up.feup.examschedule.dsl.ui.internal.DslActivator

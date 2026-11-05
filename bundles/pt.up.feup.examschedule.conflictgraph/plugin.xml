@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.emf.ecore.dynamic_package">
+      <resource uri="https://pt/up/feup/examschedule/conflictgraph" location="model/conflictgraph.ecore"/>
+   </extension>
+</plugin>
