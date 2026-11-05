@@ -29,4 +29,17 @@ Run it from the repository root: the Xtext generator is given a relative path (s
 
 ## Eclipse IDE
 
-Set `releng/emf-claude.target` as the target platform, then import the projects under `bundles/`. Generated sources (`src-gen/`) are not committed: run `./mvnw generate-sources` once, or run the `.mwe2` workflows from the IDE.
+Use Eclipse 2026-09 with Xtext, ATL, Ecore Tools, OCL and Acceleo 4 installed (Acceleo: Help → Install New Software → the 2026-09 release site → Modeling → Acceleo).
+
+1. Run `./mvnw verify` once from the terminal: it generates `src-gen/` (not committed) and `out/`.
+2. File → Import → Existing Projects into Workspace, root = this folder, with "Search for nested projects" on. Leave "Copy projects into workspace" off. This imports the six bundles plus `exam-schedule-out` (the generated models) and `exam-schedule-instances`.
+3. Open `releng/emf-claude.target` (File → Open File) and click "Set as Active Target Platform", or use the running platform.
+
+Launch configurations (Run → Run Configurations, or External Tools for the `mvnw`/Python ones) live in `bundles/pt.up.feup.examschedule.chain/launch/`:
+
+- **Exam DSL Eclipse**: a second Eclipse with the `.exam` editor and every metamodel installed. Import `exam-schedule-instances` and `exam-schedule-out` there to edit problems and browse the `.xmi` models (Sample Reflective Ecore Model Editor).
+- **Run model chain**: runs the transformations on `instances/` into `out/`.
+- **Run generated QAOA scripts**: runs every `out/*/qaoa_*.py` with `.venv`.
+- **Generate EMF and Xtext code (mvnw)** and **Build and run everything (mvnw)**: the Maven build, using Eclipse's own JDK.
+
+Regenerate code after editing an `.ecore` or `Exam.xtext` with the "Generate EMF and Xtext code" launch rather than the `.mwe2` workflows: ANTLR cannot handle the non-ASCII characters an absolute path may contain, and the Maven build passes it a relative one.

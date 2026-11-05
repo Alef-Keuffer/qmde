@@ -2,7 +2,8 @@
 .ipynb_checkpoints/
 target/
 .polyglot.*
-out/
+out/*
+!out/.project
 src-gen/
 bin/
 .venv/
