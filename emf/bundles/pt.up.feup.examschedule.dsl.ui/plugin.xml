@@ -330,34 +330,6 @@
 			</command>
 		</menuContribution>
 	</extension>
-	<!-- quickfix marker resolution generator for pt.up.feup.examschedule.dsl.Exam -->
-	<extension
-			point="org.eclipse.ui.ide.markerResolution">
-		<markerResolutionGenerator
-			class="pt.up.feup.examschedule.dsl.ui.ExamExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="pt.up.feup.examschedule.dsl.ui.exam.check.fast">
-			<attribute
-				name="FIXABLE_KEY"
-				value="true">
-			</attribute>
-		</markerResolutionGenerator>
-		<markerResolutionGenerator
-			class="pt.up.feup.examschedule.dsl.ui.ExamExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="pt.up.feup.examschedule.dsl.ui.exam.check.normal">
-			<attribute
-				name="FIXABLE_KEY"
-				value="true">
-			</attribute>
-		</markerResolutionGenerator>
-		<markerResolutionGenerator
-			class="pt.up.feup.examschedule.dsl.ui.ExamExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="pt.up.feup.examschedule.dsl.ui.exam.check.expensive">
-			<attribute
-				name="FIXABLE_KEY"
-				value="true">
-			</attribute>
-		</markerResolutionGenerator>
-	</extension>
 	<!-- Rename Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler

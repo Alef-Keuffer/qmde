@@ -34,10 +34,31 @@ Workflow {
 			fileExtensions = "exam"
 			referencedResource = "platform:/resource/pt.up.feup.examschedule.model/model/problem.genmodel"
 			referencedResource = "platform:/resource/pt.up.feup.examschedule.model/model/solverconfig.genmodel"
+			// No customisation stubs: Xtext binds its default implementations instead. Turn a stub back
+			// on (and commit it) when the language needs custom validation, scoping, labels, etc.
 			serializer = {
 				generateStub = false
 			}
 			validator = {
+				generateStub = false
+			}
+			scopeProvider = {
+				generateStub = false
+			}
+			generator = {
+				generateStub = false
+			}
+			labelProvider = {
+				generateStub = false
+			}
+			outline = {
+				generateStub = false
+			}
+			quickFixProvider = {
+				generateStub = false
+			}
+			contentAssist = {
+				generateStub = false
 			}
 		}
 	}

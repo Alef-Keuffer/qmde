@@ -23,7 +23,6 @@ Export-Package: pt.up.feup.examschedule.dsl,
  pt.up.feup.examschedule.dsl.serializer,
  pt.up.feup.examschedule.dsl.services,
  pt.up.feup.examschedule.dsl.validation,
- pt.up.feup.examschedule.dsl.generator,
  pt.up.feup.examschedule.dsl.exam,
  pt.up.feup.examschedule.dsl.exam.impl,
  pt.up.feup.examschedule.dsl.exam.util
