@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup:Project
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jdt="http://www.eclipse.org/oomph/setup/jdt/1.0"
+    xmlns:projects="http://www.eclipse.org/oomph/setup/projects/1.0"
+    xmlns:setup="http://www.eclipse.org/oomph/setup/1.0"
+    xmlns:setup.p2="http://www.eclipse.org/oomph/setup/p2/1.0"
+    xmlns:setup.targlets="http://www.eclipse.org/oomph/setup/targlets/1.0"
+    xsi:schemaLocation="http://www.eclipse.org/oomph/setup/jdt/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/JDT.ecore http://www.eclipse.org/oomph/setup/projects/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/Projects.ecore http://www.eclipse.org/oomph/setup/targlets/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/SetupTarglets.ecore"
+    name="emf-claude"
+    label="emf-claude (exam-slot assignment, QAOA)">
+  <setupTask
+      xsi:type="setup:VariableTask"
+      type="FOLDER"
+      name="emf-claude.location"
+      label="emf-claude repository folder">
+    <description>The folder of your emf-claude clone (the one containing build.sh). Run ./build.sh there once first, so the generated code exists.</description>
+  </setupTask>
+  <setupTask
+      xsi:type="jdt:JRETask"
+      version="JavaSE-21"
+      location="${jre.location-21}">
+    <description>JDK 21 or newer (ADR-0003: Tycho and Eclipse 2026-09 need it).</description>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:EclipseIniTask"
+      option="-Xmx"
+      value="4g"
+      vm="true"/>
+  <setupTask
+      xsi:type="setup.p2:P2Task"
+      label="emf-claude IDE tools">
+    <description>Editors for every artefact of the chain: Ecore (+ Ecore Tools diagrams), OCLinEcore, Xtext, MWE2, ATL, Acceleo 4, plus PDE and m2e.</description>
+    <requirement
+        name="org.eclipse.jdt.feature.group"/>
+    <requirement
+        name="org.eclipse.pde.feature.group"/>
+    <requirement
+        name="org.eclipse.m2e.feature.feature.group"/>
+    <requirement
+        name="org.eclipse.m2e.pde.feature.feature.group"/>
+    <requirement
+        name="org.eclipse.emf.sdk.feature.group"/>
+    <requirement
+        name="org.eclipse.emf.ecoretools.design.feature.group"/>
+    <requirement
+        name="org.eclipse.ocl.all.sdk.feature.group"/>
+    <requirement
+        name="org.eclipse.ocl.unified.ui.feature.group"/>
+    <requirement
+        name="org.eclipse.xtext.sdk.feature.group"/>
+    <requirement
+        name="org.eclipse.emf.mwe2.language.sdk.feature.group"/>
+    <requirement
+        name="org.eclipse.m2m.atl.sdk.feature.group"/>
+    <requirement
+        name="org.eclipse.acceleo.aql.feature.feature.group"/>
+    <repository
+        url="https://download.eclipse.org/releases/2026-09"/>
+  </setupTask>
+  <setupTask
+      xsi:type="projects:ProjectsImportTask">
+    <description>Imports the bundles plus exam-schedule-out (generated models) and exam-schedule-instances.</description>
+    <sourceLocator
+        rootFolder="${emf-claude.location}"
+        locateNestedProjects="true"/>
+  </setupTask>
+  <setupTask
+      xsi:type="setup.targlets:TargletTask">
+    <description>Target platform; keep the units in sync with releng/emf-claude.target (used by the Maven build).</description>
+    <targlet
+        name="emf-claude"
+        activeRepositoryList="2026-09">
+      <requirement
+          name="org.eclipse.equinox.executable.feature.group"/>
+      <requirement
+          name="org.eclipse.platform.feature.group"/>
+      <requirement
+          name="org.eclipse.emf.sdk.feature.group"/>
+      <requirement
+          name="org.eclipse.ocl.all.sdk.feature.group"/>
+      <requirement
+          name="org.eclipse.ocl.unified.core.feature.group"/>
+      <requirement
+          name="org.eclipse.xtext.sdk.feature.group"/>
+      <requirement
+          name="org.eclipse.emf.mwe2.language.sdk.feature.group"/>
+      <requirement
+          name="org.eclipse.m2m.atl.sdk.feature.group"/>
+      <requirement
+          name="org.eclipse.acceleo.aql.feature.feature.group"/>
+      <requirement
+          name="org.eclipse.acceleo.query.feature.group"/>
+      <repositoryList
+          name="2026-09">
+        <repository
+            url="https://download.eclipse.org/releases/2026-09"/>
+      </repositoryList>
+    </targlet>
+  </setupTask>
+  <stream
+      name="main"
+      label="main"/>
+  <description>EMF model chain (Problem -> Conflict Graph -> Hamiltonian -> QUBO -> Ising -> QAOA code) for exam-slot assignment. See README.md.</description>
+</setup:Project>

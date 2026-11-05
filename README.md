@@ -31,11 +31,16 @@ Run it from the repository root: the Xtext generator is given a relative path (s
 
 ## Eclipse IDE
 
-Use Eclipse 2026-09 with Xtext, ATL, Ecore Tools, OCL and Acceleo 4 installed (Acceleo: Help → Install New Software → the 2026-09 release site → Modeling → Acceleo).
+`emf-claude.setup` provisions a ready IDE with the Eclipse Installer (Oomph): Eclipse 2026-09 with every editor the chain needs (Ecore + Ecore Tools, OCLinEcore, Xtext, MWE2, ATL, Acceleo 4, PDE, m2e), a JDK 21+, the projects imported and the target platform active.
 
-1. Run `./build.sh` once from the terminal: it generates `src-gen/` (not committed) and `out/`.
-2. File → Import → Existing Projects into Workspace, root = this folder, with "Search for nested projects" on. Leave "Copy projects into workspace" off. This imports the six bundles plus `exam-schedule-out` (the generated models) and `exam-schedule-instances`.
-3. Open `releng/emf-claude.target` (File → Open File) and click "Set as Active Target Platform", or use the running platform.
+1. Run `./build.sh` once, so the generated code (`src-gen/`) and `out/` exist.
+2. Open the Eclipse Installer, then menu (☰) → **Advanced Mode**.
+3. Product page: Eclipse.org → **Eclipse Modeling Tools**, product version **2026-09**, Java VM 21+. Next.
+4. Projects page: click **+** (add user projects), catalog `<User>`, browse to `emf-claude.setup` in this folder, OK. Tick **emf-claude**, stream `main`. Next.
+5. Variables page: pick an installation folder and a workspace folder (outside Google Drive is better: workspace metadata syncs badly), point **emf-claude repository folder** at this folder, choose a JDK 21+. Next → Finish.
+6. The new Eclipse starts and finishes the setup (importing projects, resolving the target platform); watch the progress in the status bar. Start that Eclipse from its installation folder from then on. Help → Perform Setup Tasks reruns the setup.
+
+Without the Installer: install the editors listed above into Eclipse 2026-09, import the projects with File → Import → Existing Projects into Workspace (root = this folder, "Search for nested projects" on, no copying), and activate `releng/emf-claude.target` (open it, "Set as Active Target Platform").
 
 Launch configurations (Run → Run Configurations, or External Tools for the `mvnw`/Python ones) live in `bundles/pt.up.feup.examschedule.chain/launch/`:
 
