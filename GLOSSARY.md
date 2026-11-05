@@ -76,3 +76,19 @@ _Avoid_: plan, solution matrix
 **Unscheduled Exam**:
 An exam the schedule assigns to no batch, accepted at the cost of its weight when no conflict-free schedule exists.
 _Avoid_: missed exam, dropped exam
+
+**Cost** (of a schedule):
+The total weight of its unscheduled exams; an optimal schedule has the least cost among feasible ones.
+
+### Validation
+
+**Baseline**:
+The optimal cost found classically by enumerating every schedule of the problem, independently of the QUBO.
+_Avoid_: reference solution, ground truth
+
+**Approximation Ratio**:
+The weight QAOA's schedule schedules divided by the weight the optimal schedule schedules; 0 when QAOA's schedule is infeasible.
+
+**Probability of Optimum**:
+The fraction of the final measurement shots that decode to a feasible schedule of optimal cost.
+_Avoid_: success rate

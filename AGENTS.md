@@ -1,6 +1,6 @@
 # emf-claude
 
-See `CONTEXT.md` for the problem statement and planned DSL pipeline.
+See `CONTEXT.md` for the problem statement and the DSL pipeline, and `README.md` for building (`./build.sh`) and the Eclipse setup (`emf-claude.setup`).
 
 ## Agent skills
 

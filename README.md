@@ -20,6 +20,10 @@ This builds every bundle (generating EMF and Xtext code), runs the chain headles
 
 Run it from the repository root: the Xtext generator is given a relative path (see `bundles/pt.up.feup.examschedule.dsl/pom.xml`).
 
+## Writing a problem
+
+Add a `.exam` file to `instances/` (syntax in `CONTEXT.md`, "Textual syntax"); `./build.sh` picks up every file there.
+
 ## Layout
 
 - `bundles/pt.up.feup.examschedule.model`: every metamodel (`model/*.ecore`, with OCL); EMF code generated at build.
@@ -27,6 +31,8 @@ Run it from the repository root: the Xtext generator is given a relative path (s
 - `bundles/pt.up.feup.examschedule.chain`: headless application: parse, OCL-validate, ATL (`transforms/`), Acceleo (`src/.../codegen/`).
 - `python/examqaoa.py`: model-independent runtime the generated scripts import (variational loop, decoding, baseline, Schedule writer). `python/run_generated.py` runs them all.
 - `instances/`: the test problems.
+- `build.sh`: runs Maven with a JDK 21+. `emf-claude.setup`: Oomph setup for the Eclipse IDE. `bundles/pt.up.feup.examschedule.chain/launch/`: Eclipse launch configurations.
+- `CONTEXT.md` (problem, pipeline, validation results, known limitations), `GLOSSARY.md`, `docs/adr/`.
 - `releng/emf-claude.target`: target platform (Eclipse 2026-09). `releng/run`: the headless run.
 
 ## Eclipse IDE
