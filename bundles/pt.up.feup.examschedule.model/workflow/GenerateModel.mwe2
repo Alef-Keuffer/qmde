@@ -28,18 +28,6 @@ Workflow {
 		srcPath = "platform:/resource/${project}/src-gen"
 	}
 	component = EcoreGenerator {
-		genModel = "platform:/resource/${project}/model/hamiltonian.genmodel"
-		srcPath = "platform:/resource/${project}/src-gen"
-	}
-	component = EcoreGenerator {
-		genModel = "platform:/resource/${project}/model/qubo.genmodel"
-		srcPath = "platform:/resource/${project}/src-gen"
-	}
-	component = EcoreGenerator {
-		genModel = "platform:/resource/${project}/model/ising.genmodel"
-		srcPath = "platform:/resource/${project}/src-gen"
-	}
-	component = EcoreGenerator {
 		genModel = "platform:/resource/${project}/model/schedule.genmodel"
 		srcPath = "platform:/resource/${project}/src-gen"
 	}

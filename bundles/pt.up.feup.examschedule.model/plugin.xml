@@ -26,30 +26,6 @@
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated hamiltonian -->
-      <package
-            uri="https://pt/up/feup/examschedule/hamiltonian"
-            class="pt.up.feup.examschedule.hamiltonian.HamiltonianPackage"
-            genModel="model/hamiltonian.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated qubo -->
-      <package
-            uri="https://pt/up/feup/examschedule/qubo"
-            class="pt.up.feup.examschedule.qubo.QuboPackage"
-            genModel="model/qubo.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated ising -->
-      <package
-            uri="https://pt/up/feup/examschedule/ising"
-            class="pt.up.feup.examschedule.ising.IsingPackage"
-            genModel="model/ising.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated schedule -->
       <package
             uri="https://pt/up/feup/examschedule/schedule"

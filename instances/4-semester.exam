@@ -1,11 +1,11 @@
 // Q16 (iv): six exams of a semester, three batches. Feasible.
 problem semester batches 3
 students Ana Rui Eva Ivo Lia Tom
-exam Algebra     weight 3 { Ana Rui }
-exam Calculus    weight 3 { Rui Eva Tom }
-exam Physics     weight 2 { Ana Eva }
-exam Chemistry   weight 2 { Ivo Lia }
-exam Programming weight 1 { Lia Tom }
-exam Databases   weight 1 { Ivo Ana }
+exam Algebra { Ana Rui }
+exam Calculus { Rui Eva Tom }
+exam Physics { Ana Eva }
+exam Chemistry { Ivo Lia }
+exam Programming { Lia Tom }
+exam Databases { Ivo Ana }
 
-solver { depth 1 optimizer COBYLA iterations 100 shots 4096 seed 7 }
+solver { method annealing reads 50 sweeps 10000 seed 7 }

@@ -1,10 +1,10 @@
-// Q16 (iii): four exams that all conflict, three batches. Infeasible: the least important exam
-// (Statistics, weight 1) must be left unscheduled (ADR-0001).
+// Q16 (iii): four exams that all conflict, three batches. Infeasible: every sample breaks a
+// constraint, and the report lists the broken ones (ADR-0006).
 problem clique batches 3
 students Ana Rui Eva
-exam Algebra    weight 4 { Ana Rui Eva }
-exam Calculus   weight 3 { Ana Rui Eva }
-exam Physics    weight 2 { Ana Rui Eva }
-exam Statistics weight 1 { Ana Rui Eva }
+exam Algebra { Ana Rui Eva }
+exam Calculus { Ana Rui Eva }
+exam Physics { Ana Rui Eva }
+exam Statistics { Ana Rui Eva }
 
-solver { depth 2 optimizer COBYLA iterations 150 shots 4096 seed 7 penalty auto }
+solver { method annealing reads 50 sweeps 10000 seed 7 }

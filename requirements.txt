@@ -2,3 +2,5 @@ qiskit>=2.0
 qiskit-aer>=0.17
 scipy>=1.13
 numpy>=1.26
+pyqubo>=1.5
+dwave-neal>=0.6

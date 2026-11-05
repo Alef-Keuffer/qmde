@@ -27,8 +27,7 @@ rule Exam2Exam {
 		e : Problem!Exam
 	to
 		x : ConflictGraph!Exam (
-			name <- e.name,
-			weight <- e.weight
+			name <- e.name
 		)
 }
 

@@ -1,9 +1,9 @@
 # Context of our problem
 
-In the Exam-Slot Assignment Problem, a university needs to schedule its final exams into a limited number of batches so that no student has two exams in the same batch. When no conflict-free schedule exists, exams may be left unscheduled at the cost of their weight, and the goal is the least-costly schedule.
+In the Exam-Slot Assignment Problem, a university needs to schedule its final exams into a limited number of batches so that no student has two exams in the same batch. Every exam goes in exactly one batch; when no conflict-free schedule exists, the best schedule found is reported with the constraints it breaks (ADR-0006).
 
-- solution DSL: QUBO (Quadratic Unconstrained Binary Optimization), via a Hamiltonian and an Ising model
-- quantum algorithm: QAOA (Quantum Approximate Optimization Algorithm), simulated on Qiskit Aer
+- solution DSL: QUBO (Quadratic Unconstrained Binary Optimization), built with pyqubo exactly as the reference notebook does
+- solving: QAOA (Quantum Approximate Optimization Algorithm) simulated on Qiskit Aer, or simulated annealing (`neal`) as in the notebook; chosen per problem
 
 Vocabulary is defined in `GLOSSARY.md`; architectural decisions are in `docs/adr/`.
 
@@ -21,31 +21,30 @@ References: `./hybrid-quantum-annealing-for-large-scale-exam-scheduling.pdf` (fo
   - the exams a student sits are those whose `students` include them (no `Student.exams` reference: Xtext's lazy linking cannot keep a bidirectional reference consistent)
 - Exam
   - name: string
-  - weight: double > 0 (priority: the cost of leaving it unscheduled — ADR-0001)
   - must have one or more students
 
 The Problem model is input only: it holds no batch assignment. The result is a separate Schedule model.
 
-OCL constraints (`problem.ecore`): at least one batch, at least one exam, unique exam names, unique student names, non-empty names, positive weights. Every other metamodel carries its own OCL (e.g. a conflict joins distinct exams, the QUBO's variable indices are contiguous, a quadratic term's pair is ordered); all are checked between steps.
+OCL constraints (`problem.ecore`): at least one batch, at least one exam, unique exam names, unique student names, non-empty names. The Conflict Graph and Solver Configuration carry their own OCL (e.g. a conflict joins distinct exams); all are checked between steps.
 
 ## Solver Configuration DSL
 
-A separate input model for how the problem is solved, never hard-coded in transformations: QAOA depth p (default 1), optimiser (COBYLA, Nelder-Mead or Powell; default COBYLA), maximum iterations (100), shots (1024), seed (7), and penalty mode (automatic: max weight + 1, or a manual positive value). OCL keeps depth, iterations and shots ≥ 1.
+A separate input model for how the problem is solved, never hard-coded in transformations: the method (`QAOA`, the default, or `annealing`), the penalty coefficient A (default 1000, the notebook's 1e3) and the seed (7). Simulated annealing uses reads (50) and sweeps (10000), the notebook's values. QAOA uses depth p (1), optimiser (COBYLA, Nelder-Mead or Powell; COBYLA), maximum iterations (100) and shots (1024). OCL keeps every count ≥ 1 and the penalty > 0.
 
 ## Textual syntax (`.exam`)
 
-One file holds a Problem and, optionally, its Solver Configuration (omitted settings keep the defaults):
+One file holds a Problem and, optionally, its Solver Configuration (settings in any order; omitted ones keep the defaults):
 
 ```
 problem semester batches 3
 students Ana Rui Eva
-exam Algebra  weight 3 { Ana Rui }
-exam Physics  weight 2 { Rui Eva }
+exam Algebra { Ana Rui }
+exam Physics { Rui Eva }
 
-solver { depth 2 optimizer COBYLA iterations 150 shots 4096 seed 7 penalty auto }
+solver { method annealing reads 50 sweeps 10000 seed 7 }
 ```
 
-`penalty 5.0` sets the coefficient manually. Names are identifiers (no spaces; keywords such as `exam` or `auto` are reserved).
+or `solver { method QAOA depth 2 optimizer COBYLA iterations 150 shots 4096 seed 7 penalty 1000 }`. Names are identifiers (no spaces; keywords such as `exam` or `method` are reserved).
 
 ## Pipeline
 
@@ -53,42 +52,41 @@ All modelling artefacts are EMF (Ecore + OCL). No BESSER.
 
 ```
 .exam file (Xtext, one grammar) ─► Problem.xmi + SolverConfig.xmi
-Problem ─► Conflict Graph ─► Hamiltonian ─► QUBO ─► Ising        (ATL / EMFTVM)
-Ising + SolverConfig + Conflict Graph ─► qaoa_<instance>.py        (Acceleo 4)
-qaoa_<instance>.py: Aer + SciPy optimiser loop
-    ─► best feasible bitstring ─► Schedule.xmi + report in domain terms
-    + brute-force baseline over Problem-level schedules
+Problem ─► Conflict Graph                                            (ATL / EMFTVM)
+Conflict Graph + SolverConfig ─► solve_<instance>.py                 (Acceleo 4)
+solve_<instance>.py: pyqubo formulation ─► compiled model
+    ─► simulated annealing (neal) or QAOA (Aer + SciPy optimiser loop)
+    ─► lowest-energy sample ─► Schedule.xmi + report in domain terms
+    + brute-force check that a conflict-free schedule exists
 ```
 
 - **Conflict Graph**: exams as nodes, an edge between two exams sharing at least one student (Paper Algorithm 1); the batches 1..M as elements.
-- **Hamiltonian**: named components — Reward (−Σ wᵢ xᵢₖ), AtMostOneBatch, NoSharedBatch — each citing its source and whether the penalty coefficient applies, written over variables x[Exam, Batch]. Kept separate from the QUBO so the energy stays inspectable.
-- **QUBO**: penalty coefficient multiplied in, like terms merged, variables mapped to integer indices.
-- **Ising**: QUBO under x = (1 − z)/2 — local fields, couplings, offset.
-- **Generated code** (ADR-0004): everything instance-specific is generated — Solver Configuration, Ising coefficients, the qubit → (Exam, Batch) decoding table, problem data for the baseline, and the QAOA layer gate by gate (H, then p × [RZ/RZZ cost, RX mixer], measure). Model-independent machinery (variational loop, sampling, decoding through the generated table, brute-force baseline, Schedule writer) lives in the hand-written `python/examqaoa.py` (ADR-0005). The best measured bitstring that violates no hard constraint is chosen, otherwise the best one is reported as infeasible.
-- **Formulation checks** in every run: each feasible measured bitstring's Ising energy must equal −(scheduled weight), and the exhaustive Ising ground state must decode to an optimal schedule (penalty coefficient large enough).
+- **Generated code** (ADR-0007): the exam names, the batch count and the conflicts as data, then the notebook's formulation verbatim in structure: `x = Array.create('c', (n_lesson, n_batch), 'BINARY')`, `constraint1` (each exam in exactly one batch) and `constraint2` (conflicting exams never share a batch) as `for` loops of pyqubo `Constraint`s, `H = profit + A * (constraint1 + constraint2)` with `profit = 0`, `model = H.compile()`. Constraint labels name the exams and batch.
+- **Runtime** (`python/examschedule.py`, ADR-0005): samples the compiled model by simulated annealing on `model.to_bqm()`, or by QAOA built from `model.to_ising()` (H, then p × [RZ/RZZ cost, RX mixer], measure; pyqubo's spin s = 2x − 1 is −Z on a qubit), decodes with `model.decode_sample(set)`, picks the lowest-energy sample, writes the Schedule and prints the report.
+- **Formulation check** in every run: a sample's energy is 0 exactly when it breaks no constraint.
 - Every ATL rule and template section cites the reference it implements.
-- Seven metamodels: Problem, SolverConfig, ConflictGraph, Hamiltonian, QUBO, Ising, Schedule — plus the small Xtext wrapper root for the `.exam` file.
-- **Schedule** (`schedule_<name>.xmi`): assignments (exam → batch), unscheduled exams with their weights, `feasible`, and `cost` (total weight left unscheduled). Written by the generated script; not yet OCL-validated by the chain.
+- Four metamodels: Problem, SolverConfig, ConflictGraph, Schedule — plus the small Xtext wrapper root for the `.exam` file.
+- **Schedule** (`schedule_<name>.xmi`): one assignment (exam → batch) per variable set to 1, `feasible`, and the labels of the broken constraints. Written by the generated script; not yet OCL-validated by the chain.
 
 ## Validation
 
-Report per instance: optimal cost (brute force over (nBatches+1)^nExams schedules, skipped above ~10⁶), QAOA's cost, approximation ratio (scheduled weight found ÷ best scheduled weight; 0 if infeasible), and probability of measuring an optimal schedule in the final shots.
+Report per instance: the schedule, whether it is feasible, its energy, how often it was sampled, the broken constraints if any, whether a conflict-free schedule exists (brute force over nBatches^nExams schedules, skipped above ~10⁶), and P(feasible), the fraction of shots or reads that decode to a conflict-free schedule.
 
-Results with the committed instances and seeds (Aer simulator):
+Results with the committed instances and seeds:
 
-| Instance | Qubits | Depth | Result | Optimal? | P(optimal) |
+| Instance | Variables | Method | Result | Conflict-free exists? | P(feasible) |
 |---|---|---|---|---|---|
-| path | 8 | 2 | all scheduled | yes | 0.106 |
-| cycle | 15 | 2 | all scheduled | yes | 0.033 |
-| clique (infeasible) | 12 | 2 | Statistics dropped | yes | 0.042 |
-| semester | 18 | 1 | all scheduled | yes | 0.0005 |
+| path | 8 | QAOA, depth 2 | feasible | yes | 0.071 |
+| cycle | 15 | QAOA, depth 2 | infeasible (Calculus in two batches) | yes | 0.000 |
+| clique | 12 | annealing | infeasible (Algebra in no batch) | no | 0.000 |
+| semester | 18 | annealing | feasible | yes | 1.000 |
 
-Test instances (qubits = exams × batches, ≤ ~20):
+Test instances (variables = exams × batches):
 
-1. 4-exam path, 2 batches — feasible (8 qubits)
-2. 5 exams, 3 batches, with a cycle — feasible (15 qubits)
-3. 4 mutually conflicting exams, 3 batches — infeasible, lowest-weight exam dropped (12 qubits)
-4. 6 exams, 3 batches (18 qubits)
+1. 4-exam path, 2 batches — feasible (8 variables)
+2. 5 exams, 3 batches, with a cycle — feasible (15 variables)
+3. 4 mutually conflicting exams, 3 batches — infeasible (12 variables)
+4. 6 exams, 3 batches (18 variables)
 
 ## Build
 
@@ -98,8 +96,8 @@ Run everything with `./build.sh` (see README.md); the Eclipse IDE is provisioned
 
 ## Known limitations
 
-- The initial QAOA angles are a fixed linear ramp in `python/examqaoa.py`, not part of the Solver Configuration.
+- QAOA is weak on the penalty-only formulation: on cycle (15 variables, depth 2) the optimiser finds angles no better than random guessing, even with an exact statevector objective. The earlier weighted formulation (branch `model-chain-weighted-ising`) reached P(optimal) 0.033 there; its reward terms gave the energy a slope this one lacks.
+- The initial QAOA angles are a fixed linear ramp in `python/examschedule.py`, not part of the Solver Configuration.
 - The Schedule written by the generated script is not validated against `schedule.ecore`'s OCL.
-- There are no automated unit tests; correctness rests on OCL validation between steps, the formulation checks and the brute-force baseline in every run.
-- QAOA quality drops with size: at 18 qubits and depth 1 the optimal schedule is measured in only ~0.05% of shots.
+- There are no automated unit tests; correctness rests on OCL validation between steps, the formulation check and the brute-force baseline in every run.
 - Python 3.12 is required (Qiskit Aer wheels); `./build.sh` needs a JDK 21+.

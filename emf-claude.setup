@@ -10,7 +10,7 @@
     xmlns:setup.targlets="http://www.eclipse.org/oomph/setup/targlets/1.0"
     xsi:schemaLocation="http://www.eclipse.org/oomph/setup/jdt/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/JDT.ecore http://www.eclipse.org/oomph/setup/projects/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/Projects.ecore http://www.eclipse.org/oomph/setup/targlets/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/SetupTarglets.ecore"
     name="emf-claude"
-    label="emf-claude (exam-slot assignment, QAOA)">
+    label="emf-claude (exam-slot assignment, pyqubo + QAOA or annealing)">
   <setupTask
       xsi:type="setup:VariableTask"
       type="FOLDER"
@@ -110,5 +110,5 @@
   <stream
       name="main"
       label="main"/>
-  <description>EMF model chain (Problem -> Conflict Graph -> Hamiltonian -> QUBO -> Ising -> QAOA code) for exam-slot assignment. See README.md.</description>
+  <description>EMF model chain (Problem -> Conflict Graph -> pyqubo code solved by QAOA or simulated annealing) for exam-slot assignment. See README.md.</description>
 </setup:Project>

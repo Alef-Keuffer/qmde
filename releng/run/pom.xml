@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
 
   <!-- Runs the model chain headlessly as an Eclipse application (ADR-0003) on every .exam file in
-       instances/, then runs the generated QAOA scripts in a Python virtual environment.
+       instances/, then runs the generated scripts in a Python virtual environment.
        Override with -Dproblem=<file or folder> -Dout=<folder>. -->
   <properties>
     <problem>${maven.multiModuleProjectDirectory}/instances</problem>

@@ -1,6 +1,6 @@
 # Exam-Slot Assignment
 
-Scheduling a university's final exams into a limited number of batches so that no student sits two exams at once, solved via a QUBO formulation and QAOA.
+Scheduling a university's final exams into a limited number of batches so that no student sits two exams at once, via the reference paper's QUBO formulation, solved by QAOA or simulated annealing.
 
 ## Language
 
@@ -13,11 +13,7 @@ One instance to be scheduled: a set of students, a set of exams, and the number 
 A person who must sit zero or more exams; identified by a unique name.
 
 **Exam**:
-A single final exam sat by one or more students; identified by a unique name and carrying a weight.
-
-**Weight**:
-The priority of an exam — the cost incurred if that exam is left unscheduled. Always positive.
-_Avoid_: profit, importance
+A single final exam sat by one or more students; identified by a unique name.
 
 **Batch**:
 One of a fixed number of exam periods; all exams in the same batch take place simultaneously.
@@ -36,59 +32,55 @@ _Avoid_: course conflict, contradiction matrix
 ### Solving
 
 **Solver Configuration**:
-The choices about how a problem is solved rather than what the problem is — QAOA depth, optimiser, iterations, shots, seed, penalty mode.
+The choices about how a problem is solved rather than what the problem is: the method, its settings, the seed and the penalty coefficient.
 _Avoid_: settings, parameters
 
+**Method**:
+How the compiled formulation is sampled: QAOA or simulated annealing.
+_Avoid_: solver (ambiguous with the Solver Configuration), backend
+
 **Assignment Variable**:
-The binary decision x[Exam, Batch]: 1 when that exam is placed in that batch.
-_Avoid_: qubit (that is its position in the QUBO/circuit), c[i][k]
+The binary decision x[Exam, Batch]: 1 when that exam is placed in that batch. pyqubo labels it `c[i][k]`, as in the notebook.
+_Avoid_: qubit (that is its position in the QAOA circuit)
 
 **Hamiltonian**:
-The energy to minimise, kept as named components so each constraint's contribution stays inspectable.
+The energy to minimise, H = A · (constraint1 + constraint2): each exam in exactly one batch, and no two conflicting exams in the same batch. It has no objective term; its minimum is 0 exactly when a conflict-free schedule is found.
 _Avoid_: cost function, objective (for the whole)
 
-**Hamiltonian Component**:
-The group of terms produced by one constraint or objective — Reward, AtMostOneBatch or NoSharedBatch — with its source reference and whether the penalty coefficient applies.
-_Avoid_: constraint (ambiguous with OCL), penalty term
-
-**QUBO**:
-The Hamiltonian flattened to numbers: like terms merged, the penalty coefficient multiplied in, and assignment variables replaced by integer indices.
-_Avoid_: QUBO matrix, BQM
-
-**Ising Model**:
-The QUBO rewritten over spins (x = (1 − z)/2): a local field per spin, a coupling per spin pair, and a constant offset.
-_Avoid_: spin glass, Ising Hamiltonian (reserve "Hamiltonian" for the component view)
-
-**QAOA Circuit**:
-The quantum circuit built from the Ising model: initial superposition, p alternating cost and mixer layers, and measurement.
-_Avoid_: ansatz, program, quantum model
+**Constraint**:
+One pyqubo `Constraint` term of the Hamiltonian, labelled in domain terms: `one-batch-<exam>`, or `conflict-<exam>-<exam>-batch-<k>`.
+_Avoid_: penalty term
 
 **Penalty Coefficient**:
-The multiplier applied to hard-constraint terms of the energy; computed automatically as the largest weight plus one unless set manually.
-_Avoid_: lambda, A, penalty weight
+The value fed to the Hamiltonian's placeholder A; 1000 by default, as in the notebook.
+_Avoid_: lambda, penalty weight
+
+**QUBO**:
+The Hamiltonian as pyqubo compiles it: a quadratic polynomial over the assignment variables. It exists only at run time, inside the generated script.
+_Avoid_: QUBO matrix (BQM is pyqubo's name for the same thing)
+
+**QAOA Circuit**:
+The quantum circuit built from the Ising form of the compiled model: initial superposition, p alternating cost and mixer layers, and measurement.
+_Avoid_: ansatz, program, quantum model
+
+**Simulated Annealing**:
+The classical sampler the notebook uses (`neal`): a number of reads, each a run of a number of sweeps.
 
 ### Solution
 
 **Schedule**:
-The outcome of solving a problem: the assignment of each exam to at most one batch.
+The outcome of solving a problem: the batch of each exam, as decoded from the lowest-energy sample.
 _Avoid_: plan, solution matrix
 
-**Unscheduled Exam**:
-An exam the schedule assigns to no batch, accepted at the cost of its weight when no conflict-free schedule exists.
-_Avoid_: missed exam, dropped exam
-
-**Cost** (of a schedule):
-The total weight of its unscheduled exams; an optimal schedule has the least cost among feasible ones.
+**Feasible** (schedule):
+Breaking no constraint: every exam in exactly one batch and no conflict within a batch. An infeasible schedule lists its broken constraints.
 
 ### Validation
 
 **Baseline**:
-The optimal cost found classically by enumerating every schedule of the problem, independently of the QUBO.
+The classical check, by enumerating every schedule of the problem independently of the QUBO, of whether a conflict-free schedule exists.
 _Avoid_: reference solution, ground truth
 
-**Approximation Ratio**:
-The weight QAOA's schedule schedules divided by the weight the optimal schedule schedules; 0 when QAOA's schedule is infeasible.
-
-**Probability of Optimum**:
-The fraction of the final measurement shots that decode to a feasible schedule of optimal cost.
+**P(feasible)**:
+The fraction of QAOA shots or annealing reads that decode to a feasible schedule.
 _Avoid_: success rate

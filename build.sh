@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs ./mvnw with a suitable JDK, whatever JAVA_HOME the shell has.
-# Tycho needs JDK 21+; the generated QAOA scripts need Python 3.12 (Qiskit Aer wheels).
+# Tycho needs JDK 21+; the generated scripts need Python 3.12 (Qiskit Aer wheels).
 #
 # Usage: ./build.sh [maven args...]     (default: verify)
 #   ./build.sh                              build and run every instance
@@ -47,7 +47,7 @@ export JAVA_HOME="$found"
 echo "Using JDK $(java_major "$JAVA_HOME") at $JAVA_HOME"
 
 if ! command -v python3.12 >/dev/null 2>&1; then
-	echo "warning: python3.12 not found; the generated QAOA scripts will not run (brew install python@3.12)." >&2
+	echo "warning: python3.12 not found; the generated scripts will not run (brew install python@3.12)." >&2
 fi
 
 if [ $# -eq 0 ]; then

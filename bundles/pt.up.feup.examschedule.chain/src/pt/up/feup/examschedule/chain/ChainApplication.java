@@ -18,14 +18,10 @@ import org.eclipse.equinox.app.IApplicationContext;
 
 import pt.up.feup.examschedule.conflictgraph.ConflictGraphPackage;
 import pt.up.feup.examschedule.dsl.ExamStandaloneSetup;
-import pt.up.feup.examschedule.hamiltonian.HamiltonianPackage;
-import pt.up.feup.examschedule.ising.IsingPackage;
 import pt.up.feup.examschedule.problem.Problem;
 import pt.up.feup.examschedule.problem.ProblemPackage;
-import pt.up.feup.examschedule.qubo.QuboPackage;
 import pt.up.feup.examschedule.solverconfig.SolverConfig;
 import pt.up.feup.examschedule.solverconfig.SolverConfigFactory;
-import pt.up.feup.examschedule.solverconfig.SolverConfigPackage;
 
 /**
  * Headless entry point: runs the whole model chain for one problem, or for every {@code .exam} file in a
@@ -82,33 +78,18 @@ public class ChainApplication implements IApplication {
 		File outDir = new File(outRoot, problemRoot.getName());
 		outDir.mkdirs();
 		Resource problem = save(resourceSet, outDir, "problem.xmi", problemRoot);
-		Resource config = save(resourceSet, outDir, "solverconfig.xmi", configRoot);
+		save(resourceSet, outDir, "solverconfig.xmi", configRoot);
 
 		Resource conflictGraph = model(resourceSet, outDir, "conflictgraph.xmi");
 		Atl.transform("problem2conflictgraph",
 				Map.of("Problem", ProblemPackage.eNS_URI, "ConflictGraph", ConflictGraphPackage.eNS_URI),
 				Map.of("IN", problem), Map.of("OUT", conflictGraph));
-		Resource hamiltonian = model(resourceSet, outDir, "hamiltonian.xmi");
-		Atl.transform("conflictgraph2hamiltonian",
-				Map.of("ConflictGraph", ConflictGraphPackage.eNS_URI, "SolverConfig", SolverConfigPackage.eNS_URI,
-						"Hamiltonian", HamiltonianPackage.eNS_URI),
-				Map.of("IN", conflictGraph, "CFG", config), Map.of("OUT", hamiltonian));
-		Resource qubo = model(resourceSet, outDir, "qubo.xmi");
-		Atl.transform("hamiltonian2qubo",
-				Map.of("Hamiltonian", HamiltonianPackage.eNS_URI, "QUBO", QuboPackage.eNS_URI),
-				Map.of("IN", hamiltonian), Map.of("OUT", qubo));
-		Resource ising = model(resourceSet, outDir, "ising.xmi");
-		Atl.transform("qubo2ising",
-				Map.of("QUBO", QuboPackage.eNS_URI, "Ising", IsingPackage.eNS_URI),
-				Map.of("IN", qubo), Map.of("OUT", ising));
-
-		for (Resource resource : List.of(conflictGraph, hamiltonian, qubo, ising)) {
-			resource.save(null);
-			if (!Validation.isValid(resource)) {
-				return false;
-			}
+		conflictGraph.save(null);
+		if (!Validation.isValid(conflictGraph)) {
+			return false;
 		}
-		Acceleo.generate(CODEGEN_MODULE, ising, outDir);
+		// The generated script builds the QUBO with pyqubo from the Conflict Graph (ADR-0007).
+		Acceleo.generate(CODEGEN_MODULE, conflictGraph, outDir);
 		return true;
 	}
 

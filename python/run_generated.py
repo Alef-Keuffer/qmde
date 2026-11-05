@@ -1,4 +1,4 @@
-"""Run every generated QAOA script under the given output folder (one sub-folder per problem)."""
+"""Run every generated solve_<name>.py under the given output folder (one sub-folder per problem)."""
 import os
 import subprocess
 import sys
@@ -8,7 +8,7 @@ root = Path(sys.argv[1])
 support = str(Path(__file__).resolve().parent)
 env = dict(os.environ, PYTHONPATH=support + os.pathsep + os.environ.get("PYTHONPATH", ""))
 failed = []
-for script in sorted(root.glob("*/qaoa_*.py")):
+for script in sorted(root.glob("*/solve_*.py")):
     print(f"\n=== {script.relative_to(root)}", flush=True)
     if subprocess.run([sys.executable, script.name], cwd=script.parent, env=env).returncode:
         failed.append(script.name)
