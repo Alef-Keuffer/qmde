@@ -26,6 +26,13 @@
   </setupTask>
   <setupTask
       xsi:type="setup:EclipseIniTask"
+      option="-Dosgi.instance.area.default"
+      value="${workspace.location}"
+      vm="true">
+    <description>Open the workspace chosen in the Installer by default, not ~/eclipse-workspace.</description>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:EclipseIniTask"
       option="-Xmx"
       value="4g"
       vm="true"/>

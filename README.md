@@ -43,8 +43,8 @@ Add a `.exam` file to `instances/` (syntax in `CONTEXT.md`, "Textual syntax"); `
 2. Open the Eclipse Installer, then menu (☰) → **Advanced Mode**.
 3. Product page: Eclipse.org → **Eclipse Modeling Tools**, product version **2026-09**, Java VM 21+. Next.
 4. Projects page: click **+** (add user projects), catalog `<User>`, browse to `emf-claude.setup` in this folder, OK. Tick **emf-claude**, stream `main`. Next.
-5. Variables page: pick an installation folder and a workspace folder (outside Google Drive is better: workspace metadata syncs badly), point **emf-claude repository folder** at this folder, choose a JDK 21+. Next → Finish.
-6. The new Eclipse starts and finishes the setup (importing projects, resolving the target platform); watch the progress in the status bar. Start that Eclipse from its installation folder from then on. Help → Perform Setup Tasks reruns the setup.
+5. Variables page: pick an installation folder and a workspace folder, point **emf-claude repository folder** at this folder, choose a JDK 21+. Next → Finish.
+6. The new Eclipse starts and finishes the setup (importing projects, resolving the target platform); watch the progress in the status bar. From then on start **that** Eclipse (`<installation folder>/Eclipse.app`, not `/Applications/Eclipse.app`): it opens the chosen workspace by default. Help → Perform Setup Tasks reruns the setup.
 
 Without the Installer: install the editors listed above into Eclipse 2026-09, import the projects with File → Import → Existing Projects into Workspace (root = this folder, "Search for nested projects" on, no copying), and activate `releng/emf-claude.target` (open it, "Set as Active Target Platform").
 
