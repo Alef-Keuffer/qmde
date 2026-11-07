@@ -15,6 +15,9 @@ Workarounds for the fork jacomecunha/BESSER @ 9cf7a90 (BESSER 7.18.0):
   W5  quantum_model_to_code() writes RXGate/RYGate/RZGate(..., angle=op.parameter) and fails with
       "'RXGate' object has no attribute 'parameter'": save_circuit() writes the circuit itself, with the
       gate constructors of the quantum metamodel.
+  W6  The QiskitGenerator's template creates AerSimulator() without a seed, so counts change on every run:
+      run_generated() runs the generated script unchanged while AerSimulator defaults seed_simulator to the
+      seed of the Solver Configuration.
 """
 
 import contextlib
@@ -220,3 +223,26 @@ def save_circuit(stem: Path, circuit) -> None:
         lines.append(f"circuit.add_operation({op['gate']}({args}))")
     stem.with_suffix(".py").write_text("\n".join(lines) + "\n", encoding="utf-8")
     stem.with_suffix(".json").write_text(json.dumps(data, indent=1) + "\n", encoding="utf-8")
+
+
+def run_generated(script: Path, seed: int, log: Path) -> dict:
+    """Run a generated Qiskit script, unchanged, and return its counts (bit string -> shots); what it prints
+    goes to log. W6: while it runs, AerSimulator() is seeded with the Solver Configuration's seed."""
+    import qiskit_aer
+
+    original = qiskit_aer.AerSimulator
+
+    class SeededAerSimulator(original):
+        def __init__(self, *args, **kwargs):
+            kwargs.setdefault("seed_simulator", seed)
+            super().__init__(*args, **kwargs)
+
+    printed = io.StringIO()
+    qiskit_aer.AerSimulator = SeededAerSimulator
+    try:
+        with contextlib.redirect_stdout(printed):
+            namespace = runpy.run_path(str(script), run_name="__main__")
+    finally:
+        qiskit_aer.AerSimulator = original
+    Path(log).write_text(printed.getvalue(), encoding="utf-8")
+    return dict(namespace["counts"])
