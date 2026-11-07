@@ -27,7 +27,9 @@ package built from git leaves out the template of the Qiskit generator), qiskit,
 It prints, per instance, the schedule found and the metrics, and writes `output/<instance>/`, one file per step,
 all generated (never edited by hand): `1_problem`, `1_config`, `2_solution` + `2_trace` (T1), `3_quantum` +
 `3_trace` (T2), `4_qiskit/qiskit_circuit.py` (T3) and its output, `5_solutions.json` (decoded counts) and
-`6_validation.json` (baseline and metrics). The table of all instances is in `output/summary.md`.
+`6_validation.json` (baseline and metrics) and, as the bonus of mapping solutions back, `7_problem_solved`: the
+problem model with every exam linked to the TimeSlot it was given. The table of all instances is in
+`output/summary.md`.
 
 ### Layout
 
@@ -36,9 +38,9 @@ all generated (never edited by hand): `1_problem`, `1_config`, `2_solution` + `2
 | `metamodels/` | Part I: Problem DSL and Solution DSL (input only, not changed) |
 | `config/` | Solver Configuration DSL (`solver_config_dsl.py`, B-UML with OCL) and one configuration per instance: conflict weight w, depth p, the angles of each QAOA layer, shots, seed |
 | `instances/` | the problems: `tiny` (Part I example, 9 qubits), `many` (24 valid schedules, 12), `none` (no valid schedule, 12), `medium` (15), `limit` (18); all with 3 time slots |
-| `transformations/` | `t1_problem2solution.py` (rules R1-R6), `t2_solution2quantum.py` (rules Q1-Q7), `map_back.py` (decoding), `model_io.py` (model I/O and every workaround W1-W6 for the BESSER fork) |
+| `transformations/` | `t1_problem2solution.py` (rules R1-R6), `t2_solution2quantum.py` (rules Q1-Q7), `map_back.py` (decoding, and writing the schedule back into the problem model), `model_io.py` (model I/O and every workaround W1-W7 for the BESSER fork) |
 | `pipeline.py` | the whole chain for every instance |
-| `tests/` | `baseline.py` (classical brute force and metrics) and the tests: `test_t1.py` (energy 0 exactly on valid schedules, minima = optimal schedules, the lambda rule, Part I's structure and OCL), `test_t2.py` (Ising = QUBO, circuit structure, phases and bit order in the statevector of the generated code), `test_pipeline.py` (end to end, little-endian decoding, saved models reload, reproducibility), `test_baseline.py` |
+| `tests/` | `baseline.py` (classical brute force and metrics) and the tests: `test_t1.py` (energy 0 exactly on valid schedules, minima = optimal schedules, the lambda rule, Part I's structure and OCL), `test_t2.py` (Ising = QUBO, circuit structure, phases and bit order in the statevector of the generated code), `test_pipeline.py` (end to end, little-endian decoding, saved models reload, reproducibility, the solved problem model), `test_baseline.py` |
 
 ## EMF model chain (`emf/`)
 
