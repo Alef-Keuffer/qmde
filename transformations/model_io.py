@@ -179,17 +179,22 @@ def save_models(stem: Path, domain_model: DomainModel, model: ObjectModel, descr
 _SET_OF_NAMES = re.compile(r"\{([A-Za-z_]\w*(?:, [A-Za-z_]\w*)+)\}")
 _LINK_LINE = re.compile(r"^\w+_obj\.\w+ = ")
 _BLOCK_START = re.compile(r"^\w+: (BinaryAssociation|Constraint) = ")
+_CLASS_LINE = re.compile(r"^\w+ = Class\(")
+_PROPERTY_LINE = re.compile(r"^\w+: Property = Property\(")
+_ATTRIBUTES_HEADER = re.compile(r"^# \w+ class attributes and methods$")
 
 
 def _canonical(code: str) -> str:
     """W7: the same file for the same model. Sorts what project_to_code writes in memory order: the items of set
-    literals ({a_obj, b_obj}), the two ends of each association (ends={...}), each run of consecutive association
-    or constraint definitions, and each run of link assignments (x_obj.end = ...: each object end is assigned
-    once, so their order does not matter)."""
+    literals ({a_obj, b_obj}), the two ends of each association (ends={...}), the class definitions, the property
+    definitions and the "attributes" block of each class, the association and constraint definitions, and the link
+    assignments (x_obj.end = ...: each object end is assigned once, so their order does not matter)."""
     code = _SET_OF_NAMES.sub(lambda m: "{" + ", ".join(sorted(m.group(1).split(", "))) + "}", code)
     lines = _sort_ends(code.split("\n"))
-    lines = _sort_runs(lines, _BLOCK_START.match, lambda block_start: block_start + _block_length(lines, block_start))
-    lines = _sort_runs(lines, _LINK_LINE.match, lambda i: i + 1)
+    for single_line in (_CLASS_LINE, _PROPERTY_LINE, _LINK_LINE):
+        lines = _sort_runs(lines, single_line.match, lambda i: i + 1)
+    lines = _sort_runs(lines, _ATTRIBUTES_HEADER.match, lambda i: lines.index("", i) + 1)  # up to a blank line
+    lines = _sort_runs(lines, _BLOCK_START.match, lambda i: i + _block_length(lines, i))
     return "\n".join(lines)
 
 
