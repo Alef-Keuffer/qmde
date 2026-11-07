@@ -18,6 +18,8 @@ Workarounds for the fork jacomecunha/BESSER @ 9cf7a90 (BESSER 7.18.0):
   W6  The QiskitGenerator's template creates AerSimulator() without a seed, so counts change on every run:
       run_generated() runs the generated script unchanged while AerSimulator defaults seed_simulator to the
       seed of the Solver Configuration.
+  W7  project_to_code() writes sets (links, association ends, set literals) in memory order, so one model gives
+      a different file on every run: save_models() sorts what has no meaning in its order (_canonical).
 """
 
 import contextlib
@@ -25,6 +27,7 @@ import dataclasses
 import functools
 import io
 import json
+import re
 import runpy
 from pathlib import Path
 
@@ -168,7 +171,66 @@ def save_models(stem: Path, domain_model: DomainModel, model: ObjectModel, descr
                       metadata=Metadata(description=description))  # W2
     with contextlib.redirect_stdout(io.StringIO()):  # project_to_code prints a temporary path
         project_to_code(project, str(stem.with_suffix(".py")))
+    path = stem.with_suffix(".py")
+    path.write_text(_canonical(path.read_text(encoding="utf-8")), encoding="utf-8")  # W7
     stem.with_suffix(".json").write_text(json.dumps(to_json(model), indent=2) + "\n", encoding="utf-8")
+
+
+_SET_OF_NAMES = re.compile(r"\{([A-Za-z_]\w*(?:, [A-Za-z_]\w*)+)\}")
+_LINK_LINE = re.compile(r"^\w+_obj\.\w+ = ")
+_BLOCK_START = re.compile(r"^\w+: (BinaryAssociation|Constraint) = ")
+
+
+def _canonical(code: str) -> str:
+    """W7: the same file for the same model. Sorts what project_to_code writes in memory order: the items of set
+    literals ({a_obj, b_obj}), the two ends of each association (ends={...}), each run of consecutive association
+    or constraint definitions, and each run of link assignments (x_obj.end = ...: each object end is assigned
+    once, so their order does not matter)."""
+    code = _SET_OF_NAMES.sub(lambda m: "{" + ", ".join(sorted(m.group(1).split(", "))) + "}", code)
+    lines = _sort_ends(code.split("\n"))
+    lines = _sort_runs(lines, _BLOCK_START.match, lambda block_start: block_start + _block_length(lines, block_start))
+    lines = _sort_runs(lines, _LINK_LINE.match, lambda i: i + 1)
+    return "\n".join(lines)
+
+
+def _sort_ends(lines):
+    result, i = [], 0
+    while i < len(lines):
+        if lines[i].strip() == "ends={":
+            j = i + 1
+            while lines[j].strip() != "}":
+                j += 1
+            ends = sorted(line.rstrip().rstrip(",") for line in lines[i + 1:j])
+            result += [lines[i]] + [e + ("," if k < len(ends) - 1 else "") for k, e in enumerate(ends)] + [lines[j]]
+            i = j + 1
+        else:
+            result.append(lines[i])
+            i += 1
+    return result
+
+
+def _block_length(lines, i):
+    j = i
+    while lines[j] != ")":
+        j += 1
+    return j + 1 - i
+
+
+def _sort_runs(lines, starts, end_of):
+    """Sort each run of consecutive items; an item starts at a line where starts() holds and ends at end_of()."""
+    result, i = [], 0
+    while i < len(lines):
+        if not starts(lines[i]):
+            result.append(lines[i])
+            i += 1
+            continue
+        items = []
+        while i < len(lines) and starts(lines[i]):
+            j = end_of(i)
+            items.append(lines[i:j])
+            i = j
+        result += [line for item in sorted(items) for line in item]
+    return result
 
 
 def _operation(op) -> dict:
