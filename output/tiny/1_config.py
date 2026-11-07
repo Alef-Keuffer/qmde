@@ -14,22 +14,22 @@ from besser.BUML.metamodel.object import ObjectModel
 import datetime
 
 # Classes
-SolverConfig = Class(name="SolverConfig")
 QAOALayer = Class(name="QAOALayer")
-
-# SolverConfig class attributes and methods
-SolverConfig_name: Property = Property(name="name", type=StringType)
-SolverConfig_conflictWeight: Property = Property(name="conflictWeight", type=FloatType)
-SolverConfig_depth: Property = Property(name="depth", type=IntegerType)
-SolverConfig_shots: Property = Property(name="shots", type=IntegerType)
-SolverConfig_seed: Property = Property(name="seed", type=IntegerType)
-SolverConfig.attributes={SolverConfig_conflictWeight, SolverConfig_depth, SolverConfig_name, SolverConfig_seed, SolverConfig_shots}
+SolverConfig = Class(name="SolverConfig")
 
 # QAOALayer class attributes and methods
-QAOALayer_index: Property = Property(name="index", type=IntegerType)
-QAOALayer_gamma: Property = Property(name="gamma", type=FloatType)
 QAOALayer_beta: Property = Property(name="beta", type=FloatType)
+QAOALayer_gamma: Property = Property(name="gamma", type=FloatType)
+QAOALayer_index: Property = Property(name="index", type=IntegerType)
 QAOALayer.attributes={QAOALayer_beta, QAOALayer_gamma, QAOALayer_index}
+
+# SolverConfig class attributes and methods
+SolverConfig_conflictWeight: Property = Property(name="conflictWeight", type=FloatType)
+SolverConfig_depth: Property = Property(name="depth", type=IntegerType)
+SolverConfig_name: Property = Property(name="name", type=StringType)
+SolverConfig_seed: Property = Property(name="seed", type=IntegerType)
+SolverConfig_shots: Property = Property(name="shots", type=IntegerType)
+SolverConfig.attributes={SolverConfig_conflictWeight, SolverConfig_depth, SolverConfig_name, SolverConfig_seed, SolverConfig_shots}
 
 # Relationships
 SolverConfig_QAOALayer: BinaryAssociation = BinaryAssociation(

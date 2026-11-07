@@ -14,33 +14,33 @@ from besser.BUML.metamodel.object import ObjectModel
 import datetime
 
 # Classes
-QUBO = Class(name="QUBO")
 LinearTerm = Class(name="LinearTerm")
-Variable = Class(name="Variable")
 Penalty = Class(name="Penalty")
+QUBO = Class(name="QUBO")
 QuadraticTerm = Class(name="QuadraticTerm")
-
-# QUBO class attributes and methods
-QUBO_offset: Property = Property(name="offset", type=FloatType)
-QUBO.attributes={QUBO_offset}
+Variable = Class(name="Variable")
 
 # LinearTerm class attributes and methods
 LinearTerm_coefficient: Property = Property(name="coefficient", type=FloatType)
 LinearTerm.attributes={LinearTerm_coefficient}
 
-# Variable class attributes and methods
-Variable_index: Property = Property(name="index", type=IntegerType)
-Variable_label: Property = Property(name="label", type=StringType)
-Variable.attributes={Variable_index, Variable_label}
-
 # Penalty class attributes and methods
-Penalty_weight: Property = Property(name="weight", type=FloatType)
 Penalty_constraint: Property = Property(name="constraint", type=StringType)
+Penalty_weight: Property = Property(name="weight", type=FloatType)
 Penalty.attributes={Penalty_constraint, Penalty_weight}
+
+# QUBO class attributes and methods
+QUBO_offset: Property = Property(name="offset", type=FloatType)
+QUBO.attributes={QUBO_offset}
 
 # QuadraticTerm class attributes and methods
 QuadraticTerm_coefficient: Property = Property(name="coefficient", type=FloatType)
 QuadraticTerm.attributes={QuadraticTerm_coefficient}
+
+# Variable class attributes and methods
+Variable_index: Property = Property(name="index", type=IntegerType)
+Variable_label: Property = Property(name="label", type=StringType)
+Variable.attributes={Variable_index, Variable_label}
 
 # Relationships
 LinearTerm_QUBO: BinaryAssociation = BinaryAssociation(
