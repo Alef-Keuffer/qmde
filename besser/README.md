@@ -2,6 +2,7 @@
 
 Part II of the QMDE assignment (TACS 2026/27, project A3, exam-slot assignment) with the BESSER stack, in a folder of
 its own like `../emf/`. It reads Part I's metamodels from `../metamodels/` and never changes them.
+This folder was created by one of the team members as a way to learn Part II of the assignment. It is committed to the repository to show the work behind that learning process.
 
 ## The chain, one command
 
