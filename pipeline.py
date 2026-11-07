@@ -108,8 +108,8 @@ def report(name, qubits, settings, solutions, reference, results) -> None:
         print(f"     broken: {', '.join(best['broken'])}")
     print(f"   baseline: {reference['valid']} valid of {reference['schedules']} schedules, fewest conflicts "
           f"{optimum} ({reference['optimal']} optimal); QUBO agrees: {results['qubo_matches_baseline']}")
-    print(f"   P(valid)   {results['p_valid']:.4f}   (random {results['random_p_valid']:.4f})")
-    print(f"   P(optimal) {results['p_optimal']:.4f}   (random {results['random_p_optimal']:.4f})")
+    print(f"   P(valid)   {results['p_valid']:.4f}   (random {results['random_p_valid']:.2g})")
+    print(f"   P(optimal) {results['p_optimal']:.4f}   (random {results['random_p_optimal']:.2g})")
     print(f"   ratio      {results['approximation_ratio']:.4f}   (random {results['random_approximation_ratio']:.4f})")
 
 
