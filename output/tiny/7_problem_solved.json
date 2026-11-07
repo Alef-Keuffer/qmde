@@ -1,0 +1,157 @@
+{
+  "name": "tiny_solved",
+  "objects": [
+    {
+      "name": "Alice",
+      "class": "Student",
+      "attributes": {
+        "name": "Alice"
+      }
+    },
+    {
+      "name": "Bob",
+      "class": "Student",
+      "attributes": {
+        "name": "Bob"
+      }
+    },
+    {
+      "name": "Carla",
+      "class": "Student",
+      "attributes": {
+        "name": "Carla"
+      }
+    },
+    {
+      "name": "Chemistry",
+      "class": "Exam",
+      "attributes": {
+        "name": "Chemistry",
+        "weight": 1
+      }
+    },
+    {
+      "name": "David",
+      "class": "Student",
+      "attributes": {
+        "name": "David"
+      }
+    },
+    {
+      "name": "Eva",
+      "class": "Student",
+      "attributes": {
+        "name": "Eva"
+      }
+    },
+    {
+      "name": "Math",
+      "class": "Exam",
+      "attributes": {
+        "name": "Math",
+        "weight": 1
+      }
+    },
+    {
+      "name": "Mon_0900",
+      "class": "TimeSlot",
+      "attributes": {
+        "id": 1
+      }
+    },
+    {
+      "name": "Mon_1400",
+      "class": "TimeSlot",
+      "attributes": {
+        "id": 2
+      }
+    },
+    {
+      "name": "Physics",
+      "class": "Exam",
+      "attributes": {
+        "name": "Physics",
+        "weight": 1
+      }
+    },
+    {
+      "name": "Tue_0900",
+      "class": "TimeSlot",
+      "attributes": {
+        "id": 3
+      }
+    }
+  ],
+  "links": [
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Chemistry",
+        "students": "Bob"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Chemistry",
+        "students": "David"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Math",
+        "students": "Alice"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Math",
+        "students": "Carla"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Physics",
+        "students": "Alice"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Physics",
+        "students": "Bob"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Physics",
+        "students": "Eva"
+      }
+    },
+    {
+      "association": "Exam_TimeSlot",
+      "ends": {
+        "exams": "Chemistry",
+        "timeSlot": "Mon_0900"
+      }
+    },
+    {
+      "association": "Exam_TimeSlot",
+      "ends": {
+        "exams": "Math",
+        "timeSlot": "Tue_0900"
+      }
+    },
+    {
+      "association": "Exam_TimeSlot",
+      "ends": {
+        "exams": "Physics",
+        "timeSlot": "Mon_1400"
+      }
+    }
+  ]
+}

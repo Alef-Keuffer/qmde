@@ -42,6 +42,20 @@ SolverConfig_QAOALayer: BinaryAssociation = BinaryAssociation(
 
 
 # OCL Constraints
+layer_index_in_range: Constraint = Constraint(
+    name="layer_index_in_range",
+    context=QAOALayer,
+    expression="context QAOALayer inv layer_index_in_range: self.index >= 1 and self.index <= self.config.depth",
+    language="OCL",
+    description="layers are numbered 1..p"
+)
+layers_match_depth: Constraint = Constraint(
+    name="layers_match_depth",
+    context=SolverConfig,
+    expression="context SolverConfig inv layers_match_depth: self.layers->size() = self.depth",
+    language="OCL",
+    description="one QAOALayer per layer"
+)
 positive_conflict_weight: Constraint = Constraint(
     name="positive_conflict_weight",
     context=SolverConfig,
@@ -63,27 +77,13 @@ positive_shots: Constraint = Constraint(
     language="OCL",
     description="at least one shot"
 )
-layers_match_depth: Constraint = Constraint(
-    name="layers_match_depth",
-    context=SolverConfig,
-    expression="context SolverConfig inv layers_match_depth: self.layers->size() = self.depth",
-    language="OCL",
-    description="one QAOALayer per layer"
-)
-layer_index_in_range: Constraint = Constraint(
-    name="layer_index_in_range",
-    context=QAOALayer,
-    expression="context QAOALayer inv layer_index_in_range: self.index >= 1 and self.index <= self.config.depth",
-    language="OCL",
-    description="layers are numbered 1..p"
-)
 
 # Domain Model
 domain_model = DomainModel(
     name="Solver_Config_DSL",
-    types={SolverConfig, QAOALayer},
+    types={QAOALayer, SolverConfig},
     associations={SolverConfig_QAOALayer},
-    constraints={positive_conflict_weight, positive_depth, positive_shots, layers_match_depth, layer_index_in_range},
+    constraints={layer_index_in_range, layers_match_depth, positive_conflict_weight, positive_depth, positive_shots},
     generalizations={},
     metadata=None
 )

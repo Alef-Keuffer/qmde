@@ -56,6 +56,12 @@ exam_has_name: Constraint = Constraint(
     language="OCL",
     description="Exam name can\'t be empty"
 )
+student_has_name: Constraint = Constraint(
+    name="student_has_name",
+    context=Student,
+    expression="context Student inv student_has_name: self.name.size() > 0",
+    language="OCL"
+)
 time_slot_has_non_negative_id: Constraint = Constraint(
     name="time_slot_has_non_negative_id",
     context=TimeSlot,
@@ -63,19 +69,13 @@ time_slot_has_non_negative_id: Constraint = Constraint(
     language="OCL",
     description="TimeSlot Id can\'t be negative"
 )
-student_has_name: Constraint = Constraint(
-    name="student_has_name",
-    context=Student,
-    expression="context Student inv student_has_name: self.name.size() > 0",
-    language="OCL"
-)
 
 # Domain Model
 domain_model = DomainModel(
     name="Class_Diagram",
     types={Exam, Student, TimeSlot},
     associations={Exam_Student, Exam_TimeSlot},
-    constraints={exam_has_name, time_slot_has_non_negative_id, student_has_name},
+    constraints={exam_has_name, student_has_name, time_slot_has_non_negative_id},
     generalizations={},
     metadata=None
 )
