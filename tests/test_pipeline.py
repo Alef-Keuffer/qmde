@@ -61,6 +61,26 @@ def test_saved_models_reload_to_the_same_models(tmp_path):
 
 
 def test_reproducible_from_the_seed(tmp_path):
+    """Two runs write the same bytes in every file (the seed fixes the counts; W7 fixes the order of saved sets)."""
     pipeline.run("tiny", out_root=tmp_path / "a")
     pipeline.run("tiny", out_root=tmp_path / "b")
-    assert (tmp_path / "a/tiny/5_solutions.json").read_text() == (tmp_path / "b/tiny/5_solutions.json").read_text()
+    files = sorted(p.relative_to(tmp_path / "a") for p in (tmp_path / "a").rglob("*") if p.is_file())
+    assert files and all((tmp_path / "a" / f).read_bytes() == (tmp_path / "b" / f).read_bytes() for f in files)
+
+
+def test_schedule_written_back_into_the_problem_model(tmp_path):
+    """Bonus: the solved problem model links every exam to exactly one TimeSlot (Part I's Exam_TimeSlot 1..1,
+    which the unsolved model could not satisfy), validates without workaround W4, and has the fewest conflicts."""
+    for name, conflicts in [("tiny", 0), ("none", 1)]:
+        pipeline.run(name, out_root=tmp_path)
+        solved = model_io.load_buml(tmp_path / name / "7_problem_solved.py")["object_model"]
+        assert solved.validate(raise_exception=False)["errors"] == []
+        assert model_io.check_ocl(model_io.problem_metamodel(), solved) == []
+        exams = model_io.objects_of(solved, "Exam")
+        slot = {}
+        for exam in exams:
+            (timeslot,) = model_io.linked(exam, "timeSlot")
+            slot[exam.name] = timeslot.name_
+        students = {e.name: {s.name for s in model_io.linked(e, "students")} for e in exams}
+        clashes = sum(slot[a] == slot[b] and bool(students[a] & students[b]) for a in slot for b in slot if a < b)
+        assert clashes == conflicts
