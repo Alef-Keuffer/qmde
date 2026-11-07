@@ -47,8 +47,8 @@ def check(what: str, errors: list) -> None:
         raise SystemExit(f"{what} is not valid:\n  " + "\n  ".join(errors))
 
 
-def run(name: str) -> dict:
-    out = ROOT / "output" / name
+def run(name: str, out_root: Path = ROOT / "output") -> dict:
+    out = Path(out_root) / name
     out.mkdir(parents=True, exist_ok=True)
 
     # Inputs: load and validate (structure, then OCL) before transforming anything
