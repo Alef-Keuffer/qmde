@@ -1,0 +1,4 @@
+# Generated while running pipeline.py and the tests (the root .gitignore covers them too)
+__pycache__/
+.pytest_cache/
+*.log

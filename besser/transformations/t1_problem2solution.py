@@ -1,10 +1,10 @@
 """T1 (M2M): Problem DSL model + Solver Configuration -> Solution DSL model (QUBO), with a trace.
 
-Source metamodel: metamodels/buml/problem_dsl.py (Part I): Exam, Student, TimeSlot.
-Target metamodel: metamodels/buml/solution_dsl.py (Part I): QUBO, Variable, LinearTerm, QuadraticTerm, Penalty.
+Source metamodel: ../metamodels/buml/problem_dsl.py (Part I): Exam, Student, TimeSlot.
+Target metamodel: ../metamodels/buml/solution_dsl.py (Part I): QUBO, Variable, LinearTerm, QuadraticTerm, Penalty.
 One function per rule (R1-R6), each citing the reference it implements:
   [Zhou]   Z. Zhou et al., "Hybrid quantum annealing for large-scale exam scheduling", Applied Soft Computing 184,
-           2025 (emf/hybrid-quantum-annealing-for-large-scale-exam-scheduling.pdf), Sections 5.2-5.3.
+           2025 (../emf/hybrid-quantum-annealing-for-large-scale-exam-scheduling.pdf), Sections 5.2-5.3.
   [Lucas]  A. Lucas, "Ising formulations of many NP problems", Front. Phys. 2014, arXiv:1302.5843v3.
   [Glover] F. Glover, G. Kochenberger, Y. Du, "Quantum Bridge Analytics I: a tutorial on formulating and using
            QUBO models", 4OR 2019, arXiv:1811.11538.

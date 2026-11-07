@@ -1,6 +1,6 @@
 """T2 (M2M): Solution DSL model (QUBO) + Solver Configuration -> BESSER QuantumCircuit (QAOA), with a trace.
 
-Source metamodel: metamodels/buml/solution_dsl.py (Part I).
+Source metamodel: ../metamodels/buml/solution_dsl.py (Part I).
 Target metamodel: besser.BUML.metamodel.quantum (BESSER's quantum circuit metamodel, course fork).
 One function per rule (Q1-Q7), each citing the reference it implements:
   [Farhi]  E. Farhi, J. Goldstone, S. Gutmann, "A Quantum Approximate Optimization Algorithm", arXiv:1411.4028v1.

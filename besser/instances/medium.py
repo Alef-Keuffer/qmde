@@ -1,9 +1,9 @@
-"""medium: the cycle of the EMF chain (emf/instances/2-cycle.exam).
+"""medium: the cycle of the EMF chain (../emf/instances/2-cycle.exam).
 
 5 exams whose conflicts form a 5-cycle, 3 slots: 15 qubits. An odd cycle needs 3 slots; it has
 (k-1)^n + (-1)^n (k-1) = 2^5 - 2 = 30 valid schedules (chromatic polynomial of a cycle).
 
-An object model of the Problem DSL of Part I (metamodels/buml/problem_dsl.py), written like instances/tiny.py.
+An object model of the Problem DSL of Part I (../metamodels/buml/problem_dsl.py), written like instances/tiny.py.
 """
 from besser.BUML.metamodel.object import ObjectModel
 

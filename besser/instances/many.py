@@ -1,10 +1,10 @@
-"""many: the path of the EMF chain (emf/instances/1-path.exam), with 3 slots instead of 2 (Annex A: k >= 3).
+"""many: the path of the EMF chain (../emf/instances/1-path.exam), with 3 slots instead of 2 (Annex A: k >= 3).
 
 4 exams whose conflicts form a path (Algebra-Calculus-Physics-Chemistry), 3 slots: 12 qubits.
 Many valid schedules: Algebra in any of 3 slots, then each next exam in one of the 2 slots its neighbour
 leaves free, 3 x 2 x 2 x 2 = 24.
 
-An object model of the Problem DSL of Part I (metamodels/buml/problem_dsl.py), written like instances/tiny.py.
+An object model of the Problem DSL of Part I (../metamodels/buml/problem_dsl.py), written like instances/tiny.py.
 """
 from besser.BUML.metamodel.object import ObjectModel
 

@@ -38,8 +38,8 @@ from besser.BUML.metamodel.structural import DomainModel, Metadata
 from besser.utilities.buml_code_builder.project_builder import project_to_code
 from bocl.OCLWrapper import OCLWrapper
 
-ROOT = Path(__file__).resolve().parent.parent
-PART_I = ROOT / "metamodels" / "buml"
+ROOT = Path(__file__).resolve().parent.parent  # besser/, from where this file is (not the working directory)
+PART_I = ROOT.parent / "metamodels" / "buml"  # Part I, at the repository root, read but never changed
 
 
 def load_buml(path) -> dict:
@@ -64,13 +64,13 @@ def config_metamodel() -> DomainModel:
 
 @functools.cache
 def problem_metamodel() -> DomainModel:
-    """Problem DSL of Part I (Exam, Student, TimeSlot), read from metamodels/ and never changed."""
+    """Problem DSL of Part I (Exam, Student, TimeSlot), read from ../metamodels/ and never changed."""
     return load_buml(PART_I / "problem_dsl.py")["domain_model"]
 
 
 @functools.cache
 def solution_metamodel() -> DomainModel:
-    """Solution DSL of Part I (QUBO, Variable, LinearTerm, QuadraticTerm, Penalty), read from metamodels/."""
+    """Solution DSL of Part I (QUBO, Variable, LinearTerm, QuadraticTerm, Penalty), read from ../metamodels/."""
     return load_buml(PART_I / "solution_dsl.py")["domain_model"]
 
 

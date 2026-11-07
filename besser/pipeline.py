@@ -1,7 +1,7 @@
 """The whole chain, one command: problem model -> T1 -> QUBO -> T2 -> QuantumCircuit -> T3 (BESSER's
 QiskitGenerator) -> run on Aer -> decode -> schedules in domain terms.
 
-Usage (from the repository root, with the venv of README.md):
+Usage (from besser/, with the venv of README.md):
     python pipeline.py              every instance in instances/
     python pipeline.py tiny none    only these
 
