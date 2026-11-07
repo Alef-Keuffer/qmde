@@ -12,6 +12,9 @@ Workarounds for the fork jacomecunha/BESSER @ 9cf7a90 (BESSER 7.18.0):
   W4  Part I's problem metamodel makes Exam_TimeSlot 1..1 on the timeSlot end, which an unsolved problem
       cannot satisfy: validate_problem() ignores exactly that error (the solved model written by map_back
       satisfies it).
+  W5  quantum_model_to_code() writes RXGate/RYGate/RZGate(..., angle=op.parameter) and fails with
+      "'RXGate' object has no attribute 'parameter'": save_circuit() writes the circuit itself, with the
+      gate constructors of the quantum metamodel.
 """
 
 import contextlib
@@ -22,6 +25,7 @@ import json
 import runpy
 from pathlib import Path
 
+from besser.BUML.metamodel import quantum
 from besser.BUML.metamodel.object import ObjectModel
 from besser.BUML.metamodel.project import Project
 from besser.BUML.metamodel.structural import DomainModel, Metadata
@@ -162,3 +166,57 @@ def save_models(stem: Path, domain_model: DomainModel, model: ObjectModel, descr
     with contextlib.redirect_stdout(io.StringIO()):  # project_to_code prints a temporary path
         project_to_code(project, str(stem.with_suffix(".py")))
     stem.with_suffix(".json").write_text(json.dumps(to_json(model), indent=2) + "\n", encoding="utf-8")
+
+
+def _operation(op) -> dict:
+    """One operation of a QuantumCircuit as data (the gates T2 emits)."""
+    supported = (quantum.HadamardGate, quantum.PauliXGate, quantum.RZGate, quantum.RXGate, quantum.Measurement)
+    if not isinstance(op, supported):
+        raise TypeError(f"save_circuit cannot write {type(op).__name__}")
+    data = {"gate": type(op).__name__, "target": op.target_qubits[0]}
+    if op.control_qubits:
+        data["controls"] = list(op.control_qubits)
+        data["control_states"] = [state.name for state in op.control_states]
+    if isinstance(op, (quantum.RZGate, quantum.RXGate)):
+        data["theta"] = op.theta
+    if isinstance(op, quantum.Measurement):
+        data["output_bit"] = op.output_bit
+    return data
+
+
+def circuit_to_json(circuit) -> dict:
+    return {"name": circuit.name,
+            "qregs": [{"name": r.name, "size": r.size} for r in circuit.qregs],
+            "cregs": [{"name": r.name, "size": r.size} for r in circuit.cregs],
+            "operations": [_operation(op) for op in circuit.operations]}
+
+
+def save_circuit(stem: Path, circuit) -> None:
+    """Save a QuantumCircuit as <stem>.py (B-UML quantum model, reloadable with load_buml: variable
+    ``circuit``) and <stem>.json (W5: BESSER's own quantum_model_to_code fails on rotation gates)."""
+    stem = Path(stem)
+    stem.parent.mkdir(parents=True, exist_ok=True)
+    data = circuit_to_json(circuit)
+    lines = ["# Quantum model (BESSER quantum metamodel) of the chain's T2, written by",
+             "# transformations/model_io.save_circuit (workaround W5). Generated: do not edit.",
+             "from besser.BUML.metamodel.quantum import (",
+             "    ClassicalRegister, ControlState, HadamardGate, Measurement, PauliXGate, QuantumCircuit,",
+             "    QuantumRegister, RXGate, RZGate,",
+             ")",
+             "",
+             f"circuit = QuantumCircuit(name={data['name']!r})"]
+    lines += [f"circuit.add_qreg(QuantumRegister({r['name']!r}, {r['size']}))" for r in data["qregs"]]
+    lines += [f"circuit.add_creg(ClassicalRegister({r['name']!r}, {r['size']}))" for r in data["cregs"]]
+    for op in data["operations"]:
+        if op["gate"] == "Measurement":
+            args = f"target_qubit={op['target']}, output_bit={op['output_bit']}"
+        else:
+            args = f"target_qubit={op['target']}"
+            if "theta" in op:
+                args += f", theta={op['theta']!r}"
+            if "controls" in op:
+                states = ", ".join(f"ControlState.{state}" for state in op["control_states"])
+                args += f", control_qubits={op['controls']}, control_states=[{states}]"
+        lines.append(f"circuit.add_operation({op['gate']}({args}))")
+    stem.with_suffix(".py").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    stem.with_suffix(".json").write_text(json.dumps(data, indent=1) + "\n", encoding="utf-8")
