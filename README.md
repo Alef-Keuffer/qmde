@@ -21,6 +21,7 @@ package built from git leaves out the template of the Qiskit generator), qiskit,
 ```bash
 ~/venv-qmde-fork/bin/python pipeline.py          # every instance in instances/ (a few seconds)
 ~/venv-qmde-fork/bin/python pipeline.py tiny     # one instance
+~/venv-qmde-fork/bin/python -m pytest            # the tests (a few seconds)
 ```
 
 It prints, per instance, the schedule found and the metrics, and writes `output/<instance>/`, one file per step,
@@ -37,7 +38,7 @@ all generated (never edited by hand): `1_problem`, `1_config`, `2_solution` + `2
 | `instances/` | the problems: `tiny` (Part I example, 9 qubits), `many` (24 valid schedules, 12), `none` (no valid schedule, 12), `medium` (15), `limit` (18); all with 3 time slots |
 | `transformations/` | `t1_problem2solution.py` (rules R1-R6), `t2_solution2quantum.py` (rules Q1-Q7), `map_back.py` (decoding), `model_io.py` (model I/O and every workaround W1-W6 for the BESSER fork) |
 | `pipeline.py` | the whole chain for every instance |
-| `tests/` | `baseline.py` (classical brute force and metrics) |
+| `tests/` | `baseline.py` (classical brute force and metrics) and the tests: `test_t1.py` (energy 0 exactly on valid schedules, minima = optimal schedules, the lambda rule, Part I's structure and OCL), `test_t2.py` (Ising = QUBO, circuit structure, phases and bit order in the statevector of the generated code), `test_pipeline.py` (end to end, little-endian decoding, saved models reload, reproducibility), `test_baseline.py` |
 
 ## EMF model chain (`emf/`)
 
