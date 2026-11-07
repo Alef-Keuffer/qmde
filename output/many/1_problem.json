@@ -1,0 +1,123 @@
+{
+  "name": "many",
+  "objects": [
+    {
+      "name": "Algebra",
+      "class": "Exam",
+      "attributes": {
+        "name": "Algebra",
+        "weight": 1
+      }
+    },
+    {
+      "name": "Ana",
+      "class": "Student",
+      "attributes": {
+        "name": "Ana"
+      }
+    },
+    {
+      "name": "Calculus",
+      "class": "Exam",
+      "attributes": {
+        "name": "Calculus",
+        "weight": 1
+      }
+    },
+    {
+      "name": "Chemistry",
+      "class": "Exam",
+      "attributes": {
+        "name": "Chemistry",
+        "weight": 1
+      }
+    },
+    {
+      "name": "Eva",
+      "class": "Student",
+      "attributes": {
+        "name": "Eva"
+      }
+    },
+    {
+      "name": "Mon_0900",
+      "class": "TimeSlot",
+      "attributes": {
+        "id": 1
+      }
+    },
+    {
+      "name": "Mon_1400",
+      "class": "TimeSlot",
+      "attributes": {
+        "id": 2
+      }
+    },
+    {
+      "name": "Physics",
+      "class": "Exam",
+      "attributes": {
+        "name": "Physics",
+        "weight": 1
+      }
+    },
+    {
+      "name": "Rui",
+      "class": "Student",
+      "attributes": {
+        "name": "Rui"
+      }
+    },
+    {
+      "name": "Tue_0900",
+      "class": "TimeSlot",
+      "attributes": {
+        "id": 3
+      }
+    }
+  ],
+  "links": [
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Algebra",
+        "students": "Ana"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Calculus",
+        "students": "Ana"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Calculus",
+        "students": "Rui"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Chemistry",
+        "students": "Eva"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Physics",
+        "students": "Eva"
+      }
+    },
+    {
+      "association": "Exam_Student",
+      "ends": {
+        "exams": "Physics",
+        "students": "Rui"
+      }
+    }
+  ]
+}

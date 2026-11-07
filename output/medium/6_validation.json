@@ -1,0 +1,33 @@
+{
+  "baseline": {
+    "schedules": 243,
+    "valid": 30,
+    "optimum_conflicts": 0,
+    "optimal": 30,
+    "optimal_example": {
+      "Algebra": "Mon_0900",
+      "Calculus": "Mon_1400",
+      "Chemistry": "Mon_0900",
+      "Physics": "Tue_0900",
+      "Programming": "Mon_1400"
+    }
+  },
+  "qubo_spectrum": {
+    "n": 15,
+    "e_min": 0.0,
+    "e_max": 75.0,
+    "e_mean": 18.75,
+    "ground_states": 30
+  },
+  "metrics": {
+    "shots": 4096,
+    "p_valid": 0.077880859375,
+    "p_optimal": 0.077880859375,
+    "approximation_ratio": 0.90146484375,
+    "optimum_measured": true,
+    "random_p_valid": 0.00091552734375,
+    "random_p_optimal": 0.00091552734375,
+    "random_approximation_ratio": 0.75,
+    "qubo_matches_baseline": true
+  }
+}
