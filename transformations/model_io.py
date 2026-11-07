@@ -25,6 +25,7 @@ from besser.BUML.metamodel.object import ObjectModel
 from besser.BUML.metamodel.project import Project
 from besser.BUML.metamodel.structural import DomainModel, Metadata
 from besser.utilities.buml_code_builder.project_builder import project_to_code
+from bocl.OCLWrapper import OCLWrapper
 
 ROOT = Path(__file__).resolve().parent.parent
 PART_I = ROOT / "metamodels" / "buml"
@@ -42,6 +43,12 @@ def load_buml(path) -> dict:
         return runpy.run_path(str(path))
     finally:
         ObjectModel.__init__ = original
+
+
+@functools.cache
+def config_metamodel() -> DomainModel:
+    """Solver Configuration DSL (config/solver_config_dsl.py)."""
+    return load_buml(ROOT / "config" / "solver_config_dsl.py")["domain_model"]
 
 
 @functools.cache
@@ -78,6 +85,25 @@ def validate_problem(model: ObjectModel) -> list:
     errors = model.validate(raise_exception=False)["errors"]
     return [e for e in errors
             if not ("association end 'timeSlot' of association 'Exam_TimeSlot'" in e and "(found 0 links)" in e)]
+
+
+def check_ocl(domain_model: DomainModel, model: ObjectModel) -> list:
+    """The OCL invariants of domain_model that model breaks, evaluated by BESSER's OCL interpreter (bocl).
+
+    An invariant the interpreter cannot evaluate is reported as such rather than silently passed; the slides
+    (T6, "BESSER pitfalls") note that forAll over objects, includes and isUnique are not supported.
+    """
+    wrapper = OCLWrapper(domain_model, model)
+    failures = []
+    for constraint in sorted(domain_model.constraints, key=lambda c: c.name):
+        try:
+            holds = wrapper.evaluate(constraint)
+        except Exception as error:  # the interpreter's own limitations
+            failures.append(f"{constraint.name}: not evaluated ({type(error).__name__})")
+            continue
+        if holds is not True:
+            failures.append(f"{constraint.name}: {holds}")
+    return failures
 
 
 def to_json(model: ObjectModel) -> dict:
