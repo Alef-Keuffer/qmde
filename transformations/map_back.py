@@ -57,3 +57,24 @@ def by_slot(schedule: dict) -> dict:
         for slot in slots:
             per_slot.setdefault(slot, []).append(exam)
     return {slot: sorted(exams) for slot, exams in sorted(per_slot.items())}
+
+
+def best_solution(solutions: list, optimum_conflicts: int):
+    """The most frequent measured schedule with every exam in one slot and the fewest conflicts, or None."""
+    return next((s for s in solutions if s["one_slot_each"] and s["conflicts"] == optimum_conflicts), None)
+
+
+def write_back(problem, solution: dict):
+    """Bonus (assignment §9; slides T6, "Mapping solutions back"): write a decoded schedule into the problem model.
+
+    Each exam is linked to the TimeSlot it was given, through Part I's association Exam_TimeSlot, so the solved
+    model satisfies that association's 1..1 multiplicity, which the unsolved problem could not (model_io, W4).
+    The slot of each exam comes from T1's trace (variable -> exam, slot), through decode(). `problem` must be a
+    fresh copy of the problem model: solving changes it. Part I's Solution DSL has no attribute for the value of
+    a variable, so the values are not written into the QUBO model."""
+    slots = {slot.name_: slot for slot in problem.objects if slot.classifier.name == "TimeSlot"}
+    for exam in (o for o in problem.objects if o.classifier.name == "Exam"):
+        (slot,) = solution["schedule"][exam.name]
+        exam.timeSlot = slots[slot]
+    problem.name = f"{problem.name}_solved"
+    return problem
