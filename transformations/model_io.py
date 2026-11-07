@@ -15,6 +15,7 @@ Workarounds for the fork jacomecunha/BESSER @ 9cf7a90 (BESSER 7.18.0):
 """
 
 import contextlib
+import dataclasses
 import functools
 import io
 import json
@@ -104,6 +105,40 @@ def check_ocl(domain_model: DomainModel, model: ObjectModel) -> list:
         if holds is not True:
             failures.append(f"{constraint.name}: {holds}")
     return failures
+
+
+@dataclasses.dataclass
+class Qubo:
+    """A Solution DSL model read as numbers: f(x) = offset + sum linear[v] x_v + sum quadratic[{u, v}] x_u x_v."""
+    offset: float
+    variables: list  # labels, sorted by Variable.index (not necessarily 0..n-1: Part I's hand-made model skips some)
+    linear: dict  # label -> coefficient
+    quadratic: dict  # (label, label), in variables order -> coefficient
+    penalties: dict  # Penalty.constraint -> list of the variable labels of its terms
+
+    def energy(self, x: dict) -> float:
+        """f(x) for an assignment label -> 0/1."""
+        return (self.offset + sum(c * x[v] for v, c in self.linear.items())
+                + sum(c * x[u] * x[v] for (u, v), c in self.quadratic.items()))
+
+
+def read_qubo(model: ObjectModel) -> Qubo:
+    """Read a model of Part I's Solution DSL (QUBO, Variable, LinearTerm, QuadraticTerm, Penalty)."""
+    qubo = objects_of(model, "QUBO")[0]
+    variables = [v.label for v in sorted(objects_of(model, "Variable"), key=lambda v: v.index)]
+    position = {label: i for i, label in enumerate(variables)}
+    linear, quadratic, penalties = {}, {}, {}
+    for term in objects_of(model, "LinearTerm"):
+        (v,) = linked(term, "variable")
+        linear[v.label] = linear.get(v.label, 0.0) + term.coefficient
+    for term in objects_of(model, "QuadraticTerm"):
+        u, v = sorted((x.label for x in linked(term, "variable")), key=position.get)
+        quadratic[(u, v)] = quadratic.get((u, v), 0.0) + term.coefficient
+    for penalty in objects_of(model, "Penalty"):
+        labels = {x.label for end in ("linearterm", "quadraticterm") for term in linked(penalty, end)
+                  for x in linked(term, "variable")}
+        penalties[penalty.constraint] = sorted(labels, key=position.get)
+    return Qubo(qubo.offset, variables, linear, quadratic, penalties)
 
 
 def to_json(model: ObjectModel) -> dict:
