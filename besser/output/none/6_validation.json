@@ -1,0 +1,32 @@
+{
+  "baseline": {
+    "schedules": 81,
+    "valid": 0,
+    "optimum_conflicts": 1,
+    "optimal": 36,
+    "optimal_example": {
+      "Algebra": "Mon_0900",
+      "Calculus": "Mon_0900",
+      "Physics": "Mon_1400",
+      "Statistics": "Tue_0900"
+    }
+  },
+  "qubo_spectrum": {
+    "n": 12,
+    "e_min": 1.0,
+    "e_max": 82.0,
+    "e_mean": 20.5,
+    "ground_states": 36
+  },
+  "metrics": {
+    "shots": 4096,
+    "p_valid": 0.0,
+    "p_optimal": 0.269775390625,
+    "approximation_ratio": 0.9176733699845679,
+    "optimum_measured": true,
+    "random_p_valid": 0.0,
+    "random_p_optimal": 0.0087890625,
+    "random_approximation_ratio": 0.7592592592592593,
+    "qubo_matches_baseline": true
+  }
+}

@@ -1,0 +1,8 @@
+# Part II chain (BESSER stack). Versions are pinned so that results are reproducible.
+# BESSER: the course fork (assignment §4), pinned to a commit of its master branch.
+# Editable (-e): the pip package built from git leaves out the Jinja templates the QiskitGenerator needs.
+-e git+https://github.com/jacomecunha/BESSER.git@9cf7a90928f44dabbe418dab69879014319ee38e#egg=besser
+qiskit==2.6.2
+qiskit-aer==0.18.2
+numpy==2.5.4
+pytest==7.4.0  # bocl (the fork's OCL dependency) pins pluggy==1.2.0, which rules out pytest 8

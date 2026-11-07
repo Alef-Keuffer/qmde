@@ -1,0 +1,66 @@
+{
+  "name": "limit_config",
+  "objects": [
+    {
+      "name": "limit_config",
+      "class": "SolverConfig",
+      "attributes": {
+        "name": "limit",
+        "conflictWeight": 1.0,
+        "depth": 3,
+        "shots": 4096,
+        "seed": 7
+      }
+    },
+    {
+      "name": "limit_layer_1",
+      "class": "QAOALayer",
+      "attributes": {
+        "index": 1,
+        "gamma": 0.2667,
+        "beta": 0.8
+      }
+    },
+    {
+      "name": "limit_layer_2",
+      "class": "QAOALayer",
+      "attributes": {
+        "index": 2,
+        "gamma": 0.5333,
+        "beta": 0.5333
+      }
+    },
+    {
+      "name": "limit_layer_3",
+      "class": "QAOALayer",
+      "attributes": {
+        "index": 3,
+        "gamma": 0.8,
+        "beta": 0.2667
+      }
+    }
+  ],
+  "links": [
+    {
+      "association": "SolverConfig_QAOALayer",
+      "ends": {
+        "config": "limit_config",
+        "layers": "limit_layer_1"
+      }
+    },
+    {
+      "association": "SolverConfig_QAOALayer",
+      "ends": {
+        "config": "limit_config",
+        "layers": "limit_layer_2"
+      }
+    },
+    {
+      "association": "SolverConfig_QAOALayer",
+      "ends": {
+        "config": "limit_config",
+        "layers": "limit_layer_3"
+      }
+    }
+  ]
+}

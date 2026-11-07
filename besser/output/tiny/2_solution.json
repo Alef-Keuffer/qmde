@@ -1,0 +1,1061 @@
+{
+  "name": "tiny_solution",
+  "objects": [
+    {
+      "name": "conflict_Chemistry_Physics_1",
+      "class": "Penalty",
+      "attributes": {
+        "weight": 1.0,
+        "constraint": "conflict-Chemistry-Physics-slot-1"
+      }
+    },
+    {
+      "name": "conflict_Chemistry_Physics_2",
+      "class": "Penalty",
+      "attributes": {
+        "weight": 1.0,
+        "constraint": "conflict-Chemistry-Physics-slot-2"
+      }
+    },
+    {
+      "name": "conflict_Chemistry_Physics_3",
+      "class": "Penalty",
+      "attributes": {
+        "weight": 1.0,
+        "constraint": "conflict-Chemistry-Physics-slot-3"
+      }
+    },
+    {
+      "name": "conflict_Math_Physics_1",
+      "class": "Penalty",
+      "attributes": {
+        "weight": 1.0,
+        "constraint": "conflict-Math-Physics-slot-1"
+      }
+    },
+    {
+      "name": "conflict_Math_Physics_2",
+      "class": "Penalty",
+      "attributes": {
+        "weight": 1.0,
+        "constraint": "conflict-Math-Physics-slot-2"
+      }
+    },
+    {
+      "name": "conflict_Math_Physics_3",
+      "class": "Penalty",
+      "attributes": {
+        "weight": 1.0,
+        "constraint": "conflict-Math-Physics-slot-3"
+      }
+    },
+    {
+      "name": "lin_x_Chemistry_1",
+      "class": "LinearTerm",
+      "attributes": {
+        "coefficient": -3.0
+      }
+    },
+    {
+      "name": "lin_x_Chemistry_2",
+      "class": "LinearTerm",
+      "attributes": {
+        "coefficient": -3.0
+      }
+    },
+    {
+      "name": "lin_x_Chemistry_3",
+      "class": "LinearTerm",
+      "attributes": {
+        "coefficient": -3.0
+      }
+    },
+    {
+      "name": "lin_x_Math_1",
+      "class": "LinearTerm",
+      "attributes": {
+        "coefficient": -3.0
+      }
+    },
+    {
+      "name": "lin_x_Math_2",
+      "class": "LinearTerm",
+      "attributes": {
+        "coefficient": -3.0
+      }
+    },
+    {
+      "name": "lin_x_Math_3",
+      "class": "LinearTerm",
+      "attributes": {
+        "coefficient": -3.0
+      }
+    },
+    {
+      "name": "lin_x_Physics_1",
+      "class": "LinearTerm",
+      "attributes": {
+        "coefficient": -3.0
+      }
+    },
+    {
+      "name": "lin_x_Physics_2",
+      "class": "LinearTerm",
+      "attributes": {
+        "coefficient": -3.0
+      }
+    },
+    {
+      "name": "lin_x_Physics_3",
+      "class": "LinearTerm",
+      "attributes": {
+        "coefficient": -3.0
+      }
+    },
+    {
+      "name": "one_batch_Chemistry",
+      "class": "Penalty",
+      "attributes": {
+        "weight": 3.0,
+        "constraint": "one-batch-Chemistry"
+      }
+    },
+    {
+      "name": "one_batch_Math",
+      "class": "Penalty",
+      "attributes": {
+        "weight": 3.0,
+        "constraint": "one-batch-Math"
+      }
+    },
+    {
+      "name": "one_batch_Physics",
+      "class": "Penalty",
+      "attributes": {
+        "weight": 3.0,
+        "constraint": "one-batch-Physics"
+      }
+    },
+    {
+      "name": "quad_x_Chemistry_1_x_Chemistry_2",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 6.0
+      }
+    },
+    {
+      "name": "quad_x_Chemistry_1_x_Chemistry_3",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 6.0
+      }
+    },
+    {
+      "name": "quad_x_Chemistry_1_x_Physics_1",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 1.0
+      }
+    },
+    {
+      "name": "quad_x_Chemistry_2_x_Chemistry_3",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 6.0
+      }
+    },
+    {
+      "name": "quad_x_Chemistry_2_x_Physics_2",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 1.0
+      }
+    },
+    {
+      "name": "quad_x_Chemistry_3_x_Physics_3",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 1.0
+      }
+    },
+    {
+      "name": "quad_x_Math_1_x_Math_2",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 6.0
+      }
+    },
+    {
+      "name": "quad_x_Math_1_x_Math_3",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 6.0
+      }
+    },
+    {
+      "name": "quad_x_Math_1_x_Physics_1",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 1.0
+      }
+    },
+    {
+      "name": "quad_x_Math_2_x_Math_3",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 6.0
+      }
+    },
+    {
+      "name": "quad_x_Math_2_x_Physics_2",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 1.0
+      }
+    },
+    {
+      "name": "quad_x_Math_3_x_Physics_3",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 1.0
+      }
+    },
+    {
+      "name": "quad_x_Physics_1_x_Physics_2",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 6.0
+      }
+    },
+    {
+      "name": "quad_x_Physics_1_x_Physics_3",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 6.0
+      }
+    },
+    {
+      "name": "quad_x_Physics_2_x_Physics_3",
+      "class": "QuadraticTerm",
+      "attributes": {
+        "coefficient": 6.0
+      }
+    },
+    {
+      "name": "tiny_qubo",
+      "class": "QUBO",
+      "attributes": {
+        "offset": 9.0
+      }
+    },
+    {
+      "name": "x_Chemistry_1",
+      "class": "Variable",
+      "attributes": {
+        "index": 0,
+        "label": "x_Chemistry_1"
+      }
+    },
+    {
+      "name": "x_Chemistry_2",
+      "class": "Variable",
+      "attributes": {
+        "index": 1,
+        "label": "x_Chemistry_2"
+      }
+    },
+    {
+      "name": "x_Chemistry_3",
+      "class": "Variable",
+      "attributes": {
+        "index": 2,
+        "label": "x_Chemistry_3"
+      }
+    },
+    {
+      "name": "x_Math_1",
+      "class": "Variable",
+      "attributes": {
+        "index": 3,
+        "label": "x_Math_1"
+      }
+    },
+    {
+      "name": "x_Math_2",
+      "class": "Variable",
+      "attributes": {
+        "index": 4,
+        "label": "x_Math_2"
+      }
+    },
+    {
+      "name": "x_Math_3",
+      "class": "Variable",
+      "attributes": {
+        "index": 5,
+        "label": "x_Math_3"
+      }
+    },
+    {
+      "name": "x_Physics_1",
+      "class": "Variable",
+      "attributes": {
+        "index": 6,
+        "label": "x_Physics_1"
+      }
+    },
+    {
+      "name": "x_Physics_2",
+      "class": "Variable",
+      "attributes": {
+        "index": 7,
+        "label": "x_Physics_2"
+      }
+    },
+    {
+      "name": "x_Physics_3",
+      "class": "Variable",
+      "attributes": {
+        "index": 8,
+        "label": "x_Physics_3"
+      }
+    }
+  ],
+  "links": [
+    {
+      "association": "LinearTerm_QUBO",
+      "ends": {
+        "linearterm": "lin_x_Chemistry_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "LinearTerm_QUBO",
+      "ends": {
+        "linearterm": "lin_x_Chemistry_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "LinearTerm_QUBO",
+      "ends": {
+        "linearterm": "lin_x_Chemistry_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "LinearTerm_QUBO",
+      "ends": {
+        "linearterm": "lin_x_Math_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "LinearTerm_QUBO",
+      "ends": {
+        "linearterm": "lin_x_Math_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "LinearTerm_QUBO",
+      "ends": {
+        "linearterm": "lin_x_Math_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "LinearTerm_QUBO",
+      "ends": {
+        "linearterm": "lin_x_Physics_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "LinearTerm_QUBO",
+      "ends": {
+        "linearterm": "lin_x_Physics_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "LinearTerm_QUBO",
+      "ends": {
+        "linearterm": "lin_x_Physics_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Chemistry_1",
+        "penalty": "one_batch_Chemistry"
+      }
+    },
+    {
+      "association": "Penalty_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Chemistry_2",
+        "penalty": "one_batch_Chemistry"
+      }
+    },
+    {
+      "association": "Penalty_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Chemistry_3",
+        "penalty": "one_batch_Chemistry"
+      }
+    },
+    {
+      "association": "Penalty_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Math_1",
+        "penalty": "one_batch_Math"
+      }
+    },
+    {
+      "association": "Penalty_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Math_2",
+        "penalty": "one_batch_Math"
+      }
+    },
+    {
+      "association": "Penalty_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Math_3",
+        "penalty": "one_batch_Math"
+      }
+    },
+    {
+      "association": "Penalty_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Physics_1",
+        "penalty": "one_batch_Physics"
+      }
+    },
+    {
+      "association": "Penalty_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Physics_2",
+        "penalty": "one_batch_Physics"
+      }
+    },
+    {
+      "association": "Penalty_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Physics_3",
+        "penalty": "one_batch_Physics"
+      }
+    },
+    {
+      "association": "Penalty_QUBO",
+      "ends": {
+        "penalty": "conflict_Chemistry_Physics_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_QUBO",
+      "ends": {
+        "penalty": "conflict_Chemistry_Physics_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_QUBO",
+      "ends": {
+        "penalty": "conflict_Chemistry_Physics_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_QUBO",
+      "ends": {
+        "penalty": "conflict_Math_Physics_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_QUBO",
+      "ends": {
+        "penalty": "conflict_Math_Physics_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_QUBO",
+      "ends": {
+        "penalty": "conflict_Math_Physics_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_QUBO",
+      "ends": {
+        "penalty": "one_batch_Chemistry",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_QUBO",
+      "ends": {
+        "penalty": "one_batch_Math",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_QUBO",
+      "ends": {
+        "penalty": "one_batch_Physics",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Physics_1",
+        "penalty": "conflict_Chemistry_Physics_1"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_2_x_Physics_2",
+        "penalty": "conflict_Chemistry_Physics_2"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_3_x_Physics_3",
+        "penalty": "conflict_Chemistry_Physics_3"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Physics_1",
+        "penalty": "conflict_Math_Physics_1"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_2_x_Physics_2",
+        "penalty": "conflict_Math_Physics_2"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_3_x_Physics_3",
+        "penalty": "conflict_Math_Physics_3"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Chemistry_2",
+        "penalty": "one_batch_Chemistry"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Chemistry_3",
+        "penalty": "one_batch_Chemistry"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_2_x_Chemistry_3",
+        "penalty": "one_batch_Chemistry"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Math_2",
+        "penalty": "one_batch_Math"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Math_3",
+        "penalty": "one_batch_Math"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_2_x_Math_3",
+        "penalty": "one_batch_Math"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_1_x_Physics_2",
+        "penalty": "one_batch_Physics"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_1_x_Physics_3",
+        "penalty": "one_batch_Physics"
+      }
+    },
+    {
+      "association": "Penalty_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_2_x_Physics_3",
+        "penalty": "one_batch_Physics"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Chemistry_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Chemistry_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Physics_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_2_x_Chemistry_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_2_x_Physics_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_3_x_Physics_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Math_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Math_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Physics_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Math_2_x_Math_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Math_2_x_Physics_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Math_3_x_Physics_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_1_x_Physics_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_1_x_Physics_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "QuadraticTerm_QUBO",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_2_x_Physics_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Chemistry_1",
+        "variable": "x_Chemistry_1"
+      }
+    },
+    {
+      "association": "Variable_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Chemistry_2",
+        "variable": "x_Chemistry_2"
+      }
+    },
+    {
+      "association": "Variable_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Chemistry_3",
+        "variable": "x_Chemistry_3"
+      }
+    },
+    {
+      "association": "Variable_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Math_1",
+        "variable": "x_Math_1"
+      }
+    },
+    {
+      "association": "Variable_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Math_2",
+        "variable": "x_Math_2"
+      }
+    },
+    {
+      "association": "Variable_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Math_3",
+        "variable": "x_Math_3"
+      }
+    },
+    {
+      "association": "Variable_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Physics_1",
+        "variable": "x_Physics_1"
+      }
+    },
+    {
+      "association": "Variable_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Physics_2",
+        "variable": "x_Physics_2"
+      }
+    },
+    {
+      "association": "Variable_LinearTerm",
+      "ends": {
+        "linearterm": "lin_x_Physics_3",
+        "variable": "x_Physics_3"
+      }
+    },
+    {
+      "association": "Variable_QUBO",
+      "ends": {
+        "variable": "x_Chemistry_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_QUBO",
+      "ends": {
+        "variable": "x_Chemistry_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_QUBO",
+      "ends": {
+        "variable": "x_Chemistry_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_QUBO",
+      "ends": {
+        "variable": "x_Math_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_QUBO",
+      "ends": {
+        "variable": "x_Math_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_QUBO",
+      "ends": {
+        "variable": "x_Math_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_QUBO",
+      "ends": {
+        "variable": "x_Physics_1",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_QUBO",
+      "ends": {
+        "variable": "x_Physics_2",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_QUBO",
+      "ends": {
+        "variable": "x_Physics_3",
+        "qubo": "tiny_qubo"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Chemistry_2",
+        "variable": "x_Chemistry_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Chemistry_2",
+        "variable": "x_Chemistry_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Chemistry_3",
+        "variable": "x_Chemistry_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Chemistry_3",
+        "variable": "x_Chemistry_3"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Physics_1",
+        "variable": "x_Chemistry_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_1_x_Physics_1",
+        "variable": "x_Physics_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_2_x_Chemistry_3",
+        "variable": "x_Chemistry_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_2_x_Chemistry_3",
+        "variable": "x_Chemistry_3"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_2_x_Physics_2",
+        "variable": "x_Chemistry_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_2_x_Physics_2",
+        "variable": "x_Physics_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_3_x_Physics_3",
+        "variable": "x_Chemistry_3"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Chemistry_3_x_Physics_3",
+        "variable": "x_Physics_3"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Math_2",
+        "variable": "x_Math_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Math_2",
+        "variable": "x_Math_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Math_3",
+        "variable": "x_Math_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Math_3",
+        "variable": "x_Math_3"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Physics_1",
+        "variable": "x_Math_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_1_x_Physics_1",
+        "variable": "x_Physics_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_2_x_Math_3",
+        "variable": "x_Math_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_2_x_Math_3",
+        "variable": "x_Math_3"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_2_x_Physics_2",
+        "variable": "x_Math_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_2_x_Physics_2",
+        "variable": "x_Physics_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_3_x_Physics_3",
+        "variable": "x_Math_3"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Math_3_x_Physics_3",
+        "variable": "x_Physics_3"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_1_x_Physics_2",
+        "variable": "x_Physics_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_1_x_Physics_2",
+        "variable": "x_Physics_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_1_x_Physics_3",
+        "variable": "x_Physics_1"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_1_x_Physics_3",
+        "variable": "x_Physics_3"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_2_x_Physics_3",
+        "variable": "x_Physics_2"
+      }
+    },
+    {
+      "association": "Variable_QuadraticTerm",
+      "ends": {
+        "quadraticterm": "quad_x_Physics_2_x_Physics_3",
+        "variable": "x_Physics_3"
+      }
+    }
+  ]
+}

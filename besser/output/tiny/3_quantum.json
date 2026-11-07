@@ -1,0 +1,1493 @@
+{
+ "name": "tiny_solution_qaoa",
+ "qregs": [
+  {
+   "name": "q",
+   "size": 9
+  }
+ ],
+ "cregs": [
+  {
+   "name": "c",
+   "size": 9
+  }
+ ],
+ "operations": [
+  {
+   "gate": "HadamardGate",
+   "target": 0
+  },
+  {
+   "gate": "HadamardGate",
+   "target": 1
+  },
+  {
+   "gate": "HadamardGate",
+   "target": 2
+  },
+  {
+   "gate": "HadamardGate",
+   "target": 3
+  },
+  {
+   "gate": "HadamardGate",
+   "target": 4
+  },
+  {
+   "gate": "HadamardGate",
+   "target": 5
+  },
+  {
+   "gate": "HadamardGate",
+   "target": 6
+  },
+  {
+   "gate": "HadamardGate",
+   "target": 7
+  },
+  {
+   "gate": "HadamardGate",
+   "target": 8
+  },
+  {
+   "gate": "RZGate",
+   "target": 0,
+   "theta": 0.466725
+  },
+  {
+   "gate": "RZGate",
+   "target": 1,
+   "theta": 0.466725
+  },
+  {
+   "gate": "RZGate",
+   "target": 2,
+   "theta": 0.466725
+  },
+  {
+   "gate": "RZGate",
+   "target": 3,
+   "theta": 0.466725
+  },
+  {
+   "gate": "RZGate",
+   "target": 4,
+   "theta": 0.466725
+  },
+  {
+   "gate": "RZGate",
+   "target": 5,
+   "theta": 0.466725
+  },
+  {
+   "gate": "RZGate",
+   "target": 6,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": 0.5334
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 1,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 1,
+   "theta": -0.40005
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 1,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 2,
+   "theta": -0.40005
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 6,
+   "theta": -0.066675
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 2,
+   "theta": -0.40005
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": -0.066675
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    2
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.066675
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    2
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 4,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 4,
+   "theta": -0.40005
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 4,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 5,
+   "theta": -0.40005
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 6,
+   "theta": -0.066675
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 5,
+   "theta": -0.40005
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": -0.066675
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    5
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.066675
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    5
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": -0.40005
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.40005
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    7
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.40005
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    7
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RXGate",
+   "target": 0,
+   "theta": 1.6
+  },
+  {
+   "gate": "RXGate",
+   "target": 1,
+   "theta": 1.6
+  },
+  {
+   "gate": "RXGate",
+   "target": 2,
+   "theta": 1.6
+  },
+  {
+   "gate": "RXGate",
+   "target": 3,
+   "theta": 1.6
+  },
+  {
+   "gate": "RXGate",
+   "target": 4,
+   "theta": 1.6
+  },
+  {
+   "gate": "RXGate",
+   "target": 5,
+   "theta": 1.6
+  },
+  {
+   "gate": "RXGate",
+   "target": 6,
+   "theta": 1.6
+  },
+  {
+   "gate": "RXGate",
+   "target": 7,
+   "theta": 1.6
+  },
+  {
+   "gate": "RXGate",
+   "target": 8,
+   "theta": 1.6
+  },
+  {
+   "gate": "RZGate",
+   "target": 0,
+   "theta": 0.933275
+  },
+  {
+   "gate": "RZGate",
+   "target": 1,
+   "theta": 0.933275
+  },
+  {
+   "gate": "RZGate",
+   "target": 2,
+   "theta": 0.933275
+  },
+  {
+   "gate": "RZGate",
+   "target": 3,
+   "theta": 0.933275
+  },
+  {
+   "gate": "RZGate",
+   "target": 4,
+   "theta": 0.933275
+  },
+  {
+   "gate": "RZGate",
+   "target": 5,
+   "theta": 0.933275
+  },
+  {
+   "gate": "RZGate",
+   "target": 6,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": 1.0666
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 1,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 1,
+   "theta": -0.7999499999999999
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 1,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 2,
+   "theta": -0.7999499999999999
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 6,
+   "theta": -0.133325
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 2,
+   "theta": -0.7999499999999999
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": -0.133325
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    2
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.133325
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    2
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 4,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 4,
+   "theta": -0.7999499999999999
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 4,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 5,
+   "theta": -0.7999499999999999
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 6,
+   "theta": -0.133325
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 5,
+   "theta": -0.7999499999999999
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": -0.133325
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    5
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.133325
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    5
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": -0.7999499999999999
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.7999499999999999
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    7
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.7999499999999999
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    7
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RXGate",
+   "target": 0,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RXGate",
+   "target": 1,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RXGate",
+   "target": 2,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RXGate",
+   "target": 3,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RXGate",
+   "target": 4,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RXGate",
+   "target": 5,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RXGate",
+   "target": 6,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RXGate",
+   "target": 7,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RXGate",
+   "target": 8,
+   "theta": 1.0666
+  },
+  {
+   "gate": "RZGate",
+   "target": 0,
+   "theta": 1.4000000000000001
+  },
+  {
+   "gate": "RZGate",
+   "target": 1,
+   "theta": 1.4000000000000001
+  },
+  {
+   "gate": "RZGate",
+   "target": 2,
+   "theta": 1.4000000000000001
+  },
+  {
+   "gate": "RZGate",
+   "target": 3,
+   "theta": 1.4000000000000001
+  },
+  {
+   "gate": "RZGate",
+   "target": 4,
+   "theta": 1.4000000000000001
+  },
+  {
+   "gate": "RZGate",
+   "target": 5,
+   "theta": 1.4000000000000001
+  },
+  {
+   "gate": "RZGate",
+   "target": 6,
+   "theta": 1.6
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": 1.6
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": 1.6
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 1,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 1,
+   "theta": -1.2000000000000002
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 1,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 2,
+   "theta": -1.2000000000000002
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 6,
+   "theta": -0.2
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    0
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 2,
+   "theta": -1.2000000000000002
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 2,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": -0.2
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    1
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    2
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.2
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    2
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 4,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 4,
+   "theta": -1.2000000000000002
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 4,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 5,
+   "theta": -1.2000000000000002
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 6,
+   "theta": -0.2
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 6,
+   "controls": [
+    3
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 5,
+   "theta": -1.2000000000000002
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 5,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": -0.2
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    4
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    5
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -0.2
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    5
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 7,
+   "theta": -1.2000000000000002
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 7,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -1.2000000000000002
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    6
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    7
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RZGate",
+   "target": 8,
+   "theta": -1.2000000000000002
+  },
+  {
+   "gate": "PauliXGate",
+   "target": 8,
+   "controls": [
+    7
+   ],
+   "control_states": [
+    "CONTROL"
+   ]
+  },
+  {
+   "gate": "RXGate",
+   "target": 0,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RXGate",
+   "target": 1,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RXGate",
+   "target": 2,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RXGate",
+   "target": 3,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RXGate",
+   "target": 4,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RXGate",
+   "target": 5,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RXGate",
+   "target": 6,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RXGate",
+   "target": 7,
+   "theta": 0.5334
+  },
+  {
+   "gate": "RXGate",
+   "target": 8,
+   "theta": 0.5334
+  },
+  {
+   "gate": "Measurement",
+   "target": 0,
+   "output_bit": 0
+  },
+  {
+   "gate": "Measurement",
+   "target": 1,
+   "output_bit": 1
+  },
+  {
+   "gate": "Measurement",
+   "target": 2,
+   "output_bit": 2
+  },
+  {
+   "gate": "Measurement",
+   "target": 3,
+   "output_bit": 3
+  },
+  {
+   "gate": "Measurement",
+   "target": 4,
+   "output_bit": 4
+  },
+  {
+   "gate": "Measurement",
+   "target": 5,
+   "output_bit": 5
+  },
+  {
+   "gate": "Measurement",
+   "target": 6,
+   "output_bit": 6
+  },
+  {
+   "gate": "Measurement",
+   "target": 7,
+   "output_bit": 7
+  },
+  {
+   "gate": "Measurement",
+   "target": 8,
+   "output_bit": 8
+  }
+ ]
+}

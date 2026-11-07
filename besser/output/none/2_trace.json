@@ -1,0 +1,105 @@
+{
+  "variables": {
+    "x_Algebra_1": {
+      "index": 0,
+      "exam": "Algebra",
+      "slot": "Mon_0900",
+      "slot_id": 1
+    },
+    "x_Algebra_2": {
+      "index": 1,
+      "exam": "Algebra",
+      "slot": "Mon_1400",
+      "slot_id": 2
+    },
+    "x_Algebra_3": {
+      "index": 2,
+      "exam": "Algebra",
+      "slot": "Tue_0900",
+      "slot_id": 3
+    },
+    "x_Calculus_1": {
+      "index": 3,
+      "exam": "Calculus",
+      "slot": "Mon_0900",
+      "slot_id": 1
+    },
+    "x_Calculus_2": {
+      "index": 4,
+      "exam": "Calculus",
+      "slot": "Mon_1400",
+      "slot_id": 2
+    },
+    "x_Calculus_3": {
+      "index": 5,
+      "exam": "Calculus",
+      "slot": "Tue_0900",
+      "slot_id": 3
+    },
+    "x_Physics_1": {
+      "index": 6,
+      "exam": "Physics",
+      "slot": "Mon_0900",
+      "slot_id": 1
+    },
+    "x_Physics_2": {
+      "index": 7,
+      "exam": "Physics",
+      "slot": "Mon_1400",
+      "slot_id": 2
+    },
+    "x_Physics_3": {
+      "index": 8,
+      "exam": "Physics",
+      "slot": "Tue_0900",
+      "slot_id": 3
+    },
+    "x_Statistics_1": {
+      "index": 9,
+      "exam": "Statistics",
+      "slot": "Mon_0900",
+      "slot_id": 1
+    },
+    "x_Statistics_2": {
+      "index": 10,
+      "exam": "Statistics",
+      "slot": "Mon_1400",
+      "slot_id": 2
+    },
+    "x_Statistics_3": {
+      "index": 11,
+      "exam": "Statistics",
+      "slot": "Tue_0900",
+      "slot_id": 3
+    }
+  },
+  "conflicts": [
+    [
+      "Algebra",
+      "Calculus"
+    ],
+    [
+      "Algebra",
+      "Physics"
+    ],
+    [
+      "Algebra",
+      "Statistics"
+    ],
+    [
+      "Calculus",
+      "Physics"
+    ],
+    [
+      "Calculus",
+      "Statistics"
+    ],
+    [
+      "Physics",
+      "Statistics"
+    ]
+  ],
+  "max_degree": 3,
+  "conflict_weight": 1.0,
+  "one_hot_weight": 4.0
+}

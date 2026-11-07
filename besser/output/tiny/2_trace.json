@@ -1,0 +1,71 @@
+{
+  "variables": {
+    "x_Chemistry_1": {
+      "index": 0,
+      "exam": "Chemistry",
+      "slot": "Mon_0900",
+      "slot_id": 1
+    },
+    "x_Chemistry_2": {
+      "index": 1,
+      "exam": "Chemistry",
+      "slot": "Mon_1400",
+      "slot_id": 2
+    },
+    "x_Chemistry_3": {
+      "index": 2,
+      "exam": "Chemistry",
+      "slot": "Tue_0900",
+      "slot_id": 3
+    },
+    "x_Math_1": {
+      "index": 3,
+      "exam": "Math",
+      "slot": "Mon_0900",
+      "slot_id": 1
+    },
+    "x_Math_2": {
+      "index": 4,
+      "exam": "Math",
+      "slot": "Mon_1400",
+      "slot_id": 2
+    },
+    "x_Math_3": {
+      "index": 5,
+      "exam": "Math",
+      "slot": "Tue_0900",
+      "slot_id": 3
+    },
+    "x_Physics_1": {
+      "index": 6,
+      "exam": "Physics",
+      "slot": "Mon_0900",
+      "slot_id": 1
+    },
+    "x_Physics_2": {
+      "index": 7,
+      "exam": "Physics",
+      "slot": "Mon_1400",
+      "slot_id": 2
+    },
+    "x_Physics_3": {
+      "index": 8,
+      "exam": "Physics",
+      "slot": "Tue_0900",
+      "slot_id": 3
+    }
+  },
+  "conflicts": [
+    [
+      "Chemistry",
+      "Physics"
+    ],
+    [
+      "Math",
+      "Physics"
+    ]
+  ],
+  "max_degree": 2,
+  "conflict_weight": 1.0,
+  "one_hot_weight": 3.0
+}
