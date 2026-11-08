@@ -26,6 +26,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 INSTALL = Path("~/eclipse/emf-claude-main").expanduser()
+P2 = Path("~/.p2").expanduser()
 PROJECTS = ".metadata/.plugins/org.eclipse.core.resources/.projects"
 
 
@@ -64,12 +65,25 @@ def main():
     relocate(copy, ide_emf, "file:" + quote(str(emf)) + "/")
     relocate(copy, "file:" + quote(str(ws)) + "/", "file:" + quote(str(copy)) + "/")  # hidden egit/jdt projects
 
+    # The copy shares the IDE's p2 agent: its startup rewrites the installation profile and
+    # Oomph registers a targlet profile for the copy. Put the agent's metadata back afterwards.
+    # shortcut: a p2 change the IDE makes during the build is undone too; rare, as the build takes ~15 s.
+    engine, info = P2 / "org.eclipse.equinox.p2.engine", P2 / "profiles.info"
+    shutil.copytree(engine, scratch / "p2/engine", symlinks=True)
+    shutil.copy2(info, scratch / "p2/profiles.info")
     log = scratch / "build.log"
-    with log.open("w") as out:
-        subprocess.run([INSTALL / "Eclipse.app/Contents/MacOS/eclipse", "-nosplash",
-                        "-application", "org.eclipse.jdt.apt.core.aptBuild",
-                        "-data", copy, "-configuration", config.as_uri() + "/", "-consoleLog"],
-                       stdout=out, stderr=subprocess.STDOUT, check=True)
+    try:
+        with log.open("w") as out:
+            subprocess.run([INSTALL / "Eclipse.app/Contents/MacOS/eclipse", "-nosplash",
+                            "-application", "org.eclipse.jdt.apt.core.aptBuild",
+                            "-data", copy, "-configuration", config.as_uri() + "/", "-consoleLog"],
+                           stdout=out, stderr=subprocess.STDOUT, check=True)
+    finally:
+        shutil.copytree(scratch / "p2/engine", engine.with_name(engine.name + ".restore"), symlinks=True)
+        engine.rename(engine.with_name(engine.name + ".old"))
+        engine.with_name(engine.name + ".restore").rename(engine)
+        shutil.rmtree(engine.with_name(engine.name + ".old"))
+        shutil.copy2(scratch / "p2/profiles.info", info)
     print(f"build log: {log}", flush=True)
     subprocess.run([sys.executable, tools / "eclipse-problems", copy], check=True)
 
