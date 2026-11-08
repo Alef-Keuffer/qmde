@@ -4,6 +4,8 @@ This folder is a self-contained project inside the `qmde` repository: the exam-s
 
 See `CONTEXT.md` for the problem statement and the DSL pipeline, and `README.md` for building (`./build.sh`) and the Eclipse setup (`emf.setup`).
 
+`./build.sh` passing does not mean the Eclipse IDE is clean: after changing a bundle, run `tools/eclipse-problems` to read the IDE's current Problems view (instead of asking for it to be pasted).
+
 ## Agent skills
 
 ### Issue tracker
