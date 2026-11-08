@@ -5,6 +5,7 @@ Usage: eclipse-problems [workspace]   (default: ~/eclipse/emf-qmde/ws)
 
 Output: a "snapshot: Ns old" line, then one line per problem:
     SEVERITY project path[:line] message
+Exit status: 1 if any problem is an ERROR, else 0 (a stale one counts too).
 
 Eclipse keeps markers in <ws>/.metadata/.plugins/org.eclipse.core.resources/
 .projects/<project>/: .markers (written on exit) plus .markers.snap (appended
@@ -127,6 +128,7 @@ def main():
                                  f"{attrs.get('message', '')}{stale}"))
     for *_, line in sorted(problems):
         print(line)
+    sys.exit(1 if any(severity == -2 for severity, *_ in problems) else 0)  # -2: ERROR, negated for sorting
 
 
 if __name__ == "__main__":
