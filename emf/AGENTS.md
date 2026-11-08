@@ -4,7 +4,7 @@ This folder is a self-contained project inside the `qmde` repository: the exam-s
 
 See `CONTEXT.md` for the problem statement and the DSL pipeline, and `README.md` for building (`./build.sh`) and the Eclipse setup (`emf.setup`).
 
-`./build.sh` passing does not mean the Eclipse IDE is clean: after changing a bundle, run `tools/eclipse-problems` to read the IDE's current Problems view (instead of asking for it to be pasted).
+`./build.sh` passing does not mean the Eclipse IDE is clean: after changing a bundle, run `tools/eclipse-problems` to read the IDE's current Problems view (instead of asking for it to be pasted). From a worktree, `tools/headless-problems` builds a copy of the IDE's workspace headlessly against that worktree (after `./build.sh generate-sources`) and prints what the IDE would show for it. It reproduced the 0e463ab error and is clean on `main`.
 
 ## Agent skills
 
