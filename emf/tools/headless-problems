@@ -10,7 +10,7 @@ Usage: headless-problems [emf-dir] [scratch-dir]
 
 Output: as tools/eclipse-problems, read from the copy after the build.
 
-The running IDE is left alone: its workspace (~/eclipse/emf-claude-main/ws) and
+The running IDE is left alone: its workspace (~/eclipse/emf-qmde/ws) and
 configuration area are copied, the copy's projects are pointed at emf-dir, its
 old markers are dropped, and Eclipse's own headless builder
 (org.eclipse.jdt.apt.core.aptBuild) runs a full build of the copy. That runs the
@@ -25,7 +25,7 @@ import tempfile
 from pathlib import Path
 from urllib.parse import quote
 
-INSTALL = Path("~/eclipse/emf-claude-main").expanduser()
+INSTALL = Path("~/eclipse/emf-qmde").expanduser()
 P2 = Path("~/.p2").expanduser()
 PROJECTS = ".metadata/.plugins/org.eclipse.core.resources/.projects"
 
