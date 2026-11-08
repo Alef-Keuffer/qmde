@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""Print the problems the running Eclipse shows, read from its workspace state.
+
+Usage: eclipse-problems [workspace]   (default: ~/eclipse/emf-claude-main/ws)
+
+Output: a "snapshot: Ns old" line, then one line per problem:
+    SEVERITY project path[:line] message
+
+Eclipse keeps markers in <ws>/.metadata/.plugins/org.eclipse.core.resources/
+.projects/<project>/: .markers (written on exit) plus .markers.snap (appended
+every description.snapshotinterval ms; emf.setup sets 10 s). The formats are
+MarkerWriter's save (version 3) and snap (version 2) in org.eclipse.core.resources.
+
+Eclipse never snapshots a file whose last marker was removed, so a fixed
+problem can linger until Eclipse exits. A problem older than its file's last
+edit is therefore marked "(file edited since)".
+"""
+import struct
+import sys
+import time
+from pathlib import Path
+from urllib.parse import unquote, urlparse
+
+BEGIN = bytes.fromhex("40b18b8123bc00141a2596e7a393be1e")  # SafeChunkyOutputStream chunk delimiters
+END = bytes.fromhex("c058fbf323bc00141a51f38c7bbb77c6")
+SEVERITY = {0: "INFO", 1: "WARNING", 2: "ERROR"}
+
+
+class Reader:
+    def __init__(self, data):
+        self.data, self.pos = data, 0
+
+    def more(self):
+        return self.pos < len(self.data)
+
+    def unpack(self, fmt):
+        values = struct.unpack_from(fmt, self.data, self.pos)
+        self.pos += struct.calcsize(fmt)
+        return values[0]
+
+    def utf(self):
+        n = self.unpack(">H")
+        self.pos += n
+        return self.data[self.pos - n:self.pos].decode("utf-8", "replace")
+
+    def markers(self, types):
+        """A marker set as MarkerWriter.write lays it out: count, then each marker."""
+        result = []
+        for _ in range(self.unpack(">i")):
+            self.unpack(">q")  # id
+            if self.unpack(">b") == 2:
+                types.append(self.utf())
+                type_ = types[-1]
+            else:
+                type_ = types[self.unpack(">i")]
+            attrs = {}
+            for _ in range(self.unpack(">h")):
+                key, kind = self.utf(), self.unpack(">b")
+                attrs[key] = {0: lambda: None, 1: lambda: self.unpack(">?"),
+                              2: lambda: self.unpack(">i"), 3: self.utf}[kind]()
+            result.append((type_, attrs, self.unpack(">q")))
+        return result
+
+
+def chunks(data):
+    """The complete chunks of a SafeChunkyOutputStream file; a chunk without END was never finished."""
+    return [part[:part.index(END)] for part in data.split(BEGIN)[1:] if END in part]
+
+
+def read_markers(project_dir):
+    """{workspace path: markers}: the .markers base, then each snapshot replacing its paths."""
+    by_path = {}
+    base = project_dir / ".markers"
+    if base.exists():
+        r, types = Reader(base.read_bytes()), []
+        r.unpack(">i")  # version 3, once per file
+        while r.more():
+            path = r.utf()
+            by_path[path] = r.markers(types)
+    snap = project_dir / ".markers.snap"
+    if snap.exists():
+        for chunk in chunks(snap.read_bytes()):
+            r = Reader(chunk)
+            while r.more():
+                r.unpack(">i")  # version 2, once per entry
+                path = r.utf()
+                by_path[path] = r.markers([])
+    return by_path
+
+
+def project_location(project_dir, ws):
+    loc = project_dir / ".location"
+    if loc.exists():
+        r = Reader(chunks(loc.read_bytes() + END)[0])
+        uri = r.utf()
+        if uri.startswith("URI//"):
+            return Path(unquote(urlparse(uri[5:]).path))
+    return ws / project_dir.name
+
+
+def main():
+    ws = Path(sys.argv[1] if len(sys.argv) > 1 else "~/eclipse/emf-claude-main/ws").expanduser()
+    projects = ws / ".metadata/.plugins/org.eclipse.core.resources/.projects"
+    if not projects.is_dir():
+        sys.exit(f"eclipse-problems: no Eclipse workspace state in {ws}")
+    files = [f for f in projects.glob("*/.markers*") if f.name in (".markers", ".markers.snap")]
+    newest = max((f.stat().st_mtime for f in files), default=None)
+    if newest is None:
+        print("snapshot: none (no markers saved yet)")
+    else:
+        print(f"snapshot: {int(time.time() - newest)}s old ({time.strftime('%H:%M:%S', time.localtime(newest))})")
+
+    problems = []
+    for project_dir in sorted(projects.iterdir()):
+        location = project_location(project_dir, ws)
+        for path, markers in read_markers(project_dir).items():
+            project, _, rel = path.lstrip("/").partition("/")
+            file = location / rel
+            edited = file.stat().st_mtime * 1000 if file.is_file() else 0
+            for _, attrs, created in markers:
+                if "severity" not in attrs:  # tasks and bookmarks, not problems
+                    continue
+                where = (rel or "/") + (f":{attrs['lineNumber']}" if "lineNumber" in attrs else "")
+                stale = " (file edited since)" if edited > created else ""
+                problems.append((-attrs["severity"], project, rel, attrs.get("lineNumber", 0),
+                                 f"{SEVERITY.get(attrs['severity'], attrs['severity'])} {project} {where} "
+                                 f"{attrs.get('message', '')}{stale}"))
+    for *_, line in sorted(problems):
+        print(line)
+
+
+if __name__ == "__main__":
+    main()
