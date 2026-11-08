@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+"""Build a copy of the Oomph workspace headlessly and print the problems Eclipse finds.
+
+Usage: headless-problems [emf-dir] [scratch-dir]
+    emf-dir      the emf/ folder to build (default: the one holding this tool);
+                 run ./build.sh generate-sources there first, for src-gen/.
+                 The build writes its output (bin/, gitignored) there, so use a
+                 worktree or an extract, not the checkout the IDE itself builds.
+    scratch-dir  a new folder for the workspace copy (default: a temporary one)
+
+Output: as tools/eclipse-problems, read from the copy after the build.
+
+The running IDE is left alone: its workspace (~/eclipse/emf-claude-main/ws) and
+configuration area are copied, the copy's projects are pointed at emf-dir, its
+old markers are dropped, and Eclipse's own headless builder
+(org.eclipse.jdt.apt.core.aptBuild) runs a full build of the copy. That runs the
+same builders the IDE does (Java, Xtext, PDE, m2e) against the same target
+platform. aptBuild prints no problems itself, hence reading the markers.
+"""
+import shutil
+import struct
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+from urllib.parse import quote
+
+INSTALL = Path("~/eclipse/emf-claude-main").expanduser()
+PROJECTS = ".metadata/.plugins/org.eclipse.core.resources/.projects"
+
+
+def split_location(data):
+    """(uri, rest) of a .location file: writeUTF(uri) right after the 16-byte chunk BEGIN."""
+    n = struct.unpack_from(">H", data, 16)[0]
+    return data[18:18 + n].decode(), data[18 + n:]
+
+
+def relocate(ws, old, new):
+    """Repoint every project .location URI under ws starting with old to start with new."""
+    for loc in Path(ws, PROJECTS).glob("*/.location"):
+        data = loc.read_bytes()
+        uri, rest = split_location(data)
+        if uri.startswith("URI//" + old):
+            new_uri = uri.replace(old, new, 1).encode()
+            loc.write_bytes(data[:16] + struct.pack(">H", len(new_uri)) + new_uri + rest)
+
+
+def main():
+    tools = Path(__file__).resolve().parent
+    emf = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else tools.parent
+    scratch = Path(sys.argv[2]) if len(sys.argv) > 2 else Path(tempfile.mkdtemp(prefix="headless-problems-"))
+    ws = INSTALL / "ws"
+    if not (ws / PROJECTS).is_dir():
+        sys.exit(f"headless-problems: no Eclipse workspace at {ws}")
+
+    copy, config = scratch / "ws", scratch / "config"
+    shutil.copytree(ws, copy, symlinks=True)
+    shutil.copytree(INSTALL / "Eclipse.app/Contents/Eclipse/configuration", config, symlinks=True)
+    (copy / ".metadata/.lock").unlink(missing_ok=True)
+    for f in (copy / PROJECTS).glob("*/.markers*"):
+        f.unlink()
+    model_uri, _ = split_location((copy / PROJECTS / "pt.up.feup.examschedule.model/.location").read_bytes())
+    ide_emf = model_uri.removeprefix("URI//").removesuffix("bundles/pt.up.feup.examschedule.model")
+    relocate(copy, ide_emf, "file:" + quote(str(emf)) + "/")
+    relocate(copy, "file:" + quote(str(ws)) + "/", "file:" + quote(str(copy)) + "/")  # hidden egit/jdt projects
+
+    log = scratch / "build.log"
+    with log.open("w") as out:
+        subprocess.run([INSTALL / "Eclipse.app/Contents/MacOS/eclipse", "-nosplash",
+                        "-application", "org.eclipse.jdt.apt.core.aptBuild",
+                        "-data", copy, "-configuration", config.as_uri() + "/", "-consoleLog"],
+                       stdout=out, stderr=subprocess.STDOUT, check=True)
+    print(f"build log: {log}", flush=True)
+    subprocess.run([sys.executable, tools / "eclipse-problems", copy], check=True)
+
+
+if __name__ == "__main__":
+    main()
