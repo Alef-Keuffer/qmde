@@ -56,4 +56,6 @@ Launch configurations (Run → Run Configurations, or External Tools for the `mv
 - **Run generated scripts**: runs every `out/*/solve_*.py` with `.venv`.
 - **Generate EMF and Xtext code (mvnw)** and **Build and run everything (mvnw)**: the Maven build, using Eclipse's own JDK.
 
+`./build.sh` passing does not mean the IDE is clean. `tools/headless-problems` (from a worktree, after `./build.sh generate-sources`) builds a copy of this workspace headlessly, prints its problems and exits non-zero on any error; `tools/eclipse-problems` prints the running IDE's Problems view. See `docs/adr/0008-check-ide-is-clean.md`.
+
 Regenerate code after editing an `.ecore` or `Exam.xtext` with the "Generate EMF and Xtext code" launch rather than the `.mwe2` workflows: ANTLR cannot handle the non-ASCII characters an absolute path may contain, and the Maven build passes it a relative one.

@@ -66,8 +66,9 @@ class EclipseProblemsTest(unittest.TestCase):
         d.mkdir(parents=True, exist_ok=True)
         (d / name).write_bytes(data)
 
-    def run_tool(self):
-        r = subprocess.run([sys.executable, TOOL, self.ws], capture_output=True, text=True, check=True)
+    def run_tool(self, status=0):
+        r = subprocess.run([sys.executable, TOOL, self.ws], capture_output=True, text=True)
+        self.assertEqual(r.returncode, status, r.stderr)
         lines = r.stdout.splitlines()
         self.assertRegex(lines[0], r"^snapshot: \d+s old")
         return lines[1:]
@@ -90,7 +91,7 @@ class EclipseProblemsTest(unittest.TestCase):
                    BEGIN + snap_entry("/p/A.java", [warn]) + END
                    + BEGIN + snap_entry("/p/A.java", [warn, err]) + snap_entry("/p/B.java", [task]) + END
                    + BEGIN + snap_entry("/p/A.java", [old]))  # unfinished chunk: ignored
-        self.assertEqual(self.run_tool(), [
+        self.assertEqual(self.run_tool(status=1), [
             "ERROR p A.java:4 boom",
             "WARNING p A.java:9 unused",
         ])
@@ -102,7 +103,7 @@ class EclipseProblemsTest(unittest.TestCase):
         os.utime(java, (2, 2))  # edited at 2 s, after the problem was created (1000 ms)
         self.write("p", ".markers.snap",
                    BEGIN + snap_entry("/p/A.java", [marker(JAVA, {"severity": 2, "message": "boom"}, 1000)]) + END)
-        self.assertEqual(self.run_tool(), ["ERROR p A.java boom (file edited since)"])
+        self.assertEqual(self.run_tool(status=1), ["ERROR p A.java boom (file edited since)"])
 
 
 if __name__ == "__main__":
