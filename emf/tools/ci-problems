@@ -1,0 +1,45 @@
+#!/bin/bash
+# Build this emf/ folder in a fresh Eclipse workspace on Linux and print the problems Eclipse finds.
+#
+# Usage: ci-problems eclipse-dir [scratch-dir]
+#     eclipse-dir  where Eclipse is, or is installed when missing (the CI caches it)
+#     scratch-dir  a new folder for the workspace (default: a temporary one)
+#
+# Output and exit status: as tools/eclipse-problems (1 if Eclipse reports any error).
+# Run ./build.sh generate-sources first, for src-gen/. Needs GTK 3: Xtext's builder loads SWT.
+#
+# headless-problems for machines without the Oomph IDE, such as GitHub Actions: Oomph has no
+# headless installer, so the p2 director installs every unit emf.setup names (the IDE's tools
+# and the target platform's units) into the Eclipse Modeling package, and import-projects/
+# imports the projects as Oomph's ProjectsImportTask does. The running platform serves as
+# target platform. Then, as headless-problems: aptBuild and eclipse-problems.
+set -euo pipefail
+emf=$(cd "$(dirname "$0")/.." && pwd)
+eclipse=$1
+scratch=${2:-$(mktemp -d)}
+release=$(grep -om1 'releases/[0-9]*-[0-9]*' "$emf/emf.setup" | cut -d/ -f2)
+
+if [ ! -x "$eclipse/eclipse" ]; then
+  mkdir -p "$eclipse"
+  curl -fsSL "https://download.eclipse.org/technology/epp/downloads/release/$release/R/eclipse-modeling-$release-R-linux-gtk-$(uname -m).tar.gz" |
+    tar -xz -C "$eclipse" --strip-components=1
+  # The director exits 0 when given no units, hence the assert.
+  units=$(python3 -c 'import sys, xml.etree.ElementTree as ET
+names = sorted({r.get("name") for r in ET.parse(sys.argv[1]).iter("requirement")})
+assert names, "no requirements in emf.setup"
+print(",".join(names))' "$emf/emf.setup")
+  "$eclipse/eclipse" -nosplash -application org.eclipse.equinox.p2.director \
+    -repository "https://download.eclipse.org/releases/$release" -installIU "$units"
+fi
+
+bundle=$eclipse/dropins/pt.up.feup.examschedule.tools
+rm -rf "$bundle"
+javac --release 21 -cp "$eclipse/plugins/*" -d "$bundle" "$emf/tools/import-projects/ImportProjects.java"
+cp -R "$emf/tools/import-projects/META-INF" "$emf/tools/import-projects/plugin.xml" "$bundle/"
+
+ws=$scratch/ws
+"$eclipse/eclipse" -nosplash -application pt.up.feup.examschedule.tools.importProjects -data "$ws" "$emf"
+echo "build log: $scratch/build.log"
+"$eclipse/eclipse" -nosplash -application org.eclipse.jdt.apt.core.aptBuild -data "$ws" -consoleLog \
+  > "$scratch/build.log" 2>&1 || { tail -50 "$scratch/build.log"; exit 1; }
+exec python3 "$emf/tools/eclipse-problems" "$ws"
