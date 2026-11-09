@@ -9,7 +9,7 @@ generate exam "https://pt/up/feup/examschedule/dsl/exam"
 
 ExamFile:
 	problem=Problem
-	solver=SolverConfig?;
+	solver=SolverConfig?
 
 Problem returns problem::Problem:
 	'problem' name=ID 'batches' nBatches=INT
