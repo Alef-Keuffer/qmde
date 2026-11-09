@@ -8,7 +8,8 @@ Usage: headless-problems [emf-dir] [scratch-dir]
                  worktree or an extract, not the checkout the IDE itself builds.
     scratch-dir  a new folder for the workspace copy (default: a temporary one)
 
-Output: as tools/eclipse-problems, read from the copy after the build.
+Output and exit status: as tools/eclipse-problems, read from the copy after the
+build (1 if Eclipse reports any error), so this says whether the IDE is clean.
 
 The running IDE is left alone: its workspace (~/eclipse/emf-qmde/ws) and
 configuration area are copied, the copy's projects are pointed at emf-dir, its
@@ -85,7 +86,7 @@ def main():
         shutil.rmtree(engine.with_name(engine.name + ".old"))
         shutil.copy2(scratch / "p2/profiles.info", info)
     print(f"build log: {log}", flush=True)
-    subprocess.run([sys.executable, tools / "eclipse-problems", copy], check=True)
+    sys.exit(subprocess.run([sys.executable, tools / "eclipse-problems", copy]).returncode)
 
 
 if __name__ == "__main__":
