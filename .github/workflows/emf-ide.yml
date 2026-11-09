@@ -1,0 +1,38 @@
+# Builds emf/ in a fresh Eclipse workspace and fails on any error the IDE would show (emf/tools/ci-problems).
+name: emf-ide
+
+on:
+  push:
+    branches: [main] # other branches are covered by their pull request
+    paths: ['emf/**', '.github/workflows/emf-ide.yml']
+  pull_request:
+    paths: ['emf/**', '.github/workflows/emf-ide.yml']
+
+jobs:
+  eclipse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30 # a cold run takes ~10 min; a hung Eclipse would otherwise hold the runner 6 h
+    defaults:
+      run:
+        working-directory: emf
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+      # Own key: generate-sources downloads less than the full build (emf.yml), whose cache it may start from.
+      - uses: actions/cache@v6
+        with:
+          path: ~/.m2
+          key: m2-ide-${{ hashFiles('emf/**/pom.xml', 'emf/releng/emf.target', 'emf/.mvn/**') }}
+          restore-keys: m2-
+      # On a miss, ci-problems installs Eclipse with every unit emf.setup names.
+      - uses: actions/cache@v6
+        with:
+          path: ~/eclipse
+          key: eclipse-${{ runner.arch }}-${{ hashFiles('emf/emf.setup') }}
+      # Xtext's builder activates org.eclipse.ui.ide, which loads SWT, even headless.
+      - run: sudo apt-get update -qq && sudo apt-get install -y libgtk-3-0t64
+      - run: ./build.sh generate-sources
+      - run: tools/ci-problems ~/eclipse
