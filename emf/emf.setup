@@ -37,6 +37,18 @@
       value="4g"
       vm="true"/>
   <setupTask
+      xsi:type="setup:PreferenceTask"
+      key="/instance/org.eclipse.core.resources/description.snapshotinterval"
+      value="10000">
+    <description>Snapshot markers every 10 s instead of 5 min, so tools/eclipse-problems sees the Problems view almost live.</description>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:PreferenceTask"
+      key="/instance/org.eclipse.core.resources/description.autobuilding"
+      value="true">
+    <description>Build automatically, so an edit's problems reach the Problems view (and tools/eclipse-problems) without a manual build.</description>
+  </setupTask>
+  <setupTask
       xsi:type="setup.p2:P2Task"
       label="emf IDE tools">
     <description>Editors for every artefact of the chain: Ecore (+ Ecore Tools diagrams), OCLinEcore, Xtext, MWE2, ATL, Acceleo 4, plus PDE and m2e.</description>
