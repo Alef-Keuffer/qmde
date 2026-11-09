@@ -58,4 +58,6 @@ Launch configurations (Run → Run Configurations, or External Tools for the `mv
 
 `./build.sh` passing does not mean the IDE is clean. `tools/headless-problems` (from a worktree, after `./build.sh generate-sources`) builds a copy of this workspace headlessly, prints its problems and exits non-zero on any error; `tools/eclipse-problems` prints the running IDE's Problems view. See `docs/adr/0008-check-ide-is-clean.md`.
 
+GitHub Actions runs the same check on every pull request touching `emf/**` (`.github/workflows/emf-ide.yml`), with `tools/ci-problems <eclipse-folder>` standing in for the Oomph IDE: it installs Eclipse Modeling plus every unit `emf.setup` names with the p2 director, imports the projects into a fresh workspace (`tools/import-projects`) and builds it as `headless-problems` does (see ADR-0008). The job runs `./build.sh generate-sources` first and caches `~/eclipse` per `emf.setup`, so editing `emf.setup` reinstalls it.
+
 Regenerate code after editing an `.ecore` or `Exam.xtext` with the "Generate EMF and Xtext code" launch rather than the `.mwe2` workflows: ANTLR cannot handle the non-ASCII characters an absolute path may contain, and the Maven build passes it a relative one.

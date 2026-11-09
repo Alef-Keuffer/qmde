@@ -10,4 +10,5 @@
 ## Consequences
 
 - The check needs the Oomph-provisioned IDE (`~/eclipse/emf-qmde`) and `./build.sh generate-sources` first; it takes ~15 s plus the copy.
+- CI has no Oomph IDE, and Oomph has no headless installer (its bundles declare only the `SetupArchiver` application; its tasks run in the workbench), nor does CDT 9.7 still ship the `headlessbuild -importAll` application, so `tools/ci-problems` provisions one with the p2 director from the units `emf.setup` names and imports the projects into a fresh workspace (`.github/workflows/emf-ide.yml`). Its target platform is the running platform, not a targlet. It printed the same grammar error (exit 1) with 0e463ab reverted, and no error (exit 0) without.
 - It builds a copy, so it works while the IDE is open, but writes `bin/` into the emf folder it checks: run it from a worktree, not the checkout the IDE builds.
