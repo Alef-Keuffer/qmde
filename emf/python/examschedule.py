@@ -4,6 +4,9 @@ Everything instance-specific -- the Solver Configuration, the Conflict Graph dat
 pyqubo formulation, compiled -- is generated from the models. This module holds only the generic
 parts: sampling the compiled model by simulated annealing or QAOA, decoding, the classical
 baseline, the report and writing the Schedule model (ADR-0005, ADR-0007).
+
+References: Paper = Zhou et al., Applied Soft Computing 184 (2025); Notebook = QuantumExamScheduling.ipynb;
+Farhi = arXiv:1411.4028; Lucas = arXiv:1302.5843; Glover = arXiv:1811.11538.
 """
 
 import itertools
@@ -68,6 +71,7 @@ def variables(problem):
 
 
 def schedule_of(problem, decoded):
+    """[Paper §5.5]: the batch of each exam read off X, x[i, k] = 1 iff exam i is in batch k + 1."""
     assignments = []
     for label in variables(problem):
         if decoded.sample[label]:
@@ -81,7 +85,9 @@ def schedule_of(problem, decoded):
 
 def penalty(problem, config):
     """A: the largest weight plus one unless set. An explicit A must exceed every weight, or breaking a
-    constraint can cost less than leaving an exam unscheduled (ADR-0009)."""
+    constraint can cost less than leaving an exam unscheduled (ADR-0009).
+    [Lucas §4.2]: "Choosing B < A ensures that it is never favorable to violate the constraint", per weight here.
+    [Glover §4, Comment on the Scalar Penalty P]: P large enough that a hard constraint is never broken."""
     largest = max(problem.weights)
     if config.penalty is None:
         return largest + 1
@@ -92,7 +98,7 @@ def penalty(problem, config):
 
 
 def anneal(problem, config, model, feed_dict):
-    """Simulated annealing on the BQM, as in the notebook."""
+    """[Notebook cell 15]: simulated annealing (neal) on the BQM, then pyqubo decodes every read."""
     bqm = model.to_bqm(feed_dict=feed_dict)
     sampleset = neal.SimulatedAnnealingSampler().sample(bqm, num_reads=config.reads, num_sweeps=config.sweeps,
                                                        seed=config.seed)
@@ -106,24 +112,28 @@ def bits_of(key, n):
 
 
 def qaoa(problem, config, model, feed_dict):
-    """QAOA (Farhi, Goldstone, Gutmann 2014) on the Ising form of the compiled model, simulated on Aer."""
+    """[Farhi Eqs. (1)-(8)]: QAOA on the Ising form of the compiled model, simulated on Aer, with C = H and
+    the expectation minimised, where Farhi maximises it."""
     labels = variables(problem)
     n = len(labels)
     qubit = {label: q for q, label in enumerate(labels)}
-    fields, couplings, _ = model.to_ising(feed_dict=feed_dict)  # pyqubo spins: s = 2x - 1
+    # [Lucas §2.3, Eq. (12)]: pyqubo's spins, x = (s + 1)/2, so s = 2x - 1.
+    fields, couplings, _ = model.to_ising(feed_dict=feed_dict)
     scale = max(abs(v) for v in (*fields.values(), *couplings.values()))  # normalise the angles
 
     gammas = ParameterVector("gamma", config.depth)
     betas = ParameterVector("beta", config.depth)
     qc = QuantumCircuit(n)
-    qc.h(range(n))  # uniform superposition, ground state of the mixer
+    qc.h(range(n))  # [Farhi Eq. (5)]: |s>, the uniform superposition, top eigenstate of the mixer B
+    # [Farhi Eq. (6)]: p alternating cost and mixer layers.
     for p in range(config.depth):
-        # Cost unitary exp(-i gamma H_C). On a qubit Z = 1 - 2x = -s, so a field h on s acts as -h on Z.
+        # [Farhi Eq. (2)]: cost layer U(C, gamma) = exp(-i gamma C), C = H/scale.
+        # [Lucas §1.1, Eq. (4)]: on a qubit Z = 1 - 2x = -s, so a field h on s acts as -h on Z.
         for label, h in fields.items():
             qc.rz(2 * gammas[p] * -h / scale, qubit[label])
         for (a, b), coupling in couplings.items():
             qc.rzz(2 * gammas[p] * coupling / scale, qubit[a], qubit[b])
-        # Mixer unitary exp(-i beta sum_i X_i).
+        # [Farhi Eqs. (3)-(4)]: mixer layer U(B, beta) = exp(-i beta B), B = sum_j X_j.
         for q in range(n):
             qc.rx(2 * betas[p], q)
     qc.measure_all()
@@ -138,6 +148,7 @@ def qaoa(problem, config, model, feed_dict):
         return simulator.run(bound, shots=config.shots).result().get_counts()
 
     def expected_energy(theta):
+        """[Farhi Eq. (7)]: F_p, the expectation of the cost in the state, estimated from the shots."""
         counts = sample(theta)
         rows = np.array([bits_of(key, n) for key in counts])
         energies = bqm.energies((rows, labels))
@@ -146,6 +157,7 @@ def qaoa(problem, config, model, feed_dict):
     # Linear ramp start (gamma grows, beta shrinks), a common annealing-inspired initialisation.
     ramp = (np.arange(config.depth) + 1) / (config.depth + 1)
     theta0 = np.concatenate([0.8 * ramp, 0.8 * (1 - ramp)])
+    # [Farhi Eq. (8)]: the classical loop optimises the 2p angles.
     result = minimize(expected_energy, theta0, method=SCIPY_METHODS[config.optimizer],
                       options={"maxiter": config.max_iterations})
     samples = []

@@ -2,7 +2,8 @@
 -- @nsURI Problem=https://pt/up/feup/examschedule/problem
 -- @nsURI ConflictGraph=https://pt/up/feup/examschedule/conflictgraph
 -- Problem -> Conflict Graph.
--- [Paper] = "Hybrid quantum annealing for large-scale exam scheduling", Applied Soft Computing 184.
+-- Paper: Z. Zhou et al., "Hybrid quantum annealing for large-scale exam scheduling", Applied Soft
+-- Computing 184 (2025); Glover: arXiv:1811.11538.
 module problem2conflictgraph;
 
 create OUT : ConflictGraph from IN : Problem;
@@ -11,10 +12,11 @@ rule Problem2ConflictGraph {
 	from
 		p : Problem!Problem
 	to
+		-- [Paper §5.2, Fig. 3]: the conflict graph G, exams as nodes and conflicts as edges.
 		g : ConflictGraph!ConflictGraph (
 			name <- p.name,
 			exams <- p.exams,
-			-- [Paper §3.2, Eq. (4)]: batches k = 1..M bound the schedule.
+			-- [Paper §5.3, Eq. (4)]: X has only M columns, so the M batches bound the schedule.
 			batches <- thisModule.range(p.nBatches)->collect(k | thisModule.NewBatch(k)),
 			conflicts <- p.exams->collect(a |
 					p.exams->select(b | p.exams->indexOf(a) < p.exams->indexOf(b) and a.sharesStudentWith(b))
@@ -26,9 +28,10 @@ rule Exam2Exam {
 	from
 		e : Problem!Exam
 	to
+		-- [Paper §5.2, Fig. 3]: each exam is a node of G.
 		x : ConflictGraph!Exam (
 			name <- e.name,
-			-- ADR-0009: the weight is the exam's priority, the cost of leaving it unscheduled.
+			-- [Glover §4.2]: the weight w_j of the set packing objective, the exam's priority (ADR-0009).
 			weight <- e.weight
 		)
 }
@@ -37,6 +40,7 @@ rule Exam2Exam {
 helper def : range(n : Integer) : Sequence(Integer) =
 	if n < 1 then Sequence{} else thisModule.range(n - 1)->append(n) endif;
 
+-- [Paper §5.3, Eq. (4)]: batch k is column k of X, k = 1..M.
 rule NewBatch(k : Integer) {
 	to
 		b : ConflictGraph!Batch (
@@ -47,11 +51,11 @@ rule NewBatch(k : Integer) {
 	}
 }
 
--- [Paper §3.2, Algorithm 1]: course conflict matrix C, C[i,j] = 1 iff some student
--- sits both exam i and exam j. Each unordered pair is emitted once, in problem order.
+-- [Paper §5.2, Algorithm 1, Eq. (3)]: C[i,j] = 1 iff some student sits both exam i and exam j.
 helper context Problem!Exam def : sharesStudentWith(other : Problem!Exam) : Boolean =
 	self.students->exists(s | other.students->includes(s));
 
+-- [Paper §5.2, Fig. 3]: one edge of G per pair with C[i,j] = 1, emitted once, in problem order.
 lazy rule Conflict {
 	from
 		a : Problem!Exam,

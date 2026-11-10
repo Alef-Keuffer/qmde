@@ -7,7 +7,7 @@ In the Exam-Slot Assignment Problem, a university needs to schedule its final ex
 
 Vocabulary is defined in `GLOSSARY.md`; architectural decisions are in `docs/adr/`.
 
-References: `./hybrid-quantum-annealing-for-large-scale-exam-scheduling.pdf` (formulation), `./QuantumExamScheduling.ipynb` (reference implementation), A. Lucas 2014 (Ising formulations), Farhi et al. 2014 (QAOA).
+References, with the key the code cites them by: Paper, `./hybrid-quantum-annealing-for-large-scale-exam-scheduling.pdf` (formulation); Notebook, `./QuantumExamScheduling.ipynb` (reference implementation); Lucas, A. Lucas 2014 (Ising formulations, arXiv:1302.5843); Glover, F. Glover et al. 2019 (QUBO penalties, arXiv:1811.11538); Farhi, Farhi et al. 2014 (QAOA, arXiv:1411.4028).
 
 ## Problem DSL
 
@@ -65,7 +65,7 @@ solve_<instance>.py: pyqubo formulation ─► compiled model
 - **Generated code** (ADR-0007, ADR-0009): the exam names, their weights, the batch count and the conflicts as data, then the notebook's formulation in structure: `x = Array.create('c', (n_lesson, n_batch), 'BINARY')`, `constraint1` (each exam in at most one batch, Σ_{k<l} x[i,k]·x[i,l]) and `constraint2` (conflicting exams never share a batch) as `for` loops of pyqubo `Constraint`s, `profit = −Σᵢ wᵢ Σₖ x[i,k]`, `H = profit + A * (constraint1 + constraint2)`, `model = H.compile()`. Constraint labels name the exams and batch.
 - **Runtime** (`python/examschedule.py`, ADR-0005): samples the compiled model by simulated annealing on `model.to_bqm()`, or by QAOA built from `model.to_ising()` (H, then p × [RZ/RZZ cost, RX mixer], measure; pyqubo's spin s = 2x − 1 is −Z on a qubit), decodes with `model.decode_sample(set)`, picks the lowest-energy sample, writes the Schedule and prints the report. It sets A to the largest weight plus one unless given, and rejects an explicit A ≤ the largest weight.
 - **Formulation check** in every run: a sample's energy equals minus the weight it places exactly when it breaks no constraint.
-- Every ATL rule and template section cites the reference it implements.
+- Every ATL rule, template section and runtime step of the formulation or of QAOA cites the reference it implements, next to it, as `[Key locator]` (e.g. `[Paper §5.3, Eq. (4)]`); departures from the paper cite their ADR.
 - Four metamodels: Problem, SolverConfig, ConflictGraph, Schedule — plus the small Xtext wrapper root for the `.exam` file.
 - **Schedule** (`schedule_<name>.xmi`): one assignment (exam → batch) per variable set to 1, the unscheduled exams and their cost, `feasible`, and the labels of the broken constraints; OCL keeps an exam from being both assigned and unscheduled. Whether it is optimal is reported, not stored (the baseline may be skipped). Written by the generated script; not yet OCL-validated by the chain.
 
