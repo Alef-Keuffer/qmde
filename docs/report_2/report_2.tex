@@ -59,7 +59,7 @@ unscheduled.
 
 Both chains follow \cref{fig:strategy}. The Problem is formulated as a QUBO over one Assignment Variable
 $x_{ik}$ per exam~$i$ and batch~$k$, $1$ when exam~$i$ is in batch~$k$ \cite[§5.3, Eq. (4)]{Paper}, with a
-penalty term per Constraint. A Method samples the QUBO, and the lowest-energy sample is decoded into a
+penalty per Constraint. A Method samples the QUBO, and the lowest-energy sample is decoded into a
 Schedule. Independently of the QUBO, a Baseline enumerates every schedule to find the optimal cost, and
 every sample, not only the best, is judged against it (\cref{sec:validation}).
 
@@ -79,8 +79,8 @@ conflicting exams in three batches (BESSER's \texttt{none}, EMF's \texttt{clique
 formulation accepts one Conflict, two exams in one batch; the weighted one leaves the lightest exam,
 Statistics, unscheduled at Cost~1.
 
-The paper samples its QUBO by hybrid quantum annealing on D-Wave hardware \cite{Paper}, as the reference
-notebook does \cite[cells 16--17]{Notebook}. Both chains sample it instead by simulated annealing, its
+The paper samples its QUBO by hybrid quantum annealing on D-Wave hardware \cite{Paper}; the reference
+notebook calls D-Wave's quantum annealer and its hybrid solver \cite[cells 16--17]{Notebook}. Both chains sample it instead by simulated annealing, its
 classical counterpart, as the notebook also does \cite[cell 15]{Notebook}: it needs no D-Wave account, so CI
 reproduces every run, and it gives QAOA, which a simulator limits to small instances, a yardstick on the same
 QUBO. Quantum annealing itself is issue~\#23.
@@ -128,7 +128,7 @@ settings, the seed and the Penalty Coefficient, automatic unless given (\cref{ap
 \paragraph{ATL.} An EMFTVM transformation makes the Problem a Conflict Graph \cite[§5.2, Fig. 3]{Paper}. It
 copies the exams with their weights, creates the $M$ batches, the columns of $x$
 \cite[§5.3, Eq. (4)]{Paper}, and adds one Conflict for each pair of exams that share a student, the
-contradiction matrix~$C$ of \cite[§5.2, Algorithm 1, Eq. (3)]{Paper}.
+paper's contradiction matrix~$C$ \cite[§5.2, Algorithm 1, Eq. (3)]{Paper}.
 
 \paragraph{Acceleo.} A template generates \texttt{solve\_<name>.py} from the Conflict Graph and the Solver
 Configuration: both as Python data, then the notebook's pyqubo construction \cite[cells 11--13]{Notebook}
@@ -144,9 +144,8 @@ $A$ to the largest weight plus one, or rejects an explicit $A$ not above every w
 runs dwave-neal on the compiled model, as the notebook does \cite[cell 15]{Notebook}. QAOA \cite{Farhi}
 builds the QAOA Circuit from the Ising form, with $p$ alternating cost and mixer layers on the uniform
 superposition \cite[Eqs. (2)--(6)]{Farhi}, runs it on Qiskit Aer \cite{Qiskit}, and lets a classical
-optimiser tune the $2p$ angles to minimise the expected energy \cite[Eqs. (7)--(8)]{Farhi}, starting on the
-annealing path \cite[§VI]{Farhi}. On every sample, the runtime checks the formulation: the energy is minus
-the weight placed exactly when no Constraint is broken. It decodes the lowest-energy sample into a Schedule
+optimiser tune the $2p$ angles to minimise the expected energy (Farhi et al.\ maximise theirs)
+\cite[Eqs. (7)--(8)]{Farhi}, starting on the annealing path \cite[§VI]{Farhi}. The runtime then decodes the lowest-energy sample into a Schedule
 model \cite[§5.5]{Paper}, runs the Baseline, and writes the run's results, from which \cref{app:results} is
 generated.
 
