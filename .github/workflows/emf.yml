@@ -33,5 +33,13 @@ jobs:
           key: m2-${{ hashFiles('emf/**/pom.xml', 'emf/releng/emf.target', 'emf/.mvn/**') }}
           restore-keys: m2-
       - run: ./build.sh
+      # Every run's results, for the tables of docs/report_2 and CONTEXT.md (docs/report_2/build.sh fetches them).
+      # Also when build.sh fails, so the scripts that ran leave their results for diagnosis.
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: emf-results
+          path: emf/out/*/results_*.json
+          if-no-files-found: error
       # build.sh created .venv with requirements.txt; the tools' tests need only the standard library.
       - run: .venv/bin/python -m unittest discover -s python && python3 -m unittest discover -s tools

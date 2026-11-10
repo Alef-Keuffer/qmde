@@ -1,0 +1,11 @@
+# latexmk's intermediate files; report_2.pdf is committed. (*.log is ignored at the root.)
+*-blx.bib
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.run.xml
+*.toc

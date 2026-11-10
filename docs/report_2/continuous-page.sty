@@ -1,0 +1,244 @@
+% continuous-page: the whole document is a single PDF page whose height
+% grows to fit the content. Requires LuaLaTeX ('preview''s tightpage
+% doesn't work with XeTeX). With variablewidth, the width settles after a
+% rerun; latexmk does this on its own.
+%
+% Options:
+%   textwidth=<dim>      text width; the maximum with variablewidth (16cm)
+%   marginwidth=<dim>    Sidenote margin width (5cm)
+%   marginsep=<dim>      gap between text and Sidenotes (0.8cm)
+%   border=<dim>         blank space around the cropped page (1cm)
+%   sidenotes=<bool>     false removes the margin; \sidenote then becomes
+%                        a \footnote (true)
+%   variablewidth=<bool> the page narrows to the widest line, up to
+%                        textwidth (true)
+%   backref=<bool>       with biblatex, bibliography entries list the
+%                        sections that cite them (true)
+%
+% Notes: \sidenote[<offset>]{...} in the margin, \footnote{...} at the
+% bottom of the page; see the NOTES section.
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
+\ProvidesPackage{continuous-page}[2026/11/05 v1.1 Single-page documents that grow to fit]
+
+\RequirePackage{iftex}
+\RequireLuaTeX
+
+%SECTION OPTIONS
+\newif\ifcp@sidenotes
+\newif\ifcp@variablewidth
+\newif\ifcp@backref
+\DeclareKeys{
+	backref.if           = cp@backref,
+	textwidth.store      = \cp@textwidth,
+	marginwidth.store    = \cp@marginwidth,
+	marginsep.store      = \cp@marginsep,
+	border.store         = \cp@border,
+	sidenotes.if         = cp@sidenotes,
+	variablewidth.if     = cp@variablewidth,
+}
+\SetKeys{textwidth=16cm, marginwidth=5cm, marginsep=0.8cm, border=1cm,
+	sidenotes=true, variablewidth=true, backref=true}
+\ProcessKeyOptions
+%!SECTION OPTIONS
+
+%SECTION PAGE
+% Using maxdimen so that we get as much continuous
+% page height as possible. Remember, it will be cropped.
+\RequirePackage{geometry}
+\geometry{paperheight=\maxdimen,paperwidth=80cm,textwidth=\cp@textwidth,
+	marginparwidth=\cp@marginwidth,marginparsep=\cp@marginsep,
+	left=2cm,top=2cm,bottom=3cm}
+\RequirePackage[active,tightpage]{preview}
+% This will determine margins. If not changed, the crop will be
+% super close to the size of the content (won't look good).
+\renewcommand{\PreviewBorder}{\cp@border}
+
+% Page numbers stop preview from cropping the page height.
+\pagestyle{empty}
+\let\ps@plain\ps@empty
+
+% TeX can't make a box taller than \maxdimen (~5.76m). Past that the build
+% produces an empty PDF, so we fail loudly a little before it.
+% Acrobat also refuses pages taller than 200in, so we warn past that.
+\newsavebox{\cp@box}
+\newdimen\cp@acrobatlimit \cp@acrobatlimit=14400bp
+\newdimen\cp@texlimit \cp@texlimit=16000pt
+
+% Variable width: Sidenotes are placed at \textwidth, so the text must be
+% typeset at the final width, not cropped to it afterwards. Each build
+% measures the widest line (continuous-page.lua) and saves it to the .aux;
+% the next build typesets at that width.
+\directlua{continuous_page = require("continuous-page")}
+\newdimen\cp@maxwidth
+\newcommand{\cp@setwidth}{%
+	\cp@maxwidth=\textwidth
+	\ifcp@variablewidth\ifdefined\cp@savedwidth\ifdim\cp@savedwidth<\cp@maxwidth
+		\setlength{\textwidth}{\cp@savedwidth}%
+		\hsize\textwidth \linewidth\textwidth \columnwidth\textwidth
+		\edef\marginnotetextwidth{\the\textwidth}%
+	\fi\fi\fi}
+
+\newcommand{\cp@start}{%
+	\begin{lrbox}{\cp@box}\begin{minipage}[t]{\textwidth}%
+	\setlength{\parskip}{0.5\baselineskip}\setlength{\parindent}{0pt}}
+\newcommand{\cp@end}{%
+	\cp@footnotes
+	\end{minipage}\end{lrbox}%
+	\ifcp@variablewidth
+		\edef\cp@newwidth{\directlua{continuous_page.width(\number\cp@box, \number\cp@maxwidth)}sp}%
+		\immediate\write\@mainaux{\gdef\string\cp@savedwidth{\cp@newwidth}}%
+		\ifdim\cp@newwidth=\textwidth\else
+			\PackageWarningNoLine{continuous-page}{%
+				Page width changed. Rerun to get it right}%
+		\fi
+	\fi
+	\ifdim\ht\cp@box>\cp@texlimit
+		\PackageError{continuous-page}{%
+			Content is taller than \the\cp@texlimit, TeX's limit for a
+			Continuous Page}{Shorten the document or split it into several
+			documents.}%
+	\else\ifdim\ht\cp@box>\cp@acrobatlimit
+		\PackageWarningNoLine{continuous-page}{%
+			Page is taller than 200in; Acrobat won't open it (other viewers
+			will)}%
+	\fi\fi
+	\noindent\begin{preview}%
+	% The kern makes the crop include the Sidenote margin.
+	\hbox{\usebox{\cp@box}\ifcp@sidenotes\kern\dimexpr\marginparsep+\marginparwidth\fi}%
+	\end{preview}}
+
+% The whole body goes into one box, so the page breaks nowhere.
+% marginnote places Sidenotes from the page's left edge, which the crop
+% moves to \PreviewBorder from the text.
+\AddToHook{begindocument/end}{%
+	\oddsidemargin=\dimexpr\PreviewBorder-1in\relax
+	\evensidemargin=\oddsidemargin
+	\cp@setwidth\cp@start}
+\AddToHook{enddocument}{\cp@end}
+
+% Floats can't live inside a box: figures and tables stay where they are written.
+\renewenvironment{figure}[1][]
+{\par\medskip\noindent\minipage{\linewidth}\def\@captype{figure}\centering}
+{\endminipage\par\medskip}
+\renewenvironment{table}[1][]
+{\par\medskip\noindent\minipage{\linewidth}\def\@captype{table}\centering}
+{\endminipage\par\medskip}
+
+% A Continuous Page has one page: page numbers in the contents are meaningless.
+% Patched at begindocument/end so it applies after hyperref's \contentsline.
+\AddToHook{begindocument/end}[continuous-page/toc]{%
+	\let\cp@contentsline\contentsline
+	\renewcommand{\contentsline}[4]{\cp@contentsline{#1}{#2}{}{#4}}}
+\DeclareHookRule{begindocument/end}{continuous-page/toc}{before}{continuous-page}
+%!SECTION PAGE
+
+%SECTION NOTES
+% \sidenote[<vertical offset>]{text}: a numbered note in the margin, level
+% with its line. Notes close together can overlap: nudge them with the
+% offset (e.g. \sidenote[1em]{...}). With sidenotes=false it is a \footnote.
+% \footnote{text}: a numbered note at the bottom of the Continuous Page.
+% Both share one numbering. With hyperref, each number in the text links
+% to its note and the note's number links back.
+\RequirePackage{marginnote}
+\newcounter{cpnote}
+\newsavebox{\cp@footins}
+
+% Links and anchors, which do nothing until hyperref is loaded.
+\newcommand{\cp@link}[2]{#2}
+\newcommand{\cp@target}[1]{}
+\AddToHook{begindocument/before}{%
+	\@ifpackageloaded{hyperref}{%
+		\renewcommand{\cp@link}[2]{\hyperlink{#1}{#2}}%
+		\renewcommand{\cp@target}[1]{\hypertarget{#1}{}}}{}%
+	\@ifpackageloaded{cleveref}{\crefname{cpnote}{note}{notes}}{}}
+
+% Steps the counter and puts the linked number in the text; \@thefnmark
+% becomes the note's own number, linking back.
+\newcommand{\cp@notemark}{%
+	\refstepcounter{cpnote}%
+	\cp@target{cp@noteref.\thecpnote}%
+	\cp@link{cp@note.\thecpnote}{\textsuperscript{\thecpnote}}%
+	\protected@edef\@thefnmark{%
+		\noexpand\cp@target{cp@note.\thecpnote}%
+		\noexpand\cp@link{cp@noteref.\thecpnote}{\thecpnote}}}
+
+\NewDocumentCommand{\sidenote}{O{0pt} +m}{%
+	\ifcp@sidenotes
+		\cp@notemark
+		\marginnote{\footnotesize\raggedright\textsuperscript{\@thefnmark}\,#2}[#1]%
+	\else
+		\footnote{#2}%
+	\fi}
+
+% Footnotes collect in \cp@footins, which \cp@end puts at the bottom.
+\AddToHook{begindocument/before}{%
+	\RenewDocumentCommand{\footnote}{+m}{%
+		\cp@notemark
+		\global\setbox\cp@footins\vbox{%
+			\unvbox\cp@footins
+			\reset@font\footnotesize
+			\hsize\columnwidth
+			\@parboxrestore
+			\color@begingroup
+			% article's footnote layout, without \@makefntext: hyperref
+			% would wrap the already linked number in a second link.
+			\parindent 1em\noindent
+			\hb@xt@1.8em{\hss\textsuperscript{\normalfont\@thefnmark}}%
+			\rule\z@\footnotesep\ignorespaces#1\@finalstrut\strutbox
+			\color@endgroup}}}
+\newcommand{\cp@footnotes}{%
+	\ifvoid\cp@footins\else
+		\par\vskip\skip\footins
+		\footnoterule
+		\unvbox\cp@footins
+	\fi}
+%!SECTION NOTES
+
+%SECTION BIBLIOGRAPHY BACKREFS
+% With biblatex and the backref option, each bibliography entry ends with
+% the sections that cite it ("(cited in §1, §3)"), each linking to the first
+% citation in that section. (biblatex's own backref lists pages, which are
+% all 1 here.) Rename with \renewcommand{\cpcitedinname}{citado em}.
+\newcommand{\cpcitedinname}{cited in}
+\newcommand{\cpcitedstartname}{the start}
+\newcount\cp@citecount
+
+% The innermost numbered section, or 0 before the first one.
+\newcommand{\cp@citesection}{%
+	\ifnum\value{subsection}>0 \thesubsection
+	\else\ifnum\value{section}>0 \thesection
+	\else 0\fi\fi}
+
+% Each citation writes \cp@citedin{<key>}{<section>}{<anchor>} to the .aux.
+\newcommand{\cp@cite}[1]{%
+	\global\advance\cp@citecount\@ne
+	\cp@target{cp@cite.\the\cp@citecount}%
+	\edef\cp@tmp{{#1}{\cp@citesection}{\the\cp@citecount}}%
+	\immediate\write\@mainaux{\string\cp@citedin\cp@tmp}}
+
+% Reading the .aux builds \cp@citedlist@<key>, one link per section.
+\newcommand{\cp@citedin}[3]{%
+	\ifcsname cp@cited@#1@#2\endcsname\else
+		\expandafter\gdef\csname cp@cited@#1@#2\endcsname{}%
+		\ifcsname cp@citedlist@#1\endcsname
+			\expandafter\g@addto@macro\csname cp@citedlist@#1\endcsname{, \cp@citedlink{#2}{#3}}%
+		\else
+			\expandafter\gdef\csname cp@citedlist@#1\endcsname{\cp@citedlink{#2}{#3}}%
+		\fi
+	\fi}
+\def\cp@zero{0}
+\newcommand{\cp@citedlink}[2]{%
+	\cp@link{cp@cite.#2}{\def\cp@sec{#1}%
+		\ifx\cp@sec\cp@zero\cpcitedstartname\else\S\,#1\fi}}
+
+\ifcp@backref
+	\AddToHook{begindocument/before}{%
+		\@ifpackageloaded{biblatex}{%
+			% So an .aux written with this package still loads without it.
+			\immediate\write\@mainaux{\string\providecommand\string\cp@citedin[3]{}}%
+			\AtEveryCitekey{\cp@cite{\thefield{entrykey}}}%
+			\renewbibmacro*{pageref}{%
+				\ifcsdef{cp@citedlist@\thefield{entrykey}}{%
+					\printtext[parens]{\cpcitedinname\addspace\csuse{cp@citedlist@\thefield{entrykey}}}}{}}}{}}
+\fi
+%!SECTION BIBLIOGRAPHY BACKREFS

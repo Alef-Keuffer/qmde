@@ -1,0 +1,238 @@
+% Part II report (Deliverable II.4) on a Continuous Page. Build it with ./build.sh, which first generates
+% generated/*.tex from the code and from CI; latexmk -lualatex report_2.tex alone reuses the committed ones.
+\documentclass{article}
+
+\usepackage[textwidth=16cm, marginwidth=5cm, marginsep=0.8cm,
+	sidenotes=true, variablewidth=true, backref=true]{continuous-page}
+
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, graphdrawing, arrows.meta, quotes}
+\usegdlibrary{layered}
+% BibTeX, not biber: TeX Live 2026's universal biber cannot unpack itself where lipo lacks -extract_family.
+\usepackage[style=numeric, backend=bibtex]{biblatex}
+\addbibresource{references.bib}
+\usepackage[pdfusetitle,hidelinks]{hyperref}
+\usepackage[capitalise]{cleveref}
+
+% \placeholder{<who it waits on>}{<what is missing>}{<notes>}: a coloured box where content is still
+% missing. Each is logged as "Placeholder: ...", so that ./build.sh final fails while any remains.
+\NewDocumentCommand{\placeholder}{m m +m}{%
+	\typeout{Placeholder: #2 (waits on #1)}%
+	\par\smallskip\noindent\fcolorbox{orange}{orange!8}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
+		\small\textbf{Missing: #2.} Waits on #1.\par #3}}\par\smallskip}
+
+% The metamodel diagrams of generated/metamodel-*.tex.
+\tikzset{
+	metamodel/.style={layered layout, level sep=1.2cm, sibling sep=1.8cm},
+	class/.style={draw, inner sep=0pt, font=\footnotesize},
+	contain/.style={{Diamond[]}-},
+	reference/.style={-{Straight Barb[]}, minimum layers=0}, % may join classes of one layer
+	role/.style={font=\scriptsize, auto, pos=0.6},
+}
+
+\title{Exam-Slot Assignment with QAOA and Simulated Annealing: Part~II}
+\author{Group G3: Alef Keuffer, Diogo Ferreira, Luis Arruda}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Strategy}\label{sec:strategy}
+
+Terms are those of the EMF chain's glossary, \texttt{emf/GLOSSARY.md}.\sidenote{BESSER's metamodels, from
+Part~I, call a Batch a \emph{TimeSlot} (or slot) and a feasible Schedule \emph{valid}.}
+
+\placeholder{the team}{The strategy, independent of either chain}{%
+\begin{itemize}[nosep]
+	\item The problem: exams into a fixed number of batches so that no student sits two exams of the same
+	      batch; an exam's weight is its priority.
+	\item The pipeline of \cref{fig:strategy}, shared by both chains.
+	\item The two formulations: the paper's \cite[§5.3, Eqs. (5)--(10)]{Paper} (each exam in exactly one
+	      batch, penalties only), which BESSER implements, and the weighted one (each exam in at most one
+	      batch, weights as priorities; \texttt{emf/docs/adr/0009}), which EMF implements. On four mutually
+	      conflicting exams in three batches (BESSER's \texttt{none}, EMF's \texttt{clique}) their optima
+	      differ: one conflict accepted, or Statistics left unscheduled at cost~1.
+	\item Why simulated annealing as well: the paper samples by quantum annealing on D-Wave hardware; the
+	      chains use its classical counterpart, as the notebook \cite[cell 15]{Notebook} does (quantum
+	      annealing itself is issue~\#23).
+\end{itemize}}
+
+\begin{figure}
+	\begin{tikzpicture}[node distance=6mm and 7mm, >={Stealth[]},
+			stage/.style={draw, rounded corners, align=center, text width=2.9cm, font=\small, inner sep=4pt},
+			flow/.style={font=\scriptsize, midway}]
+		\node[stage] (problem) {\textbf{Problem}\\\footnotesize students, exams and their weights, batches};
+		\node[stage, right=of problem] (qubo) {\textbf{QUBO}\\\footnotesize an Assignment Variable per
+			exam and batch, a penalty per Constraint};
+		\node[stage, right=of qubo] (method) {\textbf{Method}\\\footnotesize QAOA on a simulator, or
+			simulated annealing};
+		\node[stage, right=of method] (schedule) {\textbf{Schedule}\\\footnotesize the lowest-energy
+			sample, decoded};
+		\node[stage, below=of qubo] (baseline) {\textbf{Baseline}\\\footnotesize every schedule
+			enumerated: the optimal cost};
+		\node[stage, right=of baseline] (validation) {\textbf{Validation}\\\footnotesize P(optimal) and
+			P(feasible) against chance};
+		\draw[->] (problem) -- (qubo);
+		\draw[->] (qubo) -- (method);
+		\draw[->] (method) -- (schedule);
+		\draw[->] (problem) |- (baseline);
+		\draw[->] (baseline) -- (validation);
+		\draw[->] (method) -- node[flow, right] {every sample} (validation);
+		\draw[->] (schedule) |- (validation);
+	\end{tikzpicture}
+	\caption{The strategy of both chains: model the Problem, formulate it as a QUBO, sample it by a
+		Method, decode the lowest-energy sample into a Schedule, and judge every sample against a Baseline
+		that enumerates every schedule.}\label{fig:strategy}
+\end{figure}
+
+\section{EMF chain}\label{sec:emf}
+
+\placeholder{the team}{The EMF chain}{%
+\begin{itemize}[nosep]
+	\item Xtext: one \texttt{.exam} file holds a Problem and its Solver Configuration
+	      (\cref{app:instances}); every model is checked against its metamodel's OCL
+	      (\cref{app:metamodels}) between steps.
+	\item ATL (EMFTVM), Problem $\to$ Conflict Graph: an edge between two exams sharing a student
+	      \cite[§5.2, Algorithm 1]{Paper}.
+	\item Acceleo, Conflict Graph and Solver Configuration $\to$ \texttt{solve\_<name>.py}: the data, then
+	      the notebook's pyqubo formulation \cite{Notebook, pyqubo} made a weighted set packing
+	      \cite[§4.2]{Glover}.
+	\item The runtime samples the compiled model by simulated annealing or by QAOA \cite{Farhi} on Qiskit
+	      Aer \cite{Qiskit}, decodes the lowest-energy sample into a Schedule model and runs the Baseline.
+	\item Every rule, template section and runtime step cites its reference next to it, in the code;
+	      \cref{tab:traceability} lists them.
+\end{itemize}}
+
+\section{BESSER chain}\label{sec:besser}
+
+\placeholder{the BESSER rework}{The BESSER chain}{T1 (Problem $\to$ QUBO, rules R1--R6), T2 (QUBO $\to$
+QAOA circuit in BESSER's quantum metamodel, rules Q1--Q7), T3 (BESSER's \texttt{QiskitGenerator}) and the
+mapping of samples back to Schedules, with the reference of each rule. BESSER's code cites the paper as
+\texttt{[Zhou]}; with \texttt{[Paper \dots]} tags, \cref{app:traceability} could list its rules too.}
+
+\section{Validation}\label{sec:validation}
+
+\placeholder{the team}{How the chains are validated}{What every run measures: the Schedule found, whether
+it is feasible and optimal against the Baseline, P(optimal) and P(feasible) over every shot or read, and
+the odds of a uniformly random bit string, the bar a Method must clear. The EMF chain also checks its
+formulation in every run: a sample's energy is minus the weight it places exactly when it breaks no
+Constraint. Each chain is measured on its own instances (\cref{app:instances}); every run is in
+\cref{app:results}.}
+
+\input{generated/validation-emf}
+
+\placeholder{the BESSER rework}{The BESSER chain's table, P(optimal) against chance on its instances}{From
+\texttt{besser/output/<instance>/6\_validation.json} once the chain settles.}
+
+\section{Limitations}\label{sec:limitations}
+
+\placeholder{the team}{The limitations}{%
+\begin{itemize}[nosep]
+	\item QAOA is far behind simulated annealing (\cref{tab:validation-emf}), and only simulated, on at
+	      most 18 qubits.
+	\item The QAOA runtime starts from a fixed ramp of angles, which follows the annealing path only when
+	      $\gamma$ and $\beta$ have opposite signs; flipping the mixer's sign raised P(feasible) everywhere
+	      and P(optimal) in 8 of 9 cases (\texttt{docs/assets/grilling-report-2.md}, §6; not yet fixed).
+	\item The simulated annealing is classical: no quantum annealer was used (issue~\#23).
+	\item The Baseline enumerates every schedule, so validation stops at about $10^6$ schedules.
+	\item The Schedule the generated script writes is not validated against its metamodel's OCL.
+	\item The BESSER chain's own.
+\end{itemize}}
+
+\printbibliography
+
+\appendix
+
+\section{Rule-to-reference traceability}\label{app:traceability}
+
+\input{generated/traceability}
+
+\placeholder{the BESSER rework}{The BESSER chain's rules and their references}{Once its code cites
+\texttt{[Key locator]} as the EMF chain's does, \texttt{generate.py} can read it too.}
+
+\section{Full results}\label{app:results}
+
+\input{generated/results-emf}
+
+\begin{table}
+	\caption{The EMF chain with other QAOA settings, every one reaching the optimal cost. Measured on macOS
+		before \texttt{emf/requirements.txt} was pinned, so a rerun may differ in the second digit; copied by
+		hand from \texttt{emf/CONTEXT.md}. COBYLA stops well before 150 iterations (27 to 71 evaluations); a
+		Powell iteration is a line search over every angle (891 evaluations on cycle).}
+	\label{tab:other-settings-emf}
+	\footnotesize
+	\begin{tabular}{@{}lrlrr@{}}
+		\toprule
+		Instance & Variables & Method                                                & P(optimal) & P(feasible) \\
+		\midrule
+		path     & 8         & QAOA, depth 1, COBYLA, 150 iterations, 2048 shots      & 0.012      & 0.403       \\
+		path     & 8         & QAOA, depth 3, COBYLA, 150 iterations, 2048 shots      & 0.009      & 0.500       \\
+		path     & 8         & QAOA, depth 2, Nelder-Mead, 150 iterations, 2048 shots & 0.075      & 0.804       \\
+		cycle    & 15        & QAOA, depth 1, COBYLA, 150 iterations, 4096 shots      & 0.0007     & 0.006       \\
+		cycle    & 15        & QAOA, depth 3, COBYLA, 150 iterations, 4096 shots      & 0.039      & 0.451       \\
+		cycle    & 15        & QAOA, depth 2, Powell, 150 iterations, 4096 shots      & 0.132      & 0.512       \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\placeholder{the BESSER rework}{The BESSER chain's full results}{Every instance's metrics, from
+\texttt{besser/output/summary.md} or its JSONs.}
+
+\section{Metamodels}\label{app:metamodels}
+
+Containment is drawn with a diamond at the container, a reference with an open arrow; \textit{inv} names an
+OCL invariant.
+
+\input{generated/metamodel-problem}
+\input{generated/metamodel-solverconfig}
+\input{generated/metamodel-conflictgraph}
+\input{generated/metamodel-schedule}
+
+\placeholder{the BESSER rework}{The BESSER chain's metamodels}{Part~I's diagrams
+(\texttt{docs/imgs/problem-dsl-01.png}, \texttt{docs/imgs/solution-dsl-01.png}) once BESSER settles, with
+its Solver Configuration and quantum metamodels.}
+
+\section{Test instances}\label{app:instances}
+
+The EMF chain's instances, \texttt{emf/instances/}. Each has a twin, \texttt{<n>-<name>-qaoa.exam} or
+\texttt{<n>-<name>-annealing.exam}, holding the same problem solved by the other Method.
+
+\VerbatimInput[fontsize=\footnotesize, frame=topline, label=\texttt{1-path.exam}]{../../emf/instances/1-path.exam}
+\VerbatimInput[fontsize=\footnotesize, frame=topline, label=\texttt{2-cycle.exam}]{../../emf/instances/2-cycle.exam}
+\VerbatimInput[fontsize=\footnotesize, frame=topline, label=\texttt{3-clique.exam}]{../../emf/instances/3-clique.exam}
+\VerbatimInput[fontsize=\footnotesize, frame=topline, label=\texttt{4-semester.exam}]{../../emf/instances/4-semester.exam}
+
+\placeholder{the BESSER rework}{The BESSER chain's instances}{\texttt{besser/instances/}: tiny, many, none,
+medium and limit.}
+
+\section{Reproducing the results}\label{app:reproduce}
+
+\begin{itemize}
+	\item The EMF chain: \texttt{cd emf \&\& ./build.sh} (JDK 21+, Python 3.12) builds the chain and runs it
+	      on every instance, writing \texttt{emf/out/<name>/results\_<name>.json}. The Python packages,
+	      pyqubo \cite{pyqubo}, Qiskit and Qiskit Aer \cite{Qiskit} and dwave-neal among them, are pinned in
+	      \texttt{emf/requirements.txt}. CI runs the same on every push (\texttt{.github/workflows/emf.yml})
+	      and uploads the results as the \texttt{emf-results} artifact.
+	\item This report: \texttt{docs/report\_2/build.sh} (TeX Live, \texttt{gh}) fetches those results from
+	      CI, generates its tables, \cref{app:traceability} and the diagrams of \cref{app:metamodels}, and
+	      runs latexmk; it does not run the chains.
+	\item The LLM logs of Part~II:
+	      \href{https://github.com/Alef-Keuffer/qmde/blob/main/docs/llm_usage_2.md}{\texttt{docs/llm\_usage\_2.md}},
+	      with the session records it links in \texttt{docs/assets/}, and
+	      \href{https://github.com/Alef-Keuffer/qmde/blob/main/besser/docs/llm_usage_2.md}{\texttt{besser/docs/llm\_usage\_2.md}}.
+\end{itemize}
+
+\placeholder{the BESSER rework}{How to reproduce the BESSER chain's results}{\texttt{besser/README.md}'s
+commands, once the chain settles.}
+
+\end{document}

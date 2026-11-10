@@ -1,0 +1,12 @@
+// 4-semester.exam solved by QAOA instead: keep the two files' problems identical.
+// Q16 (iv): six exams of a semester, three batches. Feasible.
+problem semester_qaoa batches 3
+students Ana Rui Eva Ivo Lia Tom
+exam Algebra     weight 3 { Ana Rui }
+exam Calculus    weight 3 { Rui Eva Tom }
+exam Physics     weight 2 { Ana Eva }
+exam Chemistry   weight 2 { Ivo Lia }
+exam Programming weight 1 { Lia Tom }
+exam Databases   weight 1 { Ivo Ana }
+
+solver { method QAOA depth 2 optimizer COBYLA iterations 150 shots 4096 seed 7 }

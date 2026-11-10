@@ -1,0 +1,11 @@
+// 3-clique.exam solved by QAOA instead: keep the two files' problems identical.
+// Q16 (iii): four exams that all conflict, three batches. No schedule places them all: the
+// lowest-weight exam, Statistics, is left unscheduled, at cost 1 (ADR-0009).
+problem clique_qaoa batches 3
+students Ana Rui Eva
+exam Algebra    weight 4 { Ana Rui Eva }
+exam Calculus   weight 3 { Ana Rui Eva }
+exam Physics    weight 2 { Ana Rui Eva }
+exam Statistics weight 1 { Ana Rui Eva }
+
+solver { method QAOA depth 2 optimizer COBYLA iterations 150 shots 4096 seed 7 }

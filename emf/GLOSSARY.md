@@ -69,6 +69,7 @@ _Avoid_: ansatz, program, quantum model
 
 **Simulated Annealing**:
 The classical sampler the notebook uses (`neal`): a number of reads, each a run of a number of sweeps.
+_Avoid_: quantum annealing (the paper's D-Wave hardware, which the chain does not use)
 
 ### Solution
 

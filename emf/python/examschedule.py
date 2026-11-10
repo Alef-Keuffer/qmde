@@ -4,12 +4,16 @@ Everything instance-specific -- the Solver Configuration, the Conflict Graph dat
 pyqubo formulation, compiled -- is generated from the models. This module holds only the generic
 parts: sampling the compiled model by simulated annealing or QAOA, decoding, the classical
 baseline, the report and writing the Schedule model (ADR-0005, ADR-0007).
+
+References: Paper = Zhou et al., Applied Soft Computing 184 (2025); Notebook = QuantumExamScheduling.ipynb;
+Farhi = arXiv:1411.4028; Lucas = arXiv:1302.5843; Glover = arXiv:1811.11538.
 """
 
 import itertools
+import json
 import re
 import sys
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from xml.sax.saxutils import escape, quoteattr
 
@@ -68,6 +72,7 @@ def variables(problem):
 
 
 def schedule_of(problem, decoded):
+    """[Paper §5.5]: the batch of each exam read off X, x[i, k] = 1 iff exam i is in batch k + 1."""
     assignments = []
     for label in variables(problem):
         if decoded.sample[label]:
@@ -81,7 +86,9 @@ def schedule_of(problem, decoded):
 
 def penalty(problem, config):
     """A: the largest weight plus one unless set. An explicit A must exceed every weight, or breaking a
-    constraint can cost less than leaving an exam unscheduled (ADR-0009)."""
+    constraint can cost less than leaving an exam unscheduled (ADR-0009).
+    [Lucas §4.2]: "Choosing B < A ensures that it is never favorable to violate the constraint", per weight here.
+    [Glover §4, Comment on the Scalar Penalty P]: P large enough that a hard constraint is never broken."""
     largest = max(problem.weights)
     if config.penalty is None:
         return largest + 1
@@ -92,7 +99,7 @@ def penalty(problem, config):
 
 
 def anneal(problem, config, model, feed_dict):
-    """Simulated annealing on the BQM, as in the notebook."""
+    """[Notebook cell 15]: simulated annealing (neal) on the BQM, then pyqubo decodes every read."""
     bqm = model.to_bqm(feed_dict=feed_dict)
     sampleset = neal.SimulatedAnnealingSampler().sample(bqm, num_reads=config.reads, num_sweeps=config.sweeps,
                                                        seed=config.seed)
@@ -106,24 +113,28 @@ def bits_of(key, n):
 
 
 def qaoa(problem, config, model, feed_dict):
-    """QAOA (Farhi, Goldstone, Gutmann 2014) on the Ising form of the compiled model, simulated on Aer."""
+    """[Farhi Eqs. (1)-(8)]: QAOA on the Ising form of the compiled model, simulated on Aer, with C = H and
+    the expectation minimised, where Farhi maximises it."""
     labels = variables(problem)
     n = len(labels)
     qubit = {label: q for q, label in enumerate(labels)}
-    fields, couplings, _ = model.to_ising(feed_dict=feed_dict)  # pyqubo spins: s = 2x - 1
+    # [Lucas §2.3, Eq. (12)]: pyqubo's spins, x = (s + 1)/2, so s = 2x - 1.
+    fields, couplings, _ = model.to_ising(feed_dict=feed_dict)
     scale = max(abs(v) for v in (*fields.values(), *couplings.values()))  # normalise the angles
 
     gammas = ParameterVector("gamma", config.depth)
     betas = ParameterVector("beta", config.depth)
     qc = QuantumCircuit(n)
-    qc.h(range(n))  # uniform superposition, ground state of the mixer
+    qc.h(range(n))  # [Farhi Eq. (5)]: |s>, the uniform superposition, top eigenstate of the mixer B
+    # [Farhi Eq. (6)]: p alternating cost and mixer layers.
     for p in range(config.depth):
-        # Cost unitary exp(-i gamma H_C). On a qubit Z = 1 - 2x = -s, so a field h on s acts as -h on Z.
+        # [Farhi Eq. (2)]: cost layer U(C, gamma) = exp(-i gamma C), C = H/scale.
+        # [Lucas §1.1, Eq. (4)]: on a qubit Z = 1 - 2x = -s, so a field h on s acts as -h on Z.
         for label, h in fields.items():
             qc.rz(2 * gammas[p] * -h / scale, qubit[label])
         for (a, b), coupling in couplings.items():
             qc.rzz(2 * gammas[p] * coupling / scale, qubit[a], qubit[b])
-        # Mixer unitary exp(-i beta sum_i X_i).
+        # [Farhi Eqs. (3)-(4)]: mixer layer U(B, beta) = exp(-i beta B), B = sum_j X_j.
         for q in range(n):
             qc.rx(2 * betas[p], q)
     qc.measure_all()
@@ -138,6 +149,7 @@ def qaoa(problem, config, model, feed_dict):
         return simulator.run(bound, shots=config.shots).result().get_counts()
 
     def expected_energy(theta):
+        """[Farhi Eq. (7)]: F_p, the expectation of the cost in the state, estimated from the shots."""
         counts = sample(theta)
         rows = np.array([bits_of(key, n) for key in counts])
         energies = bqm.energies((rows, labels))
@@ -146,6 +158,7 @@ def qaoa(problem, config, model, feed_dict):
     # Linear ramp start (gamma grows, beta shrinks), a common annealing-inspired initialisation.
     ramp = (np.arange(config.depth) + 1) / (config.depth + 1)
     theta0 = np.concatenate([0.8 * ramp, 0.8 * (1 - ramp)])
+    # [Farhi Eq. (8)]: the classical loop optimises the 2p angles.
     result = minimize(expected_energy, theta0, method=SCIPY_METHODS[config.optimizer],
                       options={"maxiter": config.max_iterations})
     samples = []
@@ -156,15 +169,22 @@ def qaoa(problem, config, model, feed_dict):
     return samples, description, config.shots
 
 
-def optimal_cost(problem):
-    """Classical baseline straight from the problem data: the least cost of any feasible schedule."""
+def feasible_costs(problem):
+    """Classical baseline straight from the problem data: the cost of every feasible schedule, None above the
+    limit. Each feasible schedule is exactly one bit string, so their count over 2^n is random guessing's odds."""
     n = len(problem.exams)
     if (problem.n_batches + 1) ** n > BASELINE_LIMIT:
         return None
     # batch[i] is exam i's batch, or None when it is unscheduled
-    return min(sum(w for w, b in zip(problem.weights, batch) if b is None)
-               for batch in itertools.product((None, *range(problem.n_batches)), repeat=n)
-               if all(batch[i] is None or batch[i] != batch[j] for i, j in problem.conflicts))
+    return [sum(w for w, b in zip(problem.weights, batch) if b is None)
+            for batch in itertools.product((None, *range(problem.n_batches)), repeat=n)
+            if all(batch[i] is None or batch[i] != batch[j] for i, j in problem.conflicts)]
+
+
+def optimal_cost(problem):
+    """The least cost of any feasible schedule, None when the baseline is skipped."""
+    costs = feasible_costs(problem)
+    return None if costs is None else min(costs)
 
 
 def solve(problem, config, model):
@@ -187,13 +207,25 @@ def solve(problem, config, model):
 
     best, count = min(samples, key=lambda s: s[0].energy)
     schedule = schedule_of(problem, best)
-    optimum = optimal_cost(problem)
+    costs = feasible_costs(problem)
+    optimum = None if costs is None else min(costs)
     schedules = [(schedule_of(problem, d), c) for d, c in samples]
     feasible_count = sum(c for s, c in schedules if s.feasible)
     optimal_count = sum(c for s, c in schedules if is_optimal(s, optimum))
     report(problem, description, feed_dict["A"], schedule, best.energy, count, total, optimum,
            optimal_count, feasible_count)
     write_schedule(problem, schedule)
+    bit_strings = 2 ** len(variables(problem))
+    write_results(problem, {
+        "instance": problem.name, "variables": len(variables(problem)), "solver": asdict(config),
+        "description": description, "penalty": feed_dict["A"],
+        "schedule": {"assignments": schedule.assignments, "unscheduled": schedule.unscheduled,
+                     "cost": schedule.cost, "feasible": schedule.feasible, "broken": schedule.broken},
+        "energy": best.energy, "found": count, "samples": total,
+        "optimal_cost": optimum, "optimal": None if optimum is None else is_optimal(schedule, optimum),
+        "p_optimal": None if optimum is None else optimal_count / total, "p_feasible": feasible_count / total,
+        "random_p_optimal": None if costs is None else costs.count(optimum) / bit_strings,
+        "random_p_feasible": None if costs is None else len(costs) / bit_strings})
 
 
 def is_optimal(schedule, optimum):
@@ -234,4 +266,11 @@ def write_schedule(problem, schedule, path=None):
         lines.append(f'  <brokenConstraints>{escape(label)}</brokenConstraints>')
     lines.append('</schedule:Schedule>')
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"  wrote {path}")
+
+
+def write_results(problem, results, path=None):
+    """Write the run's report as JSON, for the tables of the report (docs/report_2) and CONTEXT.md."""
+    path = Path(path or f"results_{problem.name}.json")
+    path.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
     print(f"  wrote {path}")
