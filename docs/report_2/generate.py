@@ -225,9 +225,10 @@ def class_diagram(path):
     return "\n".join([r"\begin{tikzpicture}[metamodel]", *nodes, r"\end{tikzpicture}"])
 
 
-def splice(text, block, begin="<!-- results:begin -->", end="<!-- results:end -->"):
-    """text with what lies between the markers replaced by block, between blank lines (a Markdown table would
-    otherwise take the end marker for one of its rows)."""
+def splice(text, block):
+    """text with what lies between the results markers replaced by block, between blank lines (a Markdown table
+    would otherwise take the end marker for one of its rows)."""
+    begin, end = "<!-- results:begin -->", "<!-- results:end -->"
     head, rest = text.split(begin)
     _, tail = rest.split(end)
     return f"{head}{begin}\n\n{block}\n\n{end}{tail}"
@@ -300,7 +301,7 @@ def validation_table(runs, run_url):
         placeholder,
         r"\begin{table}",
         r"\caption{P(optimal) of the EMF chain on each test instance (\cref{app:instances}) by Method, against a "
-        r"uniformly random bit string's; in brackets, how many times chance. Settings in \cref{tab:results-emf}; "
+        r"uniformly random bit string's; in brackets, how many times chance. Solver Configurations in \cref{tab:results-emf}; "
         rf"from {origin}.}}\label{{tab:validation-emf}}",
         r"\begin{tabular}{@{}lrrrr@{}}",
         r"\toprule",

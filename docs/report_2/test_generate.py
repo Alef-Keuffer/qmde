@@ -6,10 +6,12 @@ from pathlib import Path
 
 import generate
 
+TMP = tempfile.TemporaryDirectory()  # removed when the tests exit
+
 
 def written(suffix, text):
     """A temporary file holding text, whose suffix picks the language."""
-    path = Path(tempfile.mkdtemp()) / f"source{suffix}"
+    path = Path(tempfile.mkdtemp(dir=TMP.name)) / f"source{suffix}"
     path.write_text(text, encoding="utf-8")
     return path
 
@@ -98,11 +100,11 @@ def result(instance, method, p_optimal, unscheduled=(), cost=0, optimizer="COBYL
 class ResultsTest(unittest.TestCase):
 
     def setUp(self):
-        self.instances = Path(tempfile.mkdtemp())
+        self.instances = Path(tempfile.mkdtemp(dir=TMP.name))
         for name, problem in [("1-clique.exam", "clique"), ("1-clique-qaoa.exam", "clique_qaoa"),
                               ("2-path.exam", "path")]:
             (self.instances / name).write_text(f"// a comment\nproblem {problem} batches 3\n", encoding="utf-8")
-        self.results = Path(tempfile.mkdtemp())
+        self.results = Path(tempfile.mkdtemp(dir=TMP.name))
         for run in [result("path", "QAOA", 0.000244140625, optimizer="NELDER_MEAD"),
                     result("clique_qaoa", "QAOA", 0.0419921875, ["Statistics"], 1.0),
                     result("clique", "ANNEALING", 0.94, ["Statistics"], 1.0)]:
