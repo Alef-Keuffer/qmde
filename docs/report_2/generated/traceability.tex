@@ -34,6 +34,7 @@ Unit & What it implements, as its comment says \\
 \texttt{qaoa} & \cite[Eq. (2)]{Farhi}: cost layer U(C, gamma) = exp(-i gamma C), C = H/scale. \cite[§1.1, Eq. (4)]{Lucas}: on a qubit Z = 1 - 2x = -s, so a field h on s acts as -h on Z. \\
 \texttt{qaoa} & \cite[Eqs. (3)--(4)]{Farhi}: mixer layer U(B, beta) = exp(-i beta B), B = sum\_j X\_j. \\
 \texttt{expected\_energy} & \cite[Eq. (7)]{Farhi}: F\_p, the expectation of the cost in the state, estimated from the shots. \\
+\texttt{qaoa} & \cite[§VI]{Farhi}: a linear ramp (gamma grows, |beta| shrinks) on the Trotterised adiabatic path from |s>, the top of B, to the top of -C, the minimum of C; with the cost layer exp(-i gamma C), that path has gamma and beta of opposite signs. \\
 \texttt{qaoa} & \cite[Eq. (8)]{Farhi}: the classical loop optimises the 2p angles. \\
 \bottomrule
 \end{tabularx}
