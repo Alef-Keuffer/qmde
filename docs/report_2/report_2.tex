@@ -142,7 +142,7 @@ Constraint. Each chain is measured on its own instances (\cref{app:instances}); 
 	      most 18 qubits.
 	\item QAOA starts from a fixed ramp of angles on the annealing path \cite[§VI]{Farhi}, not set by the
 	      Solver Configuration. From there a deeper circuit raises P(feasible) on path and cycle, but
-	      P(optimal) stays between 0.028 and 0.062 whatever the depth or optimiser
+	      there P(optimal) stays between 0.028 and 0.062 whatever the depth or optimiser
 	      (\cref{tab:results-emf,tab:other-settings-emf}): the extra feasible schedules leave an exam out.
 	\item The simulated annealing is classical: no quantum annealer was used (issue~\#23).
 	\item The Baseline enumerates every schedule, so validation stops at about $10^6$ schedules.
