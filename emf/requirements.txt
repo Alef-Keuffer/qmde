@@ -1,6 +1,21 @@
-qiskit>=2.0
-qiskit-aer>=0.17
-scipy>=1.13
-numpy>=1.26
-pyqubo>=1.5
-dwave-neal>=0.6
+# Exact versions (pip freeze, Python 3.12) so the results in CONTEXT.md reproduce.
+# Direct dependencies: qiskit, qiskit-aer, scipy, numpy, pyqubo, dwave-neal; the rest is what they pull in.
+Deprecated==3.0.1
+dill==0.4.1
+dimod==0.12.23
+dwave-neal==0.6.0
+dwave-samplers==1.8.0
+networkx==3.7
+numpy==2.5.4
+psutil==7.2.2
+pyqubo==1.5.0
+python-dateutil==4.0.0
+qiskit==2.6.2
+qiskit-aer==0.18.2
+rustworkx==0.18.1
+scipy==1.18.1
+six==1.17.0
+stevedore==5.9.1
+typing_extensions==4.16.0
+tzdata==2026.6
+wrapt==2.5.2

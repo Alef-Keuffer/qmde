@@ -33,3 +33,5 @@ jobs:
           key: m2-${{ hashFiles('emf/**/pom.xml', 'emf/releng/emf.target', 'emf/.mvn/**') }}
           restore-keys: m2-
       - run: ./build.sh
+      # build.sh created .venv with requirements.txt; the tools' tests need only the standard library.
+      - run: .venv/bin/python -m unittest discover -s python && python3 -m unittest discover -s tools

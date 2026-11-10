@@ -20,7 +20,7 @@ The priority of an exam: the cost of leaving it unscheduled. Always positive; 1 
 _Avoid_: profit, importance
 
 **Batch**:
-One of a fixed number of exam periods; all exams in the same batch take place simultaneously.
+One of a fixed number of exam periods; all exams in the same batch take place simultaneously. The "slot" in the problem's name, Exam-Slot Assignment, is a batch.
 _Avoid_: slot, time slot, TimeSlot, period
 
 ### Conflict Graph
