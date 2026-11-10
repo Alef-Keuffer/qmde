@@ -156,8 +156,10 @@ def qaoa(problem, config, model, feed_dict):
         return float(np.dot(energies, list(counts.values()))) / config.shots
 
     # Linear ramp start (gamma grows, beta shrinks), a common annealing-inspired initialisation.
+    # [Farhi §VI]: the Trotterised adiabatic path climbs from |s>, the top of B, to the top of C = -H; with the
+    # cost layer exp(-i gamma H), that path has gamma and beta of opposite signs.
     ramp = (np.arange(config.depth) + 1) / (config.depth + 1)
-    theta0 = np.concatenate([0.8 * ramp, 0.8 * (1 - ramp)])
+    theta0 = np.concatenate([0.8 * ramp, -0.8 * (1 - ramp)])
     # [Farhi Eq. (8)]: the classical loop optimises the 2p angles.
     result = minimize(expected_energy, theta0, method=SCIPY_METHODS[config.optimizer],
                       options={"maxiter": config.max_iterations})
