@@ -34,7 +34,9 @@ jobs:
           restore-keys: m2-
       - run: ./build.sh
       # Every run's results, for the tables of docs/report_2 and CONTEXT.md (docs/report_2/build.sh fetches them).
+      # Also when build.sh fails, so the scripts that ran leave their results for diagnosis.
       - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
         with:
           name: emf-results
           path: emf/out/*/results_*.json
