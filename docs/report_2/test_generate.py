@@ -36,10 +36,19 @@ rule R {
 
 -- [Paper §5.3, Eq. (4)]: batch k.
 lazy rule NewBatch {
+}
+
+unique lazy rule Conflict {
+	-- [Paper §5.3, Eq. (5)]: one conflict per pair.
+}
+
+-- [Lucas §4.2]: after the last rule.
 """)
         self.assertEqual(generate.citations(path), [
             ("rule R", "[Paper §5.2, Fig. 3]: the graph G, one node per exam [Glover §4.2]."),
             ("lazy rule NewBatch", "[Paper §5.3, Eq. (4)]: batch k."),
+            ("unique lazy rule Conflict", "[Paper §5.3, Eq. (5)]: one conflict per pair."),
+            ("module", "[Lucas §4.2]: after the last rule."),
         ])
 
     def test_template_comment_belongs_to_the_names_assigned_after_it(self):
@@ -76,13 +85,27 @@ def qaoa(p):
     # layers [Lucas §2.3].
     def expected_energy():
         """[Farhi Eq. (7)]: F_p."""
+
+
+class Schedule:
+    """[Paper §5.5]: the decoded schedule."""
+
+    async def sample(self):
+        # [Notebook cell 15]: annealing
+        pass
 ''')
         self.assertEqual(generate.citations(path), [
             ("penalty", 'A: the largest weight plus one. [Lucas §4.2]: "Choosing B < A".'),
             ("qaoa", "[Farhi Eq. (5)]: |s>"),
             ("qaoa", "[Farhi Eq. (6)]: p alternating layers [Lucas §2.3]."),
             ("expected_energy", "[Farhi Eq. (7)]: F_p."),
+            ("Schedule", "[Paper §5.5]: the decoded schedule."),
+            ("sample", "[Notebook cell 15]: annealing"),
         ])
+
+    def test_python_module_docstring_belongs_to_the_module(self):
+        path = written(".py", '"""The runtime [Paper §5.5]."""\n')
+        self.assertEqual(generate.citations(path), [("module", "The runtime [Paper §5.5].")])
 
 
 def result(instance, method, p_optimal, unscheduled=(), cost=0, optimizer="COBYLA"):

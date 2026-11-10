@@ -35,7 +35,8 @@ SOURCES = [  # what Appendix A reads: (artefact, file, what it does)
 
 KEYS = ("Paper", "Notebook", "Farhi", "Lucas", "Glover")  # bib keys = the code's citation tags
 TAG = re.compile(r"\[(%s)(?: ([^\]]*))?\]" % "|".join(KEYS))  # [Key locator]
-ATL_UNIT = re.compile(r"^(lazy rule|rule) (\w+)|^helper\b.*\bdef\s*:\s*(\w+)")
+ATL_UNIT = re.compile(r"^((?:(?:unique|lazy|abstract|refining|nodefault|entrypoint|endpoint) )*rule) (\w+)"
+                      r"|^helper\b.*\bdef\s*:\s*(\w+)")
 
 
 def comment_blocks(lines, marker):
@@ -52,11 +53,13 @@ def comment_blocks(lines, marker):
 
 
 def atl_unit(lines, first, last):
-    """An indented comment belongs to the enclosing rule, one at column 0 to the next rule or helper."""
+    """An indented comment belongs to the enclosing rule, one at column 0 to the next rule or helper, and one
+    with neither to the module."""
     candidates = reversed(lines[:first]) if lines[first][0].isspace() else lines[last + 1:]
     for line in candidates:
         if m := ATL_UNIT.match(line):
             return f"{m[1]} {m[2]}" if m[1] else f"helper {m[3]}"
+    return "module"
 
 
 def template_unit(lines, last):
@@ -73,14 +76,17 @@ def template_unit(lines, last):
 
 def python_blocks(text):
     """(unit, text) of every docstring and comment block, a trailing comment being a block of its own;
-    the unit is the innermost function around it."""
-    defs = [n for n in ast.walk(ast.parse(text)) if isinstance(n, ast.FunctionDef)]
+    the unit is the innermost function or class around it."""
+    tree = ast.parse(text)
+    defs = [n for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))]
 
     def unit(line):
         inner = max((d for d in defs if d.lineno <= line <= d.end_lineno), key=lambda d: d.lineno, default=None)
         return inner.name if inner else "module"
 
     blocks = [(d.lineno, d.name, " ".join(ast.get_docstring(d).split())) for d in defs if ast.get_docstring(d)]
+    if doc := ast.get_docstring(tree):
+        blocks.append((0, "module", " ".join(doc.split())))
     runs = []  # [first line, last line, own line?, comments]
     for token in tokenize.generate_tokens(io.StringIO(text).readline):
         if token.type != tokenize.COMMENT:
@@ -278,7 +284,7 @@ def source(run_url):
         return rf"\href{{{run_url}}}{{CI run {run_url.rsplit('/', 1)[1]}}}", ""
     return "a local run", (r"\placeholder{CI}{These EMF numbers come from a local run, not from CI}{Once CI has "
                            r"uploaded an \texttt{emf-results} artifact (push \#24 and \#25), rerun \texttt{build.sh}, "
-                           r"or \texttt{build.sh --run <id>} for a pull request's run.}")
+                           r"or \texttt{build.sh --run <id>} for another branch's run.}")
 
 
 def times_chance(run):
