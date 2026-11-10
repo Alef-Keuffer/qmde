@@ -1,11 +1,13 @@
 {
-  // The Java language server would import emf/'s bundles as Maven projects and rewrite their .project files (#7);
-  // the first four patterns are its defaults.
+  // The Java language server would import emf/'s bundles as Maven projects and rewrite their .project files (#7).
+  // **/emf too: emf/pom.xml lists every bundle, so importing it imports them all; the first four patterns are the defaults.
+  "java.import.maven.enabled": false,
   "java.import.exclusions": [
     "**/node_modules/**",
     "**/.metadata/**",
     "**/archetype-resources/**",
     "**/META-INF/maven/**",
+    "**/emf",
     "**/emf/**"
   ]
 }
