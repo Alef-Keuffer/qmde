@@ -1,3 +1,7 @@
+---
+status: superseded by ADR-0009
+---
+
 # Follow the paper: every exam in exactly one batch, no weights
 
 We drop exam weights and use the reference paper's formulation as its notebook writes it: H = A·[Σᵢ (Σₖ xᵢₖ − 1)² + Σ_{(i,j) conflict} Σₖ xᵢₖxⱼₖ], with no objective (`profit = 0`). Scheduling is pure feasibility: a schedule is either conflict-free with every exam in one batch, or it breaks constraints. This supersedes ADR-0001.

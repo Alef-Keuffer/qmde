@@ -24,7 +24,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SolverConfig">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Solver Configuration. depth, optimizer, maxIterations and shots apply to QAOA; reads and sweeps to simulated annealing; seed and penaltyCoefficient to both."/>
+      <details key="documentation" value="Solver Configuration. depth, optimizer, maxIterations and shots apply to QAOA; reads and sweeps to simulated annealing; seed and penaltyCoefficient to both; an absent penaltyCoefficient means automatic."/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
       <details key="constraints" value="positiveDepth positiveIterations positiveShots positiveReads positiveSweeps positivePenalty"/>
@@ -35,14 +35,13 @@
       <details key="positiveShots" value="shots >= 1"/>
       <details key="positiveReads" value="reads >= 1"/>
       <details key="positiveSweeps" value="sweeps >= 1"/>
-      <details key="positivePenalty" value="penaltyCoefficient > 0"/>
+      <details key="positivePenalty" value="penaltyCoefficient = null or penaltyCoefficient > 0"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="method" eType="#//Method"
         defaultValueLiteral="QAOA"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="penaltyCoefficient" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
-        defaultValueLiteral="1000.0">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="penaltyCoefficient" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="The value fed to the pyqubo Placeholder A; the notebook uses 1e3."/>
+        <details key="documentation" value="The value fed to the pyqubo Placeholder A. Absent means automatic: the largest exam weight plus one. An explicit value must exceed every weight, which the generated script checks (OCL cannot reach the Problem from here; ADR-0009)."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="seed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"

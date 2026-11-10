@@ -1,4 +1,5 @@
 // Q16 (ii): five exams whose conflicts form a 5-cycle, three batches. Feasible (needs 3 batches).
+// No weights: every exam weighs 1, so the schedule places as many exams as it can.
 problem cycle batches 3
 students Ana Rui Eva Ivo Lia
 exam Algebra { Ana Lia }
