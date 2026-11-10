@@ -1,7 +1,7 @@
 """Tests for the baseline: .venv/bin/python -m unittest discover -s python"""
 import unittest
 
-from examschedule import Problem, optimal_cost
+from examschedule import Problem, feasible_costs, optimal_cost
 
 
 class OptimalCostTest(unittest.TestCase):
@@ -20,6 +20,11 @@ class OptimalCostTest(unittest.TestCase):
     def test_path_schedules_every_exam(self):
         path = Problem("path", ("A", "B", "C", "D"), (2, 3, 1, 2), 2, ((0, 1), (1, 2), (2, 3)))
         self.assertEqual(optimal_cost(path), 0)
+
+    def test_random_odds_count_the_optimal_bit_strings(self):
+        # A 4-path in two batches has two optimal schedules: the two ways to 2-colour it.
+        path = Problem("path", ("A", "B", "C", "D"), (2, 3, 1, 2), 2, ((0, 1), (1, 2), (2, 3)))
+        self.assertEqual(feasible_costs(path).count(0), 2)
 
     def test_skipped_above_the_limit(self):
         big = Problem("big", tuple(f"E{i}" for i in range(13)), (1,) * 13, 3, ())

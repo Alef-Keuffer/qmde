@@ -1,0 +1,12 @@
+// 2-cycle.exam solved by simulated annealing instead: keep the two files' problems identical.
+// Q16 (ii): five exams whose conflicts form a 5-cycle, three batches. Feasible (needs 3 batches).
+// No weights: every exam weighs 1, so the schedule places as many exams as it can.
+problem cycle_annealing batches 3
+students Ana Rui Eva Ivo Lia
+exam Algebra { Ana Lia }
+exam Calculus { Ana Rui }
+exam Physics { Rui Eva }
+exam Chemistry { Eva Ivo }
+exam Programming { Ivo Lia }
+
+solver { method annealing reads 50 sweeps 10000 seed 7 }

@@ -10,9 +10,10 @@ Farhi = arXiv:1411.4028; Lucas = arXiv:1302.5843; Glover = arXiv:1811.11538.
 """
 
 import itertools
+import json
 import re
 import sys
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from xml.sax.saxutils import escape, quoteattr
 
@@ -168,15 +169,22 @@ def qaoa(problem, config, model, feed_dict):
     return samples, description, config.shots
 
 
-def optimal_cost(problem):
-    """Classical baseline straight from the problem data: the least cost of any feasible schedule."""
+def feasible_costs(problem):
+    """Classical baseline straight from the problem data: the cost of every feasible schedule, None above the
+    limit. Each feasible schedule is exactly one bit string, so their count over 2^n is random guessing's odds."""
     n = len(problem.exams)
     if (problem.n_batches + 1) ** n > BASELINE_LIMIT:
         return None
     # batch[i] is exam i's batch, or None when it is unscheduled
-    return min(sum(w for w, b in zip(problem.weights, batch) if b is None)
-               for batch in itertools.product((None, *range(problem.n_batches)), repeat=n)
-               if all(batch[i] is None or batch[i] != batch[j] for i, j in problem.conflicts))
+    return [sum(w for w, b in zip(problem.weights, batch) if b is None)
+            for batch in itertools.product((None, *range(problem.n_batches)), repeat=n)
+            if all(batch[i] is None or batch[i] != batch[j] for i, j in problem.conflicts)]
+
+
+def optimal_cost(problem):
+    """The least cost of any feasible schedule, None when the baseline is skipped."""
+    costs = feasible_costs(problem)
+    return None if costs is None else min(costs)
 
 
 def solve(problem, config, model):
@@ -199,13 +207,25 @@ def solve(problem, config, model):
 
     best, count = min(samples, key=lambda s: s[0].energy)
     schedule = schedule_of(problem, best)
-    optimum = optimal_cost(problem)
+    costs = feasible_costs(problem)
+    optimum = None if costs is None else min(costs)
     schedules = [(schedule_of(problem, d), c) for d, c in samples]
     feasible_count = sum(c for s, c in schedules if s.feasible)
     optimal_count = sum(c for s, c in schedules if is_optimal(s, optimum))
     report(problem, description, feed_dict["A"], schedule, best.energy, count, total, optimum,
            optimal_count, feasible_count)
     write_schedule(problem, schedule)
+    bit_strings = 2 ** len(variables(problem))
+    write_results(problem, {
+        "instance": problem.name, "variables": len(variables(problem)), "solver": asdict(config),
+        "description": description, "penalty": feed_dict["A"],
+        "schedule": {"assignments": schedule.assignments, "unscheduled": schedule.unscheduled,
+                     "cost": schedule.cost, "feasible": schedule.feasible, "broken": schedule.broken},
+        "energy": best.energy, "found": count, "samples": total,
+        "optimal_cost": optimum, "optimal": None if optimum is None else is_optimal(schedule, optimum),
+        "p_optimal": None if optimum is None else optimal_count / total, "p_feasible": feasible_count / total,
+        "random_p_optimal": None if costs is None else costs.count(optimum) / bit_strings,
+        "random_p_feasible": None if costs is None else len(costs) / bit_strings})
 
 
 def is_optimal(schedule, optimum):
@@ -246,4 +266,11 @@ def write_schedule(problem, schedule, path=None):
         lines.append(f'  <brokenConstraints>{escape(label)}</brokenConstraints>')
     lines.append('</schedule:Schedule>')
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"  wrote {path}")
+
+
+def write_results(problem, results, path=None):
+    """Write the run's report as JSON, for the tables of the report (docs/report_2) and CONTEXT.md."""
+    path = Path(path or f"results_{problem.name}.json")
+    path.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
     print(f"  wrote {path}")

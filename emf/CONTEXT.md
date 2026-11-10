@@ -71,7 +71,7 @@ solve_<instance>.py: pyqubo formulation ─► compiled model
 
 ## Validation
 
-Report per instance: the schedule, its unscheduled exams and cost, whether it is feasible, its energy, how often it was sampled, the broken constraints if any, the optimal cost (brute force over (nBatches + 1)^nExams schedules, each exam in one batch or none, skipped above ~10⁶) and whether this schedule is optimal, and P(optimal), the fraction of shots or reads that decode to an optimal schedule, with P(feasible) alongside.
+Report per instance: the schedule, its unscheduled exams and cost, whether it is feasible, its energy, how often it was sampled, the broken constraints if any, the optimal cost (brute force over (nBatches + 1)^nExams schedules, each exam in one batch or none, skipped above ~10⁶) and whether this schedule is optimal, and P(optimal), the fraction of shots or reads that decode to an optimal schedule, with P(feasible) alongside, and the odds of a uniformly random bit string being optimal or feasible. The generated script prints it and writes it as `results_<name>.json` next to the Schedule; CI uploads these as the `emf-results` artifact.
 
 Results with the committed instances and seeds, from CI's `./build.sh` (Linux, the pinned `requirements.txt`); every schedule found is feasible and optimal:
 
@@ -99,7 +99,7 @@ The same instances with the other method or other QAOA settings: replace the con
 
 For scale, a uniformly random bitstring is optimal with probability 0.0078 (path), 0.0009 (cycle), 0.0015 (clique) and 0.00005 (semester). COBYLA stops well before 150 iterations (27 to 71 evaluations), so `iterations` does not limit it; for Powell an iteration is a line search over every angle (891 evaluations on cycle).
 
-Test instances (variables = exams × batches):
+Test instances (variables = exams × batches), each solved by both methods: `<n>-<name>.exam` and its twin `<n>-<name>-qaoa.exam` or `<n>-<name>-annealing.exam`, the same problem named `<name>_qaoa` or `<name>_annealing` (`python/test_instances.py` keeps the twins identical):
 
 1. 4-exam path, 2 batches — feasible (8 variables)
 2. 5 exams, 3 batches, with a cycle — feasible (15 variables)
