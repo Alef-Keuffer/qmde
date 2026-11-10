@@ -30,3 +30,33 @@
   assistant recommended a required weight.
 - **How we checked it:** the claims about the old version were read from
   `e3c399a`; the issues were listed back with `gh` after creation.
+
+## Reviewing the repository setup ([#22](https://github.com/Alef-Keuffer/qmde/pull/22)) (2026-11-10)
+
+- **Who:** Alef Keuffer.
+- **Tool:** Claude Code (Claude Opus 5.5), with the `grill-with-docs` skill
+  (grilling + domain modeling).
+- **What we asked:** whether the repository is set up correctly and what to
+  improve. Session record (questions, recommendations and my answers):
+  [grilling-repo-setup.md](assets/grilling-repo-setup.md).
+- **What the assistant produced:** a review of `origin/main`, since my local
+  `main` was 61 commits behind; two rounds of numbered questions with
+  recommendations; PR #22 (closing #7); cleanup of merged branches and
+  worktrees; this entry.
+- **Decisions we made:** remove the m2e state that a language server's import
+  had brought in with `ca4c3cf`, and keep the Java language server off `emf/`
+  with `.vscode/settings.json`; a commit rule in the root `AGENTS.md`; run the
+  unit tests in CI; pin `requirements.txt` exactly and take the first results
+  table from CI; keep "Exam-Slot Assignment" as the problem's name, with a
+  Glossary line saying its slot is a Batch; close #4 and #5; delete merged
+  branches, including my remote ones; keep the clone in Google Drive.
+- **Assumptions we accepted:** CI is the reference environment for the results
+  tables; Antigravity's Java support is not needed for `emf/` (it could not
+  resolve the PDE bundles anyway, as its log showed).
+- **Corrections we made:** I kept the clone in Google Drive where the assistant
+  recommended moving it, and extended the branch cleanup to my remote
+  branches. My Antigravity check showed the assistant's first exclusion
+  (`**/emf/**`) did not work; it then added `**/emf` and turned off Maven import.
+- **How we checked it:** opening the worktree's `emf/` and then its root in
+  Antigravity left `git status` clean; `tools/headless-problems` exited 0; the
+  unit tests passed locally and in CI; both CI workflows were green on #22.
