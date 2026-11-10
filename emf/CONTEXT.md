@@ -82,7 +82,7 @@ Results with the committed instances and seeds (`./build.sh`; every schedule fou
 | clique | 12 | annealing, 50 reads × 10000 sweeps | 1, Statistics | 1 | 0.940 | 1.000 |
 | semester | 18 | annealing, 50 reads × 10000 sweeps | 0, none | 0 | 0.960 | 1.000 |
 
-The same instances with the other method or other QAOA settings: replace the contents of the instance's `solver { … }` with the settings given; the omitted ones keep their defaults (seed 7, reads 50, sweeps 10000, penalty auto). All reach the optimal cost.
+The same instances with the other method or other QAOA settings: replace the contents of the instance's `solver { … }` with the settings given; the omitted ones keep their defaults (seed 7, reads 50, sweeps 10000, penalty auto). All reach the optimal cost. These were measured on macOS before `requirements.txt` was pinned, so a rerun may differ in the second digit.
 
 | Instance | Variables | Solver Configuration | Result (cost, unscheduled exams) | Optimal cost (baseline) | P(optimal) | P(feasible) |
 |---|---|---|---|---|---|---|
