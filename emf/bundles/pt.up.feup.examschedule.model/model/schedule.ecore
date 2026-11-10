@@ -8,22 +8,29 @@
     <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
   </eAnnotations>
   <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-    <details key="documentation" value="The outcome of solving a problem: the batch of each exam, or the constraints the best sample breaks."/>
+    <details key="documentation" value="The outcome of solving a problem: the batch of each scheduled exam, the unscheduled exams and their cost, or the constraints the best sample breaks."/>
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Schedule">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="The schedule decoded from the lowest-energy sample: one assignment per variable set to 1. It is feasible when the sample breaks no constraint; otherwise brokenConstraints holds the pyqubo labels of the broken ones."/>
+      <details key="documentation" value="The schedule decoded from the lowest-energy sample: one assignment per variable set to 1, and the exams in no batch. It is feasible when the sample breaks no constraint; otherwise brokenConstraints holds the pyqubo labels of the broken ones. Whether it is optimal is reported, not stored: the baseline may be skipped."/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="feasibleIsUnbroken feasibleMeansOneBatch"/>
+      <details key="constraints" value="feasibleIsUnbroken feasibleMeansOneBatch scheduledOrUnscheduled"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="feasibleIsUnbroken" value="feasible = brokenConstraints-&gt;isEmpty()"/>
       <details key="feasibleMeansOneBatch" value="feasible implies assignments-&gt;isUnique(exam)"/>
+      <details key="scheduledOrUnscheduled" value="unscheduled-&gt;forAll(u | assignments-&gt;forAll(a | a.exam &lt;&gt; u))"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="feasible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cost" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The total weight of the unscheduled exams."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="assignments" upperBound="-1" eType="#//Assignment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unscheduled" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="brokenConstraints" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Assignment">

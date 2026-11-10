@@ -29,9 +29,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Exam">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="An exam node."/>
+      <details key="documentation" value="An exam node, with its weight."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+        defaultValueLiteral="1.0"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Batch">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

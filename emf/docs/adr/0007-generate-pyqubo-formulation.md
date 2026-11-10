@@ -14,3 +14,4 @@ Acceleo generates `solve_<name>.py` from the Conflict Graph and the Solver Confi
 - The QAOA circuit is built in `python/examschedule.py` from `model.to_ising()`, not generated gate by gate. pyqubo's spins are s = 2x − 1 while a qubit's Z is 1 − 2x, so each local field changes sign on the circuit.
 - Acceleo reads every `[` as template syntax, so the few Python subscripts in the template are written `['['/]`.
 - The constraint labels name exams and batches (`one-batch-Algebra`, `conflict-Algebra-Calculus-batch-1`) instead of the notebook's indices, so broken constraints read in domain terms.
+- Since ADR-0009, `profit` is no longer 0 but minus the weight placed, and `constraint1` is "at most one batch" (`at-most-one-batch-Algebra`).

@@ -1,6 +1,6 @@
 """Runtime support for the generated scripts (``solve_<name>.py``).
 
-Everything instance-specific -- the Solver Configuration, the Conflict Graph data and the paper's
+Everything instance-specific -- the Solver Configuration, the Conflict Graph data and the weighted
 pyqubo formulation, compiled -- is generated from the models. This module holds only the generic
 parts: sampling the compiled model by simulated annealing or QAOA, decoding, the classical
 baseline, the report and writing the Schedule model (ADR-0005, ADR-0007).
@@ -8,6 +8,7 @@ baseline, the report and writing the Schedule model (ADR-0005, ADR-0007).
 
 import itertools
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from xml.sax.saxutils import escape, quoteattr
@@ -31,6 +32,7 @@ VARIABLE = re.compile(r"c\[(\d+)\]\[(\d+)\]")  # pyqubo's label for x[i, k] of A
 class Problem:
     name: str
     exams: tuple  # exam i's name
+    weights: tuple  # exam i's weight: the cost of leaving it unscheduled
     n_batches: int
     conflicts: tuple  # (i, j), i < j: exams i and j share a student
 
@@ -38,7 +40,7 @@ class Problem:
 @dataclass
 class SolverConfig:
     method: str  # QAOA or ANNEALING
-    penalty: float  # fed to the Placeholder A
+    penalty: float | None  # fed to the Placeholder A; None means automatic
     seed: int
     reads: int
     sweeps: int
@@ -51,6 +53,8 @@ class SolverConfig:
 @dataclass
 class Schedule:
     assignments: list  # (exam, batch) for every variable set to 1
+    unscheduled: list  # exams in no batch
+    cost: float  # total weight of the unscheduled exams
     broken: list  # labels of the constraints the sample breaks
 
     @property
@@ -69,7 +73,22 @@ def schedule_of(problem, decoded):
         if decoded.sample[label]:
             i, k = map(int, VARIABLE.fullmatch(label).groups())
             assignments.append((problem.exams[i], k + 1))
-    return Schedule(assignments, sorted(decoded.constraints(only_broken=True)))
+    placed = {exam for exam, _ in assignments}
+    unscheduled = [(e, w) for e, w in zip(problem.exams, problem.weights) if e not in placed]
+    return Schedule(assignments, [e for e, _ in unscheduled], sum(w for _, w in unscheduled),
+                    sorted(decoded.constraints(only_broken=True)))
+
+
+def penalty(problem, config):
+    """A: the largest weight plus one unless set. An explicit A must exceed every weight, or breaking a
+    constraint can cost less than leaving an exam unscheduled (ADR-0009)."""
+    largest = max(problem.weights)
+    if config.penalty is None:
+        return largest + 1
+    if config.penalty <= largest:
+        sys.exit(f"penalty {config.penalty:g} must exceed the largest weight, {largest:g}; "
+                 f"'penalty auto' gives {largest + 1:g}")
+    return config.penalty
 
 
 def anneal(problem, config, model, feed_dict):
@@ -137,17 +156,19 @@ def qaoa(problem, config, model, feed_dict):
     return samples, description, config.shots
 
 
-def conflict_free_exists(problem):
-    """Classical baseline straight from the problem data: does any conflict-free schedule exist?"""
+def optimal_cost(problem):
+    """Classical baseline straight from the problem data: the least cost of any feasible schedule."""
     n = len(problem.exams)
-    if problem.n_batches ** n > BASELINE_LIMIT:
+    if (problem.n_batches + 1) ** n > BASELINE_LIMIT:
         return None
-    return any(all(batch[i] != batch[j] for i, j in problem.conflicts)
-               for batch in itertools.product(range(problem.n_batches), repeat=n))
+    # batch[i] is exam i's batch, or None when it is unscheduled
+    return min(sum(w for w, b in zip(problem.weights, batch) if b is None)
+               for batch in itertools.product((None, *range(problem.n_batches)), repeat=n)
+               if all(batch[i] is None or batch[i] != batch[j] for i, j in problem.conflicts))
 
 
 def solve(problem, config, model):
-    feed_dict = {"A": config.penalty}
+    feed_dict = {"A": penalty(problem, config)}
     run = anneal if config.method == "ANNEALING" else qaoa
     samples, description, total = run(problem, config, model, feed_dict)
     merged = {}  # identical samples (several annealing reads) counted once
@@ -156,33 +177,45 @@ def solve(problem, config, model):
         merged[key] = (decoded, merged.get(key, (decoded, 0))[1] + count)
     samples = list(merged.values())
 
-    # Formulation check: H >= 0, and it is 0 exactly on the samples that break no constraint.
+    # Formulation check: H is minus the weight placed exactly on the samples that break no constraint.
     for decoded, _ in samples:
-        if (abs(decoded.energy) < TOLERANCE) != (not decoded.constraints(only_broken=True)):
-            raise AssertionError(f"energy {decoded.energy} disagrees with broken constraints "
-                                 f"{decoded.constraints(only_broken=True)}")
+        weight_placed = sum(w * decoded.sample[f"c[{i}][{k}]"]
+                            for i, w in enumerate(problem.weights) for k in range(problem.n_batches))
+        if (abs(decoded.energy + weight_placed) < TOLERANCE) != (not decoded.constraints(only_broken=True)):
+            raise AssertionError(f"energy {decoded.energy} with weight {weight_placed} placed disagrees with "
+                                 f"broken constraints {decoded.constraints(only_broken=True)}")
 
     best, count = min(samples, key=lambda s: s[0].energy)
     schedule = schedule_of(problem, best)
-    feasible_count = sum(c for d, c in samples if not d.constraints(only_broken=True))
-    report(problem, description, schedule, best.energy, count, total, feasible_count,
-           conflict_free_exists(problem))
+    optimum = optimal_cost(problem)
+    schedules = [(schedule_of(problem, d), c) for d, c in samples]
+    feasible_count = sum(c for s, c in schedules if s.feasible)
+    optimal_count = sum(c for s, c in schedules if is_optimal(s, optimum))
+    report(problem, description, feed_dict["A"], schedule, best.energy, count, total, optimum,
+           optimal_count, feasible_count)
     write_schedule(problem, schedule)
 
 
-def report(problem, description, schedule, energy, count, total, feasible_count, exists):
-    print(f"Instance {problem.name}: {len(variables(problem))} variables, {description}")
+def is_optimal(schedule, optimum):
+    return optimum is not None and schedule.feasible and abs(schedule.cost - optimum) < TOLERANCE
+
+
+def report(problem, description, a, schedule, energy, count, total, optimum, optimal_count, feasible_count):
+    print(f"Instance {problem.name}: {len(variables(problem))} variables, {description}, A = {a:g}")
     for batch in range(1, problem.n_batches + 1):
         exams = [e for e, k in schedule.assignments if k == batch]
         print(f"  batch {batch}: {', '.join(exams) or '-'}")
+    print(f"  unscheduled: {', '.join(schedule.unscheduled) or '-'}, cost {schedule.cost:g}")
     print(f"  feasible: {schedule.feasible}, energy {energy:.6g}, found {count}/{total} times")
     if schedule.broken:
         print(f"  broken constraints: {', '.join(schedule.broken)}")
-    if exists is None:
+    if optimum is None:
         print("  baseline: skipped (too many schedules)")
+        print(f"  P(feasible) {feasible_count / total:.4f}")
     else:
-        print(f"  baseline (brute force): a conflict-free schedule {'exists' if exists else 'does not exist'}")
-    print(f"  P(feasible) {feasible_count / total:.4f}")
+        verdict = "optimal" if is_optimal(schedule, optimum) else "not optimal"
+        print(f"  baseline (brute force): optimal cost {optimum:g}; this schedule is {verdict}")
+        print(f"  P(optimal) {optimal_count / total:.4f}, P(feasible) {feasible_count / total:.4f}")
 
 
 def write_schedule(problem, schedule, path=None):
@@ -191,9 +224,12 @@ def write_schedule(problem, schedule, path=None):
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<schedule:Schedule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"'
              ' xmlns:schedule="https://pt/up/feup/examschedule/schedule"'
-             f' name={quoteattr(problem.name)} feasible="{str(schedule.feasible).lower()}">']
+             f' name={quoteattr(problem.name)} feasible="{str(schedule.feasible).lower()}"'
+             f' cost="{schedule.cost!r}">']
     for exam, batch in schedule.assignments:
         lines.append(f'  <assignments exam={quoteattr(exam)} batch="{batch}"/>')
+    for exam in schedule.unscheduled:
+        lines.append(f'  <unscheduled>{escape(exam)}</unscheduled>')
     for label in schedule.broken:
         lines.append(f'  <brokenConstraints>{escape(label)}</brokenConstraints>')
     lines.append('</schedule:Schedule>')

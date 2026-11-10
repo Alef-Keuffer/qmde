@@ -27,7 +27,9 @@ rule Exam2Exam {
 		e : Problem!Exam
 	to
 		x : ConflictGraph!Exam (
-			name <- e.name
+			name <- e.name,
+			-- ADR-0009: the weight is the exam's priority, the cost of leaving it unscheduled.
+			weight <- e.weight
 		)
 }
 

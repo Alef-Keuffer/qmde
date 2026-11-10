@@ -35,12 +35,19 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Exam">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="nonEmptyName"/>
+      <details key="constraints" value="nonEmptyName positiveWeight"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="nonEmptyName" value="name &lt;> null and name.size() > 0"/>
+      <details key="positiveWeight" value="weight > 0"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+        defaultValueLiteral="1.0">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The priority of the exam: the cost of leaving it unscheduled (ADR-0009)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="students" lowerBound="1"
         upperBound="-1" eType="#//Student"/>
   </eClassifiers>

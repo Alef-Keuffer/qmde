@@ -1,6 +1,6 @@
 # emf
 
-Exam-slot assignment with the reference paper's QUBO formulation, solved by QAOA or simulated annealing, built as an EMF model chain. See `CONTEXT.md` for the problem and pipeline, `GLOSSARY.md` for vocabulary and `docs/adr/` for decisions.
+Exam-slot assignment with weighted exams, as a QUBO built like the reference paper's, solved by QAOA or simulated annealing, built as an EMF model chain. See `CONTEXT.md` for the problem and pipeline, `GLOSSARY.md` for vocabulary and `docs/adr/` for decisions.
 
 ## Run
 
@@ -12,7 +12,7 @@ Requires a JDK 21+ and Python 3.12 (`python3.12`; Qiskit Aer has no wheels for n
 
 `build.sh` finds a JDK 21+ (your `JAVA_HOME` if recent enough, else `/usr/libexec/java_home`, `~/Library/Java`, SDKMAN or `/usr/lib/jvm`) and runs `./mvnw verify`; any arguments go to Maven instead (`./build.sh generate-sources`). Plain `./mvnw` works too when `JAVA_HOME` already points to JDK 21+.
 
-This builds every bundle (generating EMF and Xtext code), runs the chain headlessly on every `.exam` file in `instances/`, creates `.venv` with `requirements.txt`, and runs each generated script. For each problem, `out/<name>/` holds every intermediate model (`problem.xmi`, `solverconfig.xmi`, `conflictgraph.xmi`), the generated `solve_<name>.py` (the notebook's pyqubo formulation over this problem's data) and the decoded `schedule_<name>.xmi`; the report (schedule, broken constraints, baseline, P(feasible)) is printed. One problem only:
+This builds every bundle (generating EMF and Xtext code), runs the chain headlessly on every `.exam` file in `instances/`, creates `.venv` with `requirements.txt`, and runs each generated script. For each problem, `out/<name>/` holds every intermediate model (`problem.xmi`, `solverconfig.xmi`, `conflictgraph.xmi`), the generated `solve_<name>.py` (the notebook's pyqubo formulation over this problem's data) and the decoded `schedule_<name>.xmi`; the report (schedule, unscheduled exams and cost, broken constraints, baseline, P(optimal), P(feasible)) is printed. One problem only:
 
 ```sh
 ./build.sh verify -Dproblem=$PWD/instances/1-path.exam

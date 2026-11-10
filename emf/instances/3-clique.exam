@@ -1,10 +1,10 @@
-// Q16 (iii): four exams that all conflict, three batches. Infeasible: every sample breaks a
-// constraint, and the report lists the broken ones (ADR-0006).
+// Q16 (iii): four exams that all conflict, three batches. No schedule places them all: the
+// lowest-weight exam, Statistics, is left unscheduled, at cost 1 (ADR-0009).
 problem clique batches 3
 students Ana Rui Eva
-exam Algebra { Ana Rui Eva }
-exam Calculus { Ana Rui Eva }
-exam Physics { Ana Rui Eva }
-exam Statistics { Ana Rui Eva }
+exam Algebra    weight 4 { Ana Rui Eva }
+exam Calculus   weight 3 { Ana Rui Eva }
+exam Physics    weight 2 { Ana Rui Eva }
+exam Statistics weight 1 { Ana Rui Eva }
 
 solver { method annealing reads 50 sweeps 10000 seed 7 }
