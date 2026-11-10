@@ -75,33 +75,33 @@ Report per instance: the schedule, its unscheduled exams and cost, whether it is
 
 <!-- results:begin -->
 
-Results with the committed instances and seeds, from CI's `./build.sh` (Linux, the pinned `requirements.txt`), [run 42858480073](https://github.com/Alef-Keuffer/qmde/actions/runs/42858480073), written here by `docs/report_2/build.sh`; every schedule found is feasible and optimal:
+Results with the committed instances and seeds, from CI's `./build.sh` (Linux, the pinned `requirements.txt`), [run 42879932659](https://github.com/Alef-Keuffer/qmde/actions/runs/42879932659), written here by `docs/report_2/build.sh`; every schedule found is feasible and optimal:
 
 | Instance | Variables | Method | Result (cost, unscheduled exams) | Optimal cost (baseline) | P(optimal) | P(feasible) |
 |---|---|---|---|---|---|---|
-| path | 8 | QAOA, depth 2, COBYLA, 150 iterations, 2048 shots | 0, none | 0 | 0.101 | 0.582 |
+| path | 8 | QAOA, depth 2, COBYLA, 150 iterations, 2048 shots | 0, none | 0 | 0.055 | 0.752 |
 | path | 8 | annealing, 50 reads × 10000 sweeps | 0, none | 0 | 0.960 | 1.000 |
-| cycle | 15 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 0, none | 0 | 0.033 | 0.200 |
+| cycle | 15 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 0, none | 0 | 0.033 | 0.749 |
 | cycle | 15 | annealing, 50 reads × 10000 sweeps | 0, none | 0 | 1.000 | 1.000 |
 | clique | 12 | annealing, 50 reads × 10000 sweeps | 1, Statistics | 1 | 0.980 | 1.000 |
-| clique | 12 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 1, Statistics | 1 | 0.042 | 0.553 |
+| clique | 12 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 1, Statistics | 1 | 0.044 | 0.657 |
 | semester | 18 | annealing, 50 reads × 10000 sweeps | 0, none | 0 | 0.980 | 1.000 |
-| semester | 18 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 0, none | 0 | 0.00049 | 0.591 |
+| semester | 18 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 0, none | 0 | 0.0017 | 0.611 |
 
 <!-- results:end -->
 
-The same instances with other QAOA settings: replace the contents of the instance's `solver { … }` with the settings given; the omitted ones keep their defaults (seed 7, penalty auto). All reach the optimal cost. These were measured on macOS before `requirements.txt` was pinned, so a rerun may differ in the second digit.
+The same instances with other QAOA settings: replace the contents of the instance's `solver { … }` with the settings given; the omitted ones keep their defaults (seed 7, penalty auto). All reach the optimal cost. These were measured locally on macOS (arm64) with the pinned `requirements.txt`, not in CI, so a rerun on Linux may differ in the second digit.
 
 | Instance | Variables | Solver Configuration | Result (cost, unscheduled exams) | Optimal cost (baseline) | P(optimal) | P(feasible) |
 |---|---|---|---|---|---|---|
-| path | 8 | `method QAOA depth 1 optimizer COBYLA iterations 150 shots 2048` | 0, none | 0 | 0.012 | 0.403 |
-| path | 8 | `method QAOA depth 3 optimizer COBYLA iterations 150 shots 2048` | 0, none | 0 | 0.009 | 0.500 |
-| path | 8 | `method QAOA depth 2 optimizer Nelder-Mead iterations 150 shots 2048` | 0, none | 0 | 0.075 | 0.804 |
-| cycle | 15 | `method QAOA depth 1 optimizer COBYLA iterations 150 shots 4096` | 0, none | 0 | 0.0007 | 0.006 |
-| cycle | 15 | `method QAOA depth 3 optimizer COBYLA iterations 150 shots 4096` | 0, none | 0 | 0.039 | 0.451 |
-| cycle | 15 | `method QAOA depth 2 optimizer Powell iterations 150 shots 4096` | 0, none | 0 | 0.132 | 0.512 |
+| path | 8 | `method QAOA depth 1 optimizer COBYLA iterations 150 shots 2048` | 0, none | 0 | 0.031 | 0.723 |
+| path | 8 | `method QAOA depth 3 optimizer COBYLA iterations 150 shots 2048` | 0, none | 0 | 0.062 | 0.881 |
+| path | 8 | `method QAOA depth 2 optimizer Nelder-Mead iterations 150 shots 2048` | 0, none | 0 | 0.049 | 0.796 |
+| cycle | 15 | `method QAOA depth 1 optimizer COBYLA iterations 150 shots 4096` | 0, none | 0 | 0.028 | 0.517 |
+| cycle | 15 | `method QAOA depth 3 optimizer COBYLA iterations 150 shots 4096` | 0, none | 0 | 0.047 | 0.865 |
+| cycle | 15 | `method QAOA depth 2 optimizer Powell iterations 150 shots 4096` | 0, none | 0 | 0.036 | 0.809 |
 
-For scale, a uniformly random bit string is optimal with probability 0.0078 (path), 0.0009 (cycle), 0.0015 (clique) and 0.00005 (semester). COBYLA stops well before 150 iterations (27 to 71 evaluations), so `iterations` does not limit it; for Powell an iteration is a line search over every angle (891 evaluations on cycle).
+For scale, a uniformly random bit string is optimal with probability 0.0078 (path), 0.0009 (cycle), 0.0015 (clique) and 0.00005 (semester). COBYLA stops well before 150 iterations (29 to 54 evaluations), so `iterations` does not limit it; for Powell an iteration is a line search over every angle (398 evaluations on cycle).
 
 Test instances (variables = exams × batches), each solved by both methods: `<n>-<name>.exam` and its twin `<n>-<name>-qaoa.exam` or `<n>-<name>-annealing.exam`, the same problem named `<name>_qaoa` or `<name>_annealing` (`python/test_instances.py` keeps the twins identical):
 
@@ -118,8 +118,8 @@ Run everything with `./build.sh` (see README.md); the Eclipse IDE is provisioned
 
 ## Known limitations
 
-- QAOA is far behind annealing. On the weighted formulation it finds an optimal schedule on every instance, where on the penalty-only formulation of ADR-0006 it did no better than chance on cycle. With COBYLA at depth 2, P(optimal) is 13 (path), 28 (clique) and 36 (cycle) times chance, but only 11 times on semester (18 variables, 0.0005, two shots in 4096): minimising the expected energy favours feasible schedules that leave cheap exams out (P(feasible) 0.59). Powell reaches 0.13 on cycle; annealing reaches 0.96 to 1.00 everywhere.
-- The initial QAOA angles are a fixed linear ramp in `python/examschedule.py`, not part of the Solver Configuration, and they appear to matter: a deeper circuit does worse on path (depth 3: 0.009, against 0.101 at depth 2), and depth 1 on cycle falls below chance (0.0007 against 0.0009), signs that the optimiser gets stuck near the ramp.
+- QAOA is far behind annealing. On the weighted formulation it finds an optimal schedule on every instance, where on the penalty-only formulation of ADR-0006 it did no better than chance on cycle. With COBYLA at depth 2, P(optimal) is 7 (path), 30 (clique), 36 (cycle) and 37 (semester: 18 variables, 0.0017, seven shots in 4096) times chance, while P(feasible) is 0.61 to 0.75: minimising the expected energy also rewards feasible schedules that leave cheap exams out. Annealing reaches 0.96 to 1.00 everywhere.
+- The initial QAOA angles are a fixed linear ramp in `python/examschedule.py` on Farhi's annealing path (§VI), not part of the Solver Configuration. From there a deeper circuit raises P(feasible) on path and cycle (0.72 to 0.88 and 0.52 to 0.86 from depth 1 to 3), but P(optimal) stays between 0.028 and 0.062 whatever the depth or optimiser: the extra feasible schedules leave an exam out.
 - The Schedule written by the generated script is not validated against `schedule.ecore`'s OCL.
 - The only unit tests cover the baseline (`python/test_examschedule.py`) and the twin instances (`python/test_instances.py`); correctness rests on OCL validation between steps, the formulation check and the brute-force baseline in every run.
 - Python 3.12 is required (Qiskit Aer wheels); `./build.sh` needs a JDK 21+.
