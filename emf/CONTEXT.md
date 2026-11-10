@@ -75,7 +75,7 @@ Report per instance: the schedule, its unscheduled exams and cost, whether it is
 
 <!-- results:begin -->
 
-Results with the committed instances and seeds, from CI's `./build.sh` (Linux, the pinned `requirements.txt`), [run 42858480073](https://github.com/Alef-Keuffer/qmde/actions/runs/42858480073); every schedule found is feasible and optimal:
+Results with the committed instances and seeds, from CI's `./build.sh` (Linux, the pinned `requirements.txt`), [run 42858480073](https://github.com/Alef-Keuffer/qmde/actions/runs/42858480073), written here by `docs/report_2/build.sh`; every schedule found is feasible and optimal:
 
 | Instance | Variables | Method | Result (cost, unscheduled exams) | Optimal cost (baseline) | P(optimal) | P(feasible) |
 |---|---|---|---|---|---|---|
