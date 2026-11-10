@@ -12,3 +12,5 @@ bin/
 __pycache__/
 /.metadata/
 .idea/
+pom.tycho
+org.eclipse.m2e.core.prefs
