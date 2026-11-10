@@ -12,8 +12,8 @@
   local branches, `alef/emf-citations` (#24, done) → `alef/emf-ci-results`
   (#25, done) → `alef/report-2` (#26, not started; holds this record). Nothing
   is pushed.
-- **Summary:** the AI log entry for this session is still to be written (planned
-  for `docs/llm_usage_2.md` with #26).
+- **Summary:** the AI log entry "Planning the Part II report" in
+  [`docs/llm_usage_2.md`](../llm_usage_2.md), written with #26.
 
 This is a structured record of the session, written from the Claude Code
 session log. Alef's messages are quoted word for word. The AI's questions are
