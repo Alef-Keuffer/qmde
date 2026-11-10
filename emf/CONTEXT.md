@@ -73,6 +73,8 @@ solve_<instance>.py: pyqubo formulation ─► compiled model
 
 Report per instance: the schedule, its unscheduled exams and cost, whether it is feasible, its energy, how often it was sampled, the broken constraints if any, the optimal cost (brute force over (nBatches + 1)^nExams schedules, each exam in one batch or none, skipped above ~10⁶) and whether this schedule is optimal, and P(optimal), the fraction of shots or reads that decode to an optimal schedule, with P(feasible) alongside, and the odds of a uniformly random bit string being optimal or feasible. The generated script prints it and writes it as `results_<name>.json` next to the Schedule; CI uploads these as the `emf-results` artifact.
 
+<!-- results:begin -->
+
 Results with the committed instances and seeds, from CI's `./build.sh` (Linux, the pinned `requirements.txt`), [run 42858480073](https://github.com/Alef-Keuffer/qmde/actions/runs/42858480073); every schedule found is feasible and optimal:
 
 | Instance | Variables | Method | Result (cost, unscheduled exams) | Optimal cost (baseline) | P(optimal) | P(feasible) |
@@ -85,6 +87,8 @@ Results with the committed instances and seeds, from CI's `./build.sh` (Linux, t
 | clique | 12 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 1, Statistics | 1 | 0.042 | 0.553 |
 | semester | 18 | annealing, 50 reads × 10000 sweeps | 0, none | 0 | 0.980 | 1.000 |
 | semester | 18 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 0, none | 0 | 0.00049 | 0.591 |
+
+<!-- results:end -->
 
 The same instances with other QAOA settings: replace the contents of the instance's `solver { … }` with the settings given; the omitted ones keep their defaults (seed 7, penalty auto). All reach the optimal cost. These were measured on macOS before `requirements.txt` was pinned, so a rerun may differ in the second digit.
 
