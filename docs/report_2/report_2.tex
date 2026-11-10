@@ -140,9 +140,10 @@ Constraint. Each chain is measured on its own instances (\cref{app:instances}); 
 \begin{itemize}[nosep]
 	\item QAOA is far behind simulated annealing (\cref{tab:validation-emf}), and only simulated, on at
 	      most 18 qubits.
-	\item The QAOA runtime starts from a fixed ramp of angles, which follows the annealing path only when
-	      $\gamma$ and $\beta$ have opposite signs; flipping the mixer's sign raised P(feasible) everywhere
-	      and P(optimal) in 8 of 9 cases (\texttt{docs/assets/grilling-report-2.md}, §6; not yet fixed).
+	\item QAOA starts from a fixed ramp of angles on the annealing path \cite[§VI]{Farhi}, not set by the
+	      Solver Configuration. From there a deeper circuit raises P(feasible) on path and cycle, but
+	      P(optimal) stays between 0.028 and 0.062 whatever the depth or optimiser
+	      (\cref{tab:results-emf,tab:other-settings-emf}): the extra feasible schedules leave an exam out.
 	\item The simulated annealing is classical: no quantum annealer was used (issue~\#23).
 	\item The Baseline enumerates every schedule, so validation stops at about $10^6$ schedules.
 	\item The Schedule the generated script writes is not validated against its metamodel's OCL.
@@ -165,22 +166,22 @@ Constraint. Each chain is measured on its own instances (\cref{app:instances}); 
 \input{generated/results-emf}
 
 \begin{table}
-	\caption{The EMF chain with other QAOA settings, every one reaching the optimal cost. Measured on macOS
-		before \texttt{emf/requirements.txt} was pinned, so a rerun may differ in the second digit; copied by
-		hand from \texttt{emf/CONTEXT.md}. COBYLA stops well before 150 iterations (27 to 71 evaluations); a
-		Powell iteration is a line search over every angle (891 evaluations on cycle).}
+	\caption{The EMF chain with other QAOA settings, every one reaching the optimal cost. Measured locally on
+		macOS (arm64) with the pinned \texttt{emf/requirements.txt}, not in CI, so a rerun on Linux may differ in
+		the second digit; copied by hand from \texttt{emf/CONTEXT.md}. COBYLA stops well before 150 iterations (29 to 54 evaluations); a
+		Powell iteration is a line search over every angle (398 evaluations on cycle).}
 	\label{tab:other-settings-emf}
 	\footnotesize
 	\begin{tabular}{@{}lrlrr@{}}
 		\toprule
 		Instance & Variables & Method                                                & P(optimal) & P(feasible) \\
 		\midrule
-		path     & 8         & QAOA, depth 1, COBYLA, 150 iterations, 2048 shots      & 0.012      & 0.403       \\
-		path     & 8         & QAOA, depth 3, COBYLA, 150 iterations, 2048 shots      & 0.009      & 0.500       \\
-		path     & 8         & QAOA, depth 2, Nelder-Mead, 150 iterations, 2048 shots & 0.075      & 0.804       \\
-		cycle    & 15        & QAOA, depth 1, COBYLA, 150 iterations, 4096 shots      & 0.0007     & 0.006       \\
-		cycle    & 15        & QAOA, depth 3, COBYLA, 150 iterations, 4096 shots      & 0.039      & 0.451       \\
-		cycle    & 15        & QAOA, depth 2, Powell, 150 iterations, 4096 shots      & 0.132      & 0.512       \\
+		path     & 8         & QAOA, depth 1, COBYLA, 150 iterations, 2048 shots      & 0.031      & 0.723       \\
+		path     & 8         & QAOA, depth 3, COBYLA, 150 iterations, 2048 shots      & 0.062      & 0.881       \\
+		path     & 8         & QAOA, depth 2, Nelder-Mead, 150 iterations, 2048 shots & 0.049      & 0.796       \\
+		cycle    & 15        & QAOA, depth 1, COBYLA, 150 iterations, 4096 shots      & 0.028      & 0.517       \\
+		cycle    & 15        & QAOA, depth 3, COBYLA, 150 iterations, 4096 shots      & 0.047      & 0.865       \\
+		cycle    & 15        & QAOA, depth 2, Powell, 150 iterations, 4096 shots      & 0.036      & 0.809       \\
 		\bottomrule
 	\end{tabular}
 \end{table}
