@@ -85,7 +85,8 @@ def claims(tex):
     body = re.sub(r"^\s*\\(?:begin|end|input|includegraphics|VerbatimInput|[a-z]*rule|footnotesize|small|maketitle"
                   r"|tableofcontents|appendix|printbibliography)\b.*$", "", body, flags=re.M)
     body = re.sub(r"([.!?])\s*\\\]", r"\1\\]", body)  # a sentence ending in display maths ends after it
-    units = re.split(r"\n\s*\n|\\item\b|\\\\|(?:(?<=[.!?])|(?<=[.!?]\\\]))\s+(?=[A-Za-z])", body)
+    # A sentence starts at a letter or at \term ("e.g. \texttt{x}" must not split, so not at any macro).
+    units = re.split(r"\n\s*\n|\\item\b|\\\\|(?:(?<=[.!?])|(?<=[.!?]\\\]))\s+(?=[A-Za-z]|\\term\{)", body)
     units = [" ".join(u.split()) for u in units]
     return [u for u in units if re.search(r"[A-Za-z]{2}", u)]
 

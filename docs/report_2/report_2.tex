@@ -50,58 +50,58 @@
 \section{Strategy}\label{sec:strategy}
 
 The EMF chain's terms are those of the glossary (\cref{app:glossary}); the BESSER chain's sections keep its
-own words: \emph{slot} for a Batch, \emph{valid} for a schedule that places every exam without a Conflict.
+own words: \emph{slot} for a \term{Batch}, \emph{valid} for a \term{schedule} that places every \term{exam} without a \term{Conflict}.
 
-A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch
-take place at once. Two exams that share a student are in Conflict and must not share a batch
-\cite[§5.2, Algorithm 1]{Paper}. Each exam carries a Weight, its priority; in the EMF chain, the cost of
+A \term{Problem} lists \term{students}, the \term{exams} each of them sits, and a fixed number of \term{batches}; all \term{exams} of a \term{batch}
+take place at once. Two \term{exams} that share a \term{student} are in \term{Conflict} and must not share a \term{batch}
+\cite[§5.2, Algorithm 1]{Paper}. Each \term{exam} carries a \term{Weight}, its priority; in the EMF chain, the cost of
 leaving it unscheduled.
 
-Both chains follow \cref{fig:strategy}. The Problem is formulated as a QUBO over one Assignment Variable
-$x_{ik}$ per exam~$i$ and batch~$k$, $1$ when exam~$i$ is in batch~$k$ \cite[§5.3, Eq. (4)]{Paper}, with a
-penalty per Constraint. A Method samples the QUBO, and a sample is decoded into a Schedule: the
-lowest-energy one in the EMF chain, the most frequent optimal one in BESSER's. Independently of the QUBO, a
-Baseline enumerates every schedule to find the optimum (the EMF chain's stops at about $10^6$,
+Both chains follow \cref{fig:strategy}. The \term{Problem} is formulated as a \term{QUBO} over one \term{Assignment Variable}
+$x_{ik}$ per \term{exam}~$i$ and \term{batch}~$k$, $1$ when \term{exam}~$i$ is in \term{batch}~$k$ \cite[§5.3, Eq. (4)]{Paper}, with a
+penalty per \term{Constraint}. A \term{Method} samples the \term{QUBO}, and a sample is decoded into a \term{Schedule}: the
+lowest-energy one in the EMF chain, the most frequent optimal one in BESSER's. Independently of the \term{QUBO}, a
+\term{Baseline} enumerates every \term{schedule} to find the optimum (the EMF chain's stops at about $10^6$,
 \cref{sec:limitations}), and
 every sample, not only the best, is judged against it (\cref{sec:validation}).
 
 The chains implement two formulations. The paper's \cite[§5.3, Eqs. (5)--(10)]{Paper}, which the BESSER
-chain implements, places each exam in exactly one batch and has penalties only: a sample of energy zero is a
-schedule without conflicts, and nothing ranks one exam above another. The EMF chain implements a weighted
-one (\texttt{emf/docs/adr/0009}): each exam in at most one batch \cite[§4.2, Eq. (30)]{Lucas}, with every
-scheduled exam earning its weight, a weighted set packing \cite[§4.2]{Glover}:
+chain implements, places each \term{exam} in exactly one \term{batch} and has penalties only: a sample of energy zero is a
+\term{schedule} without \term{conflicts}, and nothing ranks one \term{exam} above another. The EMF chain implements a weighted
+one (\texttt{emf/docs/adr/0009}): each \term{exam} in at most one \term{batch} \cite[§4.2, Eq. (30)]{Lucas}, with every
+scheduled \term{exam} earning its \term{weight}, a weighted set packing \cite[§4.2]{Glover}:
 \[
 	H = -\sum_i w_i \sum_k x_{ik}
 	+ A \Bigl( \sum_i \sum_{k<l} x_{ik} x_{il} + \sum_{(i,j)\ \mathrm{in\ Conflict}} \sum_k x_{ik} x_{jk} \Bigr).
 \]
-With the Penalty Coefficient $A$ above every weight, leaving an exam unscheduled always costs less than
-breaking a Constraint \cite[§4.2]{Lucas}, so the optimum is a feasible Schedule of least Cost, the total
-weight of its Unscheduled Exams. The two optima differ wherever not every exam fits. On four mutually
-conflicting exams in three batches (BESSER's \texttt{none}, EMF's \texttt{clique}), the paper's
-formulation, with the penalty BESSER derives for an exam left out, above the most conflicts placing it can add, accepts one
-Conflict, two exams in one batch; the weighted one leaves the lightest exam, Statistics, unscheduled at Cost~1.
+With the \term{Penalty Coefficient} $A$ above every \term{weight}, leaving an \term{exam} unscheduled always costs less than
+breaking a \term{Constraint} \cite[§4.2]{Lucas}, so the optimum is a \term{feasible} \term{Schedule} of least \term{Cost}, the total
+\term{weight} of its \term{Unscheduled Exams}. The two optima differ wherever not every \term{exam} fits. On four mutually
+conflicting \term{exams} in three \term{batches} (BESSER's \texttt{none}, EMF's \texttt{clique}), the paper's
+formulation, with the penalty BESSER derives for an \term{exam} left out, above the most \term{conflicts} placing it can add, accepts one
+\term{Conflict}, two \term{exams} in one \term{batch}; the weighted one leaves the lightest \term{exam}, Statistics, unscheduled at \term{Cost}~1.
 
-The paper samples its QUBO on D-Wave's quantum annealer, its Leap Hybrid Sampler and, classically, by
-simulated annealing \cite[§5.4]{Paper}, as the notebook does \cite[cells 15--17]{Notebook}. The EMF chain
-samples its own QUBO by simulated annealing or by QAOA on a simulator; the BESSER chain by QAOA only.
-Simulated annealing needs no D-Wave account, so CI reruns the EMF chain's runs (\cref{tab:results-emf}), and
-it gives QAOA a yardstick on the same QUBO. Quantum annealing
+The paper samples its \term{QUBO} on D-Wave's quantum annealer, its Leap Hybrid Sampler and, classically, by
+\term{simulated annealing} \cite[§5.4]{Paper}, as the notebook does \cite[cells 15--17]{Notebook}. The EMF chain
+samples its own \term{QUBO} by \term{simulated annealing} or by QAOA on a simulator; the BESSER chain by QAOA only.
+\term{Simulated annealing} needs no D-Wave account, so CI reruns the EMF chain's runs (\cref{tab:results-emf}), and
+it gives QAOA a yardstick on the same \term{QUBO}. Quantum annealing
 itself is issue~\#23.
 
 \begin{figure}
 	\begin{tikzpicture}[node distance=6mm and 7mm, >={Stealth[]},
 			stage/.style={draw, rounded corners, align=center, text width=2.9cm, font=\small, inner sep=4pt},
 			flow/.style={font=\scriptsize, midway}]
-		\node[stage] (problem) {\textbf{Problem}\\\footnotesize students, exams and their weights, batches};
-		\node[stage, right=of problem] (qubo) {\textbf{QUBO}\\\footnotesize an Assignment Variable per
-			exam and batch, a penalty per Constraint};
-		\node[stage, right=of qubo] (method) {\textbf{Method}\\\footnotesize QAOA on a simulator, or
-			simulated annealing (EMF)};
-		\node[stage, right=of method] (schedule) {\textbf{Schedule}\\\footnotesize a sample, decoded};
-		\node[stage, below=of qubo] (baseline) {\textbf{Baseline}\\\footnotesize every schedule
+		\node[stage] (problem) {\textbf{\term{Problem}}\\\footnotesize \term{students}, \term{exams} and their \term{weights}, \term{batches}};
+		\node[stage, right=of problem] (qubo) {\textbf{\term{QUBO}}\\\footnotesize an \term{Assignment Variable} per
+			\term{exam} and \term{batch}, a penalty per \term{Constraint}};
+		\node[stage, right=of qubo] (method) {\textbf{\term{Method}}\\\footnotesize QAOA on a simulator, or
+			\term{simulated annealing} (EMF)};
+		\node[stage, right=of method] (schedule) {\textbf{\term{Schedule}}\\\footnotesize a sample, decoded};
+		\node[stage, below=of qubo] (baseline) {\textbf{\term{Baseline}}\\\footnotesize every \term{schedule}
 			enumerated: the optimum};
-		\node[stage, right=of baseline] (validation) {\textbf{Validation}\\\footnotesize P(optimal) and
-			P(feasible) against chance};
+		\node[stage, right=of baseline] (validation) {\textbf{Validation}\\\footnotesize \term{P(optimal)} and
+			\term{P(feasible)} against chance};
 		\draw[->] (problem) -- (qubo);
 		\draw[->] (qubo) -- (method);
 		\draw[->] (method) -- (schedule);
@@ -110,9 +110,9 @@ itself is issue~\#23.
 		\draw[->] (method) -- node[flow, right] {every sample} (validation);
 		\draw[->] (schedule) |- (validation);
 	\end{tikzpicture}
-	\caption{The strategy of both chains: model the Problem, formulate it as a QUBO, sample it by a
-		Method, decode a sample into a Schedule, and judge every sample against a Baseline
-		that enumerates every schedule.}\label{fig:strategy}
+	\caption{The strategy of both chains: model the \term{Problem}, formulate it as a \term{QUBO}, sample it by a
+		\term{Method}, decode a sample into a \term{Schedule}, and judge every sample against a \term{Baseline}
+		that enumerates every \term{schedule}.}\label{fig:strategy}
 \end{figure}
 
 \input{sections/two-chains}
@@ -123,11 +123,11 @@ itself is issue~\#23.
 
 \section{Validation}\label{sec:validation}
 
-\placeholder{the team}{How the chains are validated}{What every run measures: the Schedule found, whether
-it is feasible and optimal against the Baseline, P(optimal) and P(feasible) over every shot or read, and
-the odds of a uniformly random bit string, the bar a Method must clear. The EMF chain also checks its
-formulation in every run: a sample's energy is minus the weight it places exactly when it breaks no
-Constraint. Each chain is measured on its own instances (\cref{app:instances}); every run is in
+\placeholder{the team}{How the chains are validated}{What every run measures: the \term{Schedule} found, whether
+it is \term{feasible} and \term{optimal} against the \term{Baseline}, \term{P(optimal)} and \term{P(feasible)} over every shot or read, and
+the odds of a uniformly random bit string, the bar a \term{Method} must clear. The EMF chain also checks its
+formulation in every run: a sample's energy is minus the \term{weight} it places exactly when it breaks no
+\term{Constraint}. Each chain is measured on its own instances (\cref{app:instances}); every run is in
 \cref{app:results}.}
 
 \input{generated/validation-emf}
@@ -138,15 +138,15 @@ Constraint. Each chain is measured on its own instances (\cref{app:instances}); 
 
 \placeholder{the team}{The limitations}{%
 \begin{itemize}[nosep]
-	\item QAOA is far behind simulated annealing (\cref{tab:validation-emf}), and only simulated, on at
+	\item QAOA is far behind \term{simulated annealing} (\cref{tab:validation-emf}), and only simulated, on at
 	      most 18 qubits.
 	\item QAOA starts from a fixed ramp of angles on the annealing path \cite[§VI]{Farhi}, not set by the
-	      Solver Configuration. From there a deeper circuit raises P(feasible) on path and cycle, but
-	      there P(optimal) stays between 0.028 and 0.062 whatever the depth or optimiser
-	      (\cref{tab:results-emf,tab:other-settings-emf}): the extra feasible schedules leave an exam out.
-	\item The simulated annealing is classical: no quantum annealer was used (issue~\#23).
-	\item The Baseline enumerates every schedule, so validation stops at about $10^6$ schedules.
-	\item The Schedule the generated script writes is not validated against its metamodel's OCL.
+	      \term{Solver Configuration}. From there a deeper circuit raises \term{P(feasible)} on path and cycle, but
+	      there \term{P(optimal)} stays between 0.028 and 0.062 whatever the depth or optimiser
+	      (\cref{tab:results-emf,tab:other-settings-emf}): the extra \term{feasible} \term{schedules} leave an \term{exam} out.
+	\item The \term{simulated annealing} is classical: no quantum annealer was used (issue~\#23).
+	\item The \term{Baseline} enumerates every \term{schedule}, so validation stops at about $10^6$ \term{schedules}.
+	\item The \term{Schedule} the generated script writes is not validated against its metamodel's OCL.
 	\item The BESSER chain's own.
 \end{itemize}}
 

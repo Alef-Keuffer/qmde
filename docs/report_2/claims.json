@@ -1,6 +1,6 @@
 [
 	{
-		"claim": "The EMF chain's terms are those of the glossary (\\cref{app:glossary}); the BESSER chain's sections keep its own words: \\emph{slot} for a Batch, \\emph{valid} for a schedule that places every exam without a Conflict.",
+		"claim": "The EMF chain's terms are those of the glossary (\\cref{app:glossary}); the BESSER chain's sections keep its own words: \\emph{slot} for a \\term{Batch}, \\emph{valid} for a \\term{schedule} that places every \\term{exam} without a \\term{Conflict}.",
 		"evidence": [
 			{
 				"path": "docs/report_2/generate.py",
@@ -16,11 +16,11 @@
 			},
 			{
 				"path": "docs/report_2/sections/besser-chain.tex",
-				"quote": "There is one yes/no variable for each pair (exam, slot)"
+				"quote": "There is one yes/no variable for each pair (\\term{exam}, slot)"
 			},
 			{
 				"path": "docs/report_2/sections/besser-chain.tex",
-				"quote": "A schedule with zero points is a valid one."
+				"quote": "A \\term{schedule} with zero points is a valid one."
 			},
 			{
 				"path": "besser/transformations/map_back.py",
@@ -29,7 +29,7 @@
 		]
 	},
 	{
-		"claim": "A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch take place at once.",
+		"claim": "A \\term{Problem} lists \\term{students}, the \\term{exams} each of them sits, and a fixed number of \\term{batches}; all \\term{exams} of a \\term{batch} take place at once.",
 		"evidence": [
 			{
 				"path": "emf/GLOSSARY.md",
@@ -54,7 +54,7 @@
 		]
 	},
 	{
-		"claim": "Two exams that share a student are in Conflict and must not share a batch \\cite[§5.2, Algorithm 1]{Paper}.",
+		"claim": "Two \\term{exams} that share a \\term{student} are in \\term{Conflict} and must not share a \\term{batch} \\cite[§5.2, Algorithm 1]{Paper}.",
 		"evidence": [
 			{
 				"cite": "Paper",
@@ -71,7 +71,7 @@
 		]
 	},
 	{
-		"claim": "Each exam carries a Weight, its priority; in the EMF chain, the cost of leaving it unscheduled.",
+		"claim": "Each \\term{exam} carries a \\term{Weight}, its priority; in the EMF chain, the cost of leaving it unscheduled.",
 		"evidence": [
 			{
 				"path": "emf/GLOSSARY.md",
@@ -109,7 +109,7 @@
 		]
 	},
 	{
-		"claim": "The Problem is formulated as a QUBO over one Assignment Variable $x_{ik}$ per exam~$i$ and batch~$k$, $1$ when exam~$i$ is in batch~$k$ \\cite[§5.3, Eq. (4)]{Paper}, with a penalty per Constraint.",
+		"claim": "The \\term{Problem} is formulated as a \\term{QUBO} over one \\term{Assignment Variable} $x_{ik}$ per \\term{exam}~$i$ and \\term{batch}~$k$, $1$ when \\term{exam}~$i$ is in \\term{batch}~$k$ \\cite[§5.3, Eq. (4)]{Paper}, with a penalty per \\term{Constraint}.",
 		"evidence": [
 			{
 				"cite": "Paper",
@@ -134,7 +134,7 @@
 		]
 	},
 	{
-		"claim": "A Method samples the QUBO, and a sample is decoded into a Schedule: the lowest-energy one in the EMF chain, the most frequent optimal one in BESSER's.",
+		"claim": "A \\term{Method} samples the \\term{QUBO}, and a sample is decoded into a \\term{Schedule}: the lowest-energy one in the EMF chain, the most frequent optimal one in BESSER's.",
 		"evidence": [
 			{
 				"path": "emf/GLOSSARY.md",
@@ -155,7 +155,7 @@
 		]
 	},
 	{
-		"claim": "Independently of the QUBO, a Baseline enumerates every schedule to find the optimum (the EMF chain's stops at about $10^6$, \\cref{sec:limitations}), and every sample, not only the best, is judged against it (\\cref{sec:validation}).",
+		"claim": "Independently of the \\term{QUBO}, a \\term{Baseline} enumerates every \\term{schedule} to find the optimum (the EMF chain's stops at about $10^6$, \\cref{sec:limitations}), and every sample, not only the best, is judged against it (\\cref{sec:validation}).",
 		"evidence": [
 			{
 				"path": "besser/tests/baseline.py",
@@ -205,7 +205,7 @@
 		]
 	},
 	{
-		"claim": "The paper's \\cite[§5.3, Eqs. (5)--(10)]{Paper}, which the BESSER chain implements, places each exam in exactly one batch and has penalties only: a sample of energy zero is a schedule without conflicts, and nothing ranks one exam above another.",
+		"claim": "The paper's \\cite[§5.3, Eqs. (5)--(10)]{Paper}, which the BESSER chain implements, places each \\term{exam} in exactly one \\term{batch} and has penalties only: a sample of energy zero is a \\term{schedule} without \\term{conflicts}, and nothing ranks one \\term{exam} above another.",
 		"evidence": [
 			{
 				"cite": "Paper",
@@ -230,7 +230,7 @@
 		]
 	},
 	{
-		"claim": "The EMF chain implements a weighted one (\\texttt{emf/docs/adr/0009}): each exam in at most one batch \\cite[§4.2, Eq. (30)]{Lucas}, with every scheduled exam earning its weight, a weighted set packing \\cite[§4.2]{Glover}: \\[ H = -\\sum_i w_i \\sum_k x_{ik} + A \\Bigl( \\sum_i \\sum_{k<l} x_{ik} x_{il} + \\sum_{(i,j)\\ \\mathrm{in\\ Conflict}} \\sum_k x_{ik} x_{jk} \\Bigr).\\]",
+		"claim": "The EMF chain implements a weighted one (\\texttt{emf/docs/adr/0009}): each \\term{exam} in at most one \\term{batch} \\cite[§4.2, Eq. (30)]{Lucas}, with every scheduled \\term{exam} earning its \\term{weight}, a weighted set packing \\cite[§4.2]{Glover}: \\[ H = -\\sum_i w_i \\sum_k x_{ik} + A \\Bigl( \\sum_i \\sum_{k<l} x_{ik} x_{il} + \\sum_{(i,j)\\ \\mathrm{in\\ Conflict}} \\sum_k x_{ik} x_{jk} \\Bigr).\\]",
 		"evidence": [
 			{
 				"path": "emf/docs/adr/0009-weights-as-priorities-in-pyqubo.md",
@@ -259,7 +259,7 @@
 		]
 	},
 	{
-		"claim": "With the Penalty Coefficient $A$ above every weight, leaving an exam unscheduled always costs less than breaking a Constraint \\cite[§4.2]{Lucas}, so the optimum is a feasible Schedule of least Cost, the total weight of its Unscheduled Exams.",
+		"claim": "With the \\term{Penalty Coefficient} $A$ above every \\term{weight}, leaving an \\term{exam} unscheduled always costs less than breaking a \\term{Constraint} \\cite[§4.2]{Lucas}, so the optimum is a \\term{feasible} \\term{Schedule} of least \\term{Cost}, the total \\term{weight} of its \\term{Unscheduled Exams}.",
 		"evidence": [
 			{
 				"cite": "Lucas",
@@ -280,7 +280,7 @@
 		]
 	},
 	{
-		"claim": "The two optima differ wherever not every exam fits.",
+		"claim": "The two optima differ wherever not every \\term{exam} fits.",
 		"evidence": [
 			{
 				"path": "besser/transformations/t1_problem2solution.py",
@@ -297,7 +297,7 @@
 		]
 	},
 	{
-		"claim": "On four mutually conflicting exams in three batches (BESSER's \\texttt{none}, EMF's \\texttt{clique}), the paper's formulation, with the penalty BESSER derives for an exam left out, above the most conflicts placing it can add, accepts one Conflict, two exams in one batch; the weighted one leaves the lightest exam, Statistics, unscheduled at Cost~1.",
+		"claim": "On four mutually conflicting \\term{exams} in three \\term{batches} (BESSER's \\texttt{none}, EMF's \\texttt{clique}), the paper's formulation, with the penalty BESSER derives for an \\term{exam} left out, above the most \\term{conflicts} placing it can add, accepts one \\term{Conflict}, two \\term{exams} in one \\term{batch}; the weighted one leaves the lightest \\term{exam}, Statistics, unscheduled at \\term{Cost}~1.",
 		"evidence": [
 			{
 				"path": "besser/instances/none.py",
@@ -334,7 +334,7 @@
 		]
 	},
 	{
-		"claim": "The paper samples its QUBO on D-Wave's quantum annealer, its Leap Hybrid Sampler and, classically, by simulated annealing \\cite[§5.4]{Paper}, as the notebook does \\cite[cells 15--17]{Notebook}.",
+		"claim": "The paper samples its \\term{QUBO} on D-Wave's quantum annealer, its Leap Hybrid Sampler and, classically, by \\term{simulated annealing} \\cite[§5.4]{Paper}, as the notebook does \\cite[cells 15--17]{Notebook}.",
 		"evidence": [
 			{
 				"cite": "Paper",
@@ -363,7 +363,7 @@
 		]
 	},
 	{
-		"claim": "The EMF chain samples its own QUBO by simulated annealing or by QAOA on a simulator; the BESSER chain by QAOA only.",
+		"claim": "The EMF chain samples its own \\term{QUBO} by \\term{simulated annealing} or by QAOA on a simulator; the BESSER chain by QAOA only.",
 		"evidence": [
 			{
 				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
@@ -380,7 +380,7 @@
 		]
 	},
 	{
-		"claim": "Simulated annealing needs no D-Wave account, so CI reruns the EMF chain's runs (\\cref{tab:results-emf}), and it gives QAOA a yardstick on the same QUBO.",
+		"claim": "\\term{Simulated annealing} needs no D-Wave account, so CI reruns the EMF chain's runs (\\cref{tab:results-emf}), and it gives QAOA a yardstick on the same \\term{QUBO}.",
 		"evidence": [
 			{
 				"cite": "Notebook",
@@ -422,7 +422,7 @@
 		]
 	},
 	{
-		"claim": "The strategy of both chains: model the Problem, formulate it as a QUBO, sample it by a Method, decode a sample into a Schedule, and judge every sample against a Baseline that enumerates every schedule.",
+		"claim": "The strategy of both chains: model the \\term{Problem}, formulate it as a \\term{QUBO}, sample it by a \\term{Method}, decode a sample into a \\term{Schedule}, and judge every sample against a \\term{Baseline} that enumerates every \\term{schedule}.",
 		"evidence": [
 			{
 				"path": "emf/CONTEXT.md",
@@ -512,7 +512,7 @@
 		]
 	},
 	{
-		"claim": "They solve the two formulations above, so only the EMF chain's results depend on the Weight.",
+		"claim": "They solve the two formulations above, so only the EMF chain's results depend on the \\term{Weight}.",
 		"evidence": [
 			{
 				"path": "besser/transformations/t1_problem2solution.py",
@@ -537,7 +537,7 @@
 		]
 	},
 	{
-		"claim": "Take the smallest instance, \\texttt{emf/instances/1-path.exam}: four exams whose conflicts form a path, two batches.",
+		"claim": "Take the smallest instance, \\texttt{emf/instances/1-path.exam}: four \\term{exams} whose \\term{conflicts} form a path, two \\term{batches}.",
 		"evidence": [
 			{
 				"path": "emf/instances/1-path.exam",
@@ -682,7 +682,7 @@
 		]
 	},
 	{
-		"claim": "Python at run time: pyqubo builds the QUBO, then QAOA or annealing samples it, writing \\texttt{schedule\\_path.xmi} and a printed report; the schedule conforms to \\texttt{schedule.ecore}.",
+		"claim": "Python at run time: pyqubo builds the \\term{QUBO}, then QAOA or annealing samples it, writing \\texttt{schedule\\_path.xmi} and a printed report; the \\term{schedule} conforms to \\texttt{schedule.ecore}.",
 		"evidence": [
 			{
 				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
@@ -868,7 +868,7 @@
 		]
 	},
 	{
-		"claim": "Metamodel & \\texttt{problem.ecore} & a Problem has exams; an Exam has students",
+		"claim": "Metamodel & \\texttt{problem.ecore} & a \\term{Problem} has \\term{exams}; an \\term{Exam} has \\term{students}",
 		"evidence": [
 			{
 				"path": "emf/bundles/pt.up.feup.examschedule.model/model/problem.ecore",
@@ -960,7 +960,7 @@
 		"evidence": []
 	},
 	{
-		"claim": "Rules map a Problem to a Conflict Graph and add an edge for each pair of exams sharing a student, the paper's Algorithm~1 \\cite[§5.2, Algorithm 1]{Paper}.",
+		"claim": "Rules map a \\term{Problem} to a \\term{Conflict Graph} and add an edge for each pair of \\term{exams} sharing a \\term{student}, the paper's Algorithm~1 \\cite[§5.2, Algorithm 1]{Paper}.",
 		"evidence": [
 			{
 				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
@@ -989,7 +989,7 @@
 		"evidence": []
 	},
 	{
-		"claim": "A template walks the Conflict Graph and prints Python.",
+		"claim": "A template walks the \\term{Conflict Graph} and prints Python.",
 		"evidence": [
 			{
 				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
@@ -1006,7 +1006,7 @@
 		]
 	},
 	{
-		"claim": "The last model the chain itself produces is the Conflict Graph.",
+		"claim": "The last model the chain itself produces is the \\term{Conflict Graph}.",
 		"evidence": [
 			{
 				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
@@ -1019,7 +1019,7 @@
 		]
 	},
 	{
-		"claim": "The QUBO never becomes an \\texttt{.xmi}: pyqubo builds it in memory when the generated script runs (\\texttt{emf/docs/adr/0007}), the hand-off chosen in \\cref{sec:strategy}.",
+		"claim": "The \\term{QUBO} never becomes an \\texttt{.xmi}: pyqubo builds it in memory when the generated script runs (\\texttt{emf/docs/adr/0007}), the hand-off chosen in \\cref{sec:strategy}.",
 		"evidence": [
 			{
 				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
@@ -1036,7 +1036,7 @@
 		]
 	},
 	{
-		"claim": "The BESSER chain takes a description of the exams, transforms it step by step into a quantum circuit, runs that circuit on a simulator, and converts the results back into a timetable that is easy for a person to read.",
+		"claim": "The BESSER chain takes a description of the \\term{exams}, transforms it step by step into a quantum circuit, runs that circuit on a simulator, and converts the results back into a timetable that is easy for a person to read.",
 		"evidence": [
 			{
 				"path": "besser/pipeline.py",
@@ -1049,7 +1049,7 @@
 		]
 	},
 	{
-		"claim": "Every step writes its result to \\texttt{besser/output/<instance>/}, one file per step, so each step can be opened and checked independently. \\Cref{fig:besser-chain} illustrates the smallest example, \\texttt{tiny} (3 exams, 3 time slots, 9 qubits).",
+		"claim": "Every step writes its result to \\texttt{besser/output/<instance>/}, one file per step, so each step can be opened and checked independently. \\Cref{fig:besser-chain} illustrates the smallest example, \\texttt{tiny} (3 \\term{exams}, 3 time slots, 9 qubits).",
 		"evidence": [
 			{
 				"path": "besser/pipeline.py",
@@ -1092,7 +1092,7 @@
 		]
 	},
 	{
-		"claim": "The first one describes \\emph{the problem}: the exams, the students taking them, and the time slots (\\texttt{besser/instances/tiny.py}, a model of Part~I's Problem DSL).",
+		"claim": "The first one describes the \\term{problem}: the \\term{exams}, the \\term{students} taking them, and the time slots (\\texttt{besser/instances/tiny.py}, a model of Part~I's Problem DSL).",
 		"evidence": [
 			{
 				"path": "besser/instances/tiny.py",
@@ -1105,7 +1105,7 @@
 		]
 	},
 	{
-		"claim": "The second one defines \\emph{how to solve it}: the cost of a conflict, the number of layers in the circuit, its angles, how many times it should run, and a seed so that every execution produces the same result (\\texttt{besser/config/tiny.py}, a model of our Solver Configuration metamodel).",
+		"claim": "The second one defines \\emph{how to solve it}: the cost of a \\term{conflict}, the number of layers in the circuit, its angles, how many times it should run, and a seed so that every execution produces the same result (\\texttt{besser/config/tiny.py}, a model of our \\term{Solver Configuration} metamodel).",
 		"evidence": [
 			{
 				"path": "besser/config/tiny.py",
@@ -1122,7 +1122,7 @@
 		]
 	},
 	{
-		"claim": "They are kept separate on purpose: to solve the same problem in a different way, only the configuration changes, never the code.",
+		"claim": "They are kept separate on purpose: to solve the same \\term{problem} in a different way, only the configuration changes, never the code.",
 		"evidence": [
 			{
 				"path": "besser/config/solver_config_dsl.py",
@@ -1135,7 +1135,7 @@
 		]
 	},
 	{
-		"claim": "\\textbf{Read and check.} Both models are loaded and validated against the rules of their metamodels, written in OCL: for instance, an exam must have a name, and the number of circuit layers must match the depth.",
+		"claim": "\\textbf{Read and check.} Both models are loaded and validated against the rules of their metamodels, written in OCL: for instance, an \\term{exam} must have a name, and the number of circuit layers must match the depth.",
 		"evidence": [
 			{
 				"path": "besser/pipeline.py",
@@ -1170,7 +1170,7 @@
 		]
 	},
 	{
-		"claim": "\\textbf{T1, model to model: from exams to penalty points.} The problem becomes a QUBO, a list of penalty points.",
+		"claim": "\\textbf{T1, model to model: from \\term{exams} to penalty points.} The \\term{problem} becomes a \\term{QUBO}, a list of penalty points.",
 		"evidence": [
 			{
 				"path": "besser/transformations/t1_problem2solution.py",
@@ -1179,7 +1179,7 @@
 		]
 	},
 	{
-		"claim": "There is one yes/no variable for each pair (exam, slot), and a schedule accumulates points for every rule it violates: an exam with no slot or with two slots, or two exams sharing a student placed in the same slot \\cite[§5.3]{Paper}.",
+		"claim": "There is one yes/no variable for each pair (\\term{exam}, slot), and a \\term{schedule} accumulates points for every rule it violates: an \\term{exam} with no slot or with two slots, or two \\term{exams} sharing a \\term{student} placed in the same slot \\cite[§5.3]{Paper}.",
 		"evidence": [
 			{
 				"path": "besser/transformations/t1_problem2solution.py",
@@ -1208,7 +1208,7 @@
 		]
 	},
 	{
-		"claim": "A schedule with zero points is a valid one.",
+		"claim": "A \\term{schedule} with zero points is a valid one.",
 		"evidence": [
 			{
 				"path": "besser/transformations/t1_problem2solution.py",
@@ -1217,7 +1217,7 @@
 		]
 	},
 	{
-		"claim": "Leaving an exam out always costs more than a conflict, so the solver cannot ``cheat'' by dropping an exam \\cite[§2.3]{Lucas}.",
+		"claim": "Leaving an \\term{exam} out always costs more than a \\term{conflict}, so the solver cannot ``cheat'' by dropping an \\term{exam} \\cite[§2.3]{Lucas}.",
 		"evidence": [
 			{
 				"path": "besser/transformations/t1_problem2solution.py",
@@ -1234,7 +1234,7 @@
 		]
 	},
 	{
-		"claim": "Saved: \\texttt{2\\_solution}, and a trace linking each variable to its exam and slot.",
+		"claim": "Saved: \\texttt{2\\_solution}, and a trace linking each variable to its \\term{exam} and slot.",
 		"evidence": [
 			{
 				"path": "besser/pipeline.py",
@@ -1243,7 +1243,7 @@
 		]
 	},
 	{
-		"claim": "\\textbf{T2, model to model: from penalty points to a quantum circuit.} The QUBO becomes a QAOA circuit \\cite{Farhi} in BESSER's own quantum metamodel: one qubit per variable, and layers that steer the qubits towards the schedules with fewer points.",
+		"claim": "\\textbf{T2, model to model: from penalty points to a quantum circuit.} The \\term{QUBO} becomes a \\term{QAOA circuit} \\cite{Farhi} in BESSER's own quantum metamodel: one qubit per variable, and layers that steer the qubits towards the \\term{schedules} with fewer points.",
 		"evidence": [
 			{
 				"path": "besser/transformations/t2_solution2quantum.py",
@@ -1338,7 +1338,7 @@
 		]
 	},
 	{
-		"claim": "\\textbf{Decode.} Each string of bits is read from right to left, as Qiskit writes it, and the two traces convert every bit back into ``exam X in slot Y''.",
+		"claim": "\\textbf{Decode.} Each string of bits is read from right to left, as Qiskit writes it, and the two traces convert every bit back into ``\\term{exam} X in slot Y''.",
 		"evidence": [
 			{
 				"path": "besser/transformations/map_back.py",
@@ -1351,7 +1351,7 @@
 		]
 	},
 	{
-		"claim": "Saved: \\texttt{5\\_solutions.json}, the schedules in plain words, along with the rules each one breaks.",
+		"claim": "Saved: \\texttt{5\\_solutions.json}, the \\term{schedules} in plain words, along with the rules each one breaks.",
 		"evidence": [
 			{
 				"path": "besser/pipeline.py",
@@ -1364,7 +1364,7 @@
 		]
 	},
 	{
-		"claim": "\\textbf{Validate.} A classical program tries every possible schedule and finds the best ones.",
+		"claim": "\\textbf{Validate.} A classical program tries every possible \\term{schedule} and finds the best ones.",
 		"evidence": [
 			{
 				"path": "besser/tests/baseline.py",
@@ -1377,7 +1377,7 @@
 		]
 	},
 	{
-		"claim": "The chain then measures how often the circuit found a valid schedule and a best schedule, and compares this with picking a string of bits at random.",
+		"claim": "The chain then measures how often the circuit found a valid \\term{schedule} and a best \\term{schedule}, and compares this with picking a string of bits at random.",
 		"evidence": [
 			{
 				"path": "besser/tests/baseline.py",
@@ -1403,7 +1403,7 @@
 		]
 	},
 	{
-		"claim": "\\textbf{Map back.} The best schedule found is written into the problem model itself, with each exam linked to its slot, and checked again against the OCL rules.",
+		"claim": "\\textbf{Map back.} The best \\term{schedule} found is written into the problem model itself, with each \\term{exam} linked to its slot, and checked again against the OCL rules.",
 		"evidence": [
 			{
 				"path": "besser/pipeline.py",
@@ -1459,7 +1459,7 @@
 		]
 	},
 	{
-		"claim": "A classical program (\\texttt{besser/tests/baseline.py}) tries every possible schedule, assigning one slot to each exam, and identifies the valid ones (no student with two exams in the same slot) and the best ones (the fewest conflicts).",
+		"claim": "A classical program (\\texttt{besser/tests/baseline.py}) tries every possible \\term{schedule}, assigning one slot to each \\term{exam}, and identifies the valid ones (no \\term{student} with two \\term{exams} in the same slot) and the best ones (the fewest \\term{conflicts}).",
 		"evidence": [
 			{
 				"path": "besser/tests/baseline.py",
@@ -1485,7 +1485,7 @@
 		]
 	},
 	{
-		"claim": "The chain also checks T1 against the reference: the lowest number of points must be $w$ times the fewest conflicts, and exactly as many bit strings must reach it as the reference has best schedules.",
+		"claim": "The chain also checks T1 against the reference: the lowest number of points must be $w$ times the fewest \\term{conflicts}, and exactly as many bit strings must reach it as the reference has best \\term{schedules}.",
 		"evidence": [
 			{
 				"path": "besser/tests/baseline.py",
@@ -1536,7 +1536,7 @@
 		]
 	},
 	{
-		"claim": "Every bit string measured by the simulator is decoded into a schedule, and three metrics are computed across all 4096 shots:",
+		"claim": "Every bit string measured by the simulator is decoded into a \\term{schedule}, and three metrics are computed across all 4096 shots:",
 		"evidence": [
 			{
 				"path": "besser/transformations/map_back.py",
@@ -1549,7 +1549,7 @@
 		]
 	},
 	{
-		"claim": "\\textbf{P(valid)}: how often the circuit produced a valid schedule;",
+		"claim": "\\textbf{P(valid)}: how often the circuit produced a valid \\term{schedule};",
 		"evidence": [
 			{
 				"path": "besser/tests/baseline.py",
@@ -1558,7 +1558,7 @@
 		]
 	},
 	{
-		"claim": "\\textbf{P(optimal)}: how often it produced one of the best schedules;",
+		"claim": "\\textbf{P(optimal)}: how often it produced one of the best \\term{schedules};",
 		"evidence": [
 			{
 				"path": "besser/tests/baseline.py",
@@ -1593,7 +1593,7 @@
 		]
 	},
 	{
-		"claim": "The BESSER chain on its instances: QAOA with the fixed angles of each Solver Configuration (depth 3, 4096 shots, seed 7), against a bit string drawn at random from all $2^n$.",
+		"claim": "The BESSER chain on its instances: QAOA with the fixed angles of each \\term{Solver Configuration} (depth 3, 4096 shots, seed 7), against a bit string drawn at random from all $2^n$.",
 		"evidence": [
 			{
 				"path": "besser/output/summary.md",
@@ -1631,7 +1631,7 @@
 		]
 	},
 	{
-		"claim": "Instance & Qubits & Valid schedules & QUBO = baseline & P(valid) & P(optimal) & P(optimal), random & Ratio & Ratio, random",
+		"claim": "Instance & Qubits & Valid \\term{schedules} & \\term{QUBO} = baseline & P(valid) & P(optimal) & P(optimal), random & Ratio & Ratio, random",
 		"evidence": []
 	},
 	{
@@ -1680,7 +1680,7 @@
 		]
 	},
 	{
-		"claim": "On every instance, the circuit finds a best schedule far more often than chance (\\cref{tab:validation-besser}), but less often as the problem grows.",
+		"claim": "On every instance, the circuit finds a best \\term{schedule} far more often than chance (\\cref{tab:validation-besser}), but less often as the \\term{problem} grows.",
 		"evidence": [
 			{
 				"path": "besser/output/summary.md",
@@ -1705,7 +1705,7 @@
 		]
 	},
 	{
-		"claim": "The instance \\texttt{none} has no valid schedule at all, so P(valid) is 0 there; its best schedules have one conflict, and the circuit finds them in a fraction 0.2698 of the shots.",
+		"claim": "The instance \\texttt{none} has no valid \\term{schedule} at all, so P(valid) is 0 there; its best \\term{schedules} have one \\term{conflict}, and the circuit finds them in a fraction 0.2698 of the shots.",
 		"evidence": [
 			{
 				"path": "besser/output/summary.md",
@@ -1718,7 +1718,7 @@
 		]
 	},
 	{
-		"claim": "47 tests (\\texttt{cd besser \\&\\& python -m pytest}) check each step on its own: that the penalty points are zero exactly for the valid schedules (on \\texttt{tiny}), that the quantum form of the QUBO gives the same value as the QUBO on every bit string (on \\texttt{tiny} and \\texttt{medium}), that the generated Qiskit code gives each schedule the phase its penalty predicts (on \\texttt{tiny}), that the bits are read in Qiskit's order (right to left), and that two runs of \\texttt{tiny} produce exactly the same files.",
+		"claim": "47 tests (\\texttt{cd besser \\&\\& python -m pytest}) check each step on its own: that the penalty points are zero exactly for the valid \\term{schedules} (on \\texttt{tiny}), that the quantum form of the \\term{QUBO} gives the same value as the \\term{QUBO} on every bit string (on \\texttt{tiny} and \\texttt{medium}), that the generated Qiskit code gives each \\term{schedule} the phase its penalty predicts (on \\texttt{tiny}), that the bits are read in Qiskit's order (right to left), and that two runs of \\texttt{tiny} produce exactly the same files.",
 		"evidence": [
 			{
 				"path": "besser/README.md",
@@ -1751,7 +1751,7 @@
 		]
 	},
 	{
-		"claim": "To confirm that the tests really catch mistakes, \\texttt{besser/tests/mutations.py} puts three typical mistakes back, one at a time, into a temporary copy of the chain: the one-hot weight as weak as a conflict makes 17 of the 47 tests fail, the flipped sign of the cost layer 4, and count keys read left to right 2 (\\texttt{besser/README.md}).",
+		"claim": "To confirm that the tests really catch mistakes, \\texttt{besser/tests/mutations.py} puts three typical mistakes back, one at a time, into a temporary copy of the chain: the one-hot weight as weak as a \\term{conflict} makes 17 of the 47 tests fail, the flipped sign of the cost layer 4, and count keys read left to right 2 (\\texttt{besser/README.md}).",
 		"evidence": [
 			{
 				"path": "besser/README.md",
