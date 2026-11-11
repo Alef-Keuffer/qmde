@@ -14,7 +14,7 @@ References, with the key the code cites them by: Paper, `./hybrid-quantum-anneal
 - Problem
   - name: string (names the output folder and files)
   - nBatches: integer >= 1
-  - has students
+  - has one or more students
   - has one or more exams
 - Student
   - name: string
@@ -26,7 +26,7 @@ References, with the key the code cites them by: Paper, `./hybrid-quantum-anneal
 
 The Problem model is input only: it holds no batch assignment. The result is a separate Schedule model.
 
-OCL constraints (`problem.ecore`): at least one batch, at least one exam, unique exam names, unique student names, non-empty names, positive weights. The Conflict Graph and Solver Configuration carry their own OCL (e.g. a conflict joins distinct exams); all are checked between steps.
+OCL constraints (`problem.ecore`): at least one batch, unique exam names, unique student names, non-empty names, positive weights. The Conflict Graph and Solver Configuration carry their own OCL (e.g. a conflict joins distinct exams); all are checked between steps.
 
 ## Solver Configuration DSL
 
@@ -121,5 +121,5 @@ Run everything with `./build.sh` (see README.md); the Eclipse IDE is provisioned
 - QAOA is far behind annealing. On the weighted formulation it finds an optimal schedule on every instance, where on the penalty-only formulation of ADR-0006 it did no better than chance on cycle. With COBYLA at depth 2, P(optimal) is 7 (path), 30 (clique), 36 (cycle) and 37 (semester: 18 variables, 0.0017, seven shots in 4096) times chance, while P(feasible) is 0.61 to 0.75: minimising the expected energy also rewards feasible schedules that leave cheap exams out. Annealing reaches 0.96 to 1.00 everywhere.
 - The initial QAOA angles are a fixed linear ramp in `python/examschedule.py` on Farhi's annealing path (§VI), not part of the Solver Configuration. From there a deeper circuit raises P(feasible) on path and cycle (0.72 to 0.88 and 0.52 to 0.86 from depth 1 to 3), but there P(optimal) stays between 0.028 and 0.062 whatever the depth or optimiser: the extra feasible schedules leave an exam out.
 - The Schedule written by the generated script is not validated against `schedule.ecore`'s OCL.
-- The only unit tests cover the baseline (`python/test_examschedule.py`) and the twin instances (`python/test_instances.py`); correctness rests on OCL validation between steps, the formulation check and the brute-force baseline in every run.
+- The only unit tests cover the baseline (`python/test_examschedule.py`), the twin instances (`python/test_instances.py`) and the rejection of a Problem without students or exams (`pt.up.feup.examschedule.chain.tests`, run by `./build.sh`); correctness rests on OCL validation between steps, the formulation check and the brute-force baseline in every run.
 - Python 3.12 is required (Qiskit Aer wheels); `./build.sh` needs a JDK 21+.

@@ -8,21 +8,20 @@
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Problem">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="atLeastOneBatch atLeastOneExam uniqueExamNames uniqueStudentNames"/>
+      <details key="constraints" value="atLeastOneBatch uniqueExamNames uniqueStudentNames"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="atLeastOneBatch" value="nBatches >= 1"/>
-      <details key="atLeastOneExam" value="exams->notEmpty()"/>
       <details key="uniqueExamNames" value="exams->isUnique(name)"/>
       <details key="uniqueStudentNames" value="students->isUnique(name)"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nBatches" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="students" upperBound="-1"
-        eType="#//Student" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="exams" upperBound="-1"
-        eType="#//Exam" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="students" lowerBound="1"
+        upperBound="-1" eType="#//Student" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exams" lowerBound="1"
+        upperBound="-1" eType="#//Exam" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Student">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">

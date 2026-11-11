@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Exam Schedule Transformation Chain Tests
+Bundle-SymbolicName: pt.up.feup.examschedule.chain.tests
+Bundle-Version: 0.1.0.qualifier
+Fragment-Host: pt.up.feup.examschedule.chain
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: pt.up.feup.examschedule.chain.tests
+Import-Package: org.junit.jupiter.api

@@ -16,6 +16,9 @@
       <unit id="org.eclipse.m2m.atl.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.aql.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.feature.group" version="0.0.0"/>
+      <!-- What Tycho's JUnit 6 provider runs the .tests bundles with. -->
+      <unit id="junit-platform-suite-engine" version="0.0.0"/>
+      <unit id="junit-jupiter-engine" version="0.0.0"/>
     </location>
   </locations>
 </target>

@@ -22,6 +22,7 @@
     <module>bundles/pt.up.feup.examschedule.dsl.ide</module>
     <module>bundles/pt.up.feup.examschedule.dsl.ui</module>
     <module>bundles/pt.up.feup.examschedule.chain</module>
+    <module>bundles/pt.up.feup.examschedule.chain.tests</module>
     <module>releng/pt.up.feup.examschedule.repository</module>
     <module>releng/run</module>
   </modules>
