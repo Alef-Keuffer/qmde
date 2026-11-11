@@ -1,3 +1,4 @@
+// BESSER's medium (besser/instances/medium.py) is this problem.
 // Q16 (ii): five exams whose conflicts form a 5-cycle, three batches. Feasible (needs 3 batches).
 // No weights: every exam weighs 1, so the schedule places as many exams as it can.
 problem cycle batches 3

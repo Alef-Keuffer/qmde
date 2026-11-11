@@ -86,6 +86,7 @@ The total weight of its unscheduled exams.
 
 **Feasible** (schedule):
 Breaking no constraint: each exam in at most one batch and no conflict within a batch. Unscheduled exams are allowed. An infeasible schedule lists its broken constraints.
+_Avoid_: valid (the BESSER chain's word for a schedule that places every exam with no conflict: here, feasible with no unscheduled exam)
 
 **Optimal** (schedule):
 Feasible, with the lowest cost any feasible schedule of the problem has.
