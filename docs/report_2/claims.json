@@ -1,0 +1,218 @@
+[
+	{
+		"claim": "Terms are those of the EMF chain's glossary, \\texttt{emf/GLOSSARY.md}.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "## Language"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "**Batch**:"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "**Schedule**:"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "**Baseline**:"
+			}
+		]
+	},
+	{
+		"claim": "BESSER's metamodels, from Part~I, call a Batch a \\emph{TimeSlot} (or slot) and a feasible Schedule \\emph{valid}.",
+		"evidence": null
+	},
+	{
+		"claim": "The strategy of both chains: model the Problem, formulate it as a QUBO, sample it by a Method, decode the lowest-energy sample into a Schedule, and judge every sample against a Baseline that enumerates every schedule.",
+		"evidence": null
+	},
+	{
+		"claim": "The EMF chain with other QAOA settings, every one reaching the optimal cost.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "The same instances with other QAOA settings"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "All reach the optimal cost."
+			}
+		]
+	},
+	{
+		"claim": "Measured locally on macOS (arm64) with the pinned \\texttt{emf/requirements.txt}, not in CI, so a rerun on Linux may differ in the second digit; copied by hand from \\texttt{emf/CONTEXT.md}.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "These were measured locally on macOS (arm64) with the pinned `requirements.txt`, not in CI, so a rerun on Linux may differ in the second digit."
+			}
+		]
+	},
+	{
+		"claim": "COBYLA stops well before 150 iterations (29 to 54 evaluations); a Powell iteration is a line search over every angle (398 evaluations on cycle).",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "COBYLA stops well before 150 iterations (29 to 54 evaluations), so `iterations` does not limit it; for Powell an iteration is a line search over every angle (398 evaluations on cycle)."
+			}
+		]
+	},
+	{
+		"claim": "Instance & Variables & Method & P(optimal) & P(feasible)",
+		"evidence": []
+	},
+	{
+		"claim": "path & 8 & QAOA, depth 1, COBYLA, 150 iterations, 2048 shots & 0.031 & 0.723",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| path | 8 | `method QAOA depth 1 optimizer COBYLA iterations 150 shots 2048` | 0, none | 0 | 0.031 | 0.723 |"
+			}
+		]
+	},
+	{
+		"claim": "path & 8 & QAOA, depth 3, COBYLA, 150 iterations, 2048 shots & 0.062 & 0.881",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| path | 8 | `method QAOA depth 3 optimizer COBYLA iterations 150 shots 2048` | 0, none | 0 | 0.062 | 0.881 |"
+			}
+		]
+	},
+	{
+		"claim": "path & 8 & QAOA, depth 2, Nelder-Mead, 150 iterations, 2048 shots & 0.049 & 0.796",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| path | 8 | `method QAOA depth 2 optimizer Nelder-Mead iterations 150 shots 2048` | 0, none | 0 | 0.049 | 0.796 |"
+			}
+		]
+	},
+	{
+		"claim": "cycle & 15 & QAOA, depth 1, COBYLA, 150 iterations, 4096 shots & 0.028 & 0.517",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| cycle | 15 | `method QAOA depth 1 optimizer COBYLA iterations 150 shots 4096` | 0, none | 0 | 0.028 | 0.517 |"
+			}
+		]
+	},
+	{
+		"claim": "cycle & 15 & QAOA, depth 3, COBYLA, 150 iterations, 4096 shots & 0.047 & 0.865",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| cycle | 15 | `method QAOA depth 3 optimizer COBYLA iterations 150 shots 4096` | 0, none | 0 | 0.047 | 0.865 |"
+			}
+		]
+	},
+	{
+		"claim": "cycle & 15 & QAOA, depth 2, Powell, 150 iterations, 4096 shots & 0.036 & 0.809",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| cycle | 15 | `method QAOA depth 2 optimizer Powell iterations 150 shots 4096` | 0, none | 0 | 0.036 | 0.809 |"
+			}
+		]
+	},
+	{
+		"claim": "Containment is drawn with a diamond at the container, a reference with an open arrow; \\textit{inv} names an OCL invariant.",
+		"evidence": [
+			{
+				"path": "docs/report_2/report_2.tex",
+				"quote": "contain/.style={{Diamond[]}-}"
+			},
+			{
+				"path": "docs/report_2/report_2.tex",
+				"quote": "reference/.style={-{Straight Barb[]}"
+			},
+			{
+				"path": "docs/report_2/generate.py",
+				"quote": "invariants = [rf\"\\textit{{inv}} {tex(n)}\""
+			}
+		]
+	},
+	{
+		"claim": "The EMF chain's instances, \\texttt{emf/instances/}.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "Test instances (variables = exams × batches), each solved by both methods"
+			}
+		]
+	},
+	{
+		"claim": "Each has a twin, \\texttt{<n>-<name>-qaoa.exam} or \\texttt{<n>-<name>-annealing.exam}, holding the same problem solved by the other Method.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "`<n>-<name>.exam` and its twin `<n>-<name>-qaoa.exam` or `<n>-<name>-annealing.exam`, the same problem"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "each solved by both methods"
+			}
+		]
+	},
+	{
+		"claim": "The EMF chain: \\texttt{cd emf \\&\\& ./build.sh} (JDK 21+, Python 3.12) builds the chain and runs it on every instance, writing \\texttt{emf/out/<name>/results\\_<name>.json}.",
+		"evidence": [
+			{
+				"path": "emf/README.md",
+				"quote": "Requires a JDK 21+ and Python 3.12"
+			},
+			{
+				"path": "emf/README.md",
+				"quote": "runs the chain headlessly on every `.exam` file in `instances/`"
+			},
+			{
+				"path": "emf/README.md",
+				"quote": "For each problem, `out/<name>/` holds"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "writes it as `results_<name>.json` next to the Schedule"
+			}
+		]
+	},
+	{
+		"claim": "The Python packages, pyqubo \\cite{pyqubo}, Qiskit and Qiskit Aer \\cite{Qiskit} and dwave-neal among them, are pinned in \\texttt{emf/requirements.txt}.",
+		"evidence": null
+	},
+	{
+		"claim": "CI runs the same on every push (\\texttt{.github/workflows/emf.yml}) and uploads the results as the \\texttt{emf-results} artifact.",
+		"evidence": null
+	},
+	{
+		"claim": "This report: \\texttt{docs/report\\_2/build.sh} (TeX Live, \\texttt{gh}) fetches those results from CI, generates its tables, \\cref{app:traceability} and the diagrams of \\cref{app:metamodels}, and runs latexmk; it does not run the chains.",
+		"evidence": [
+			{
+				"path": "docs/report_2/build.sh",
+				"quote": "fetches the EMF results from CI, generates the tables, Appendix A, the EMF metamodel diagrams"
+			},
+			{
+				"path": "docs/report_2/build.sh",
+				"quote": "It does not run the chains"
+			},
+			{
+				"path": "docs/report_2/build.sh",
+				"quote": "Needs TeX Live (LuaLaTeX, BibTeX), python3, pdftotext and gh."
+			},
+			{
+				"path": "docs/report_2/build.sh",
+				"quote": "latexmk -lualatex"
+			}
+		]
+	},
+	{
+		"claim": "The LLM logs of Part~II: \\href{https://github.com/Alef-Keuffer/qmde/blob/main/docs/llm_usage_2.md}{\\texttt{docs/llm\\_usage\\_2.md}}, with the session records it links in \\texttt{docs/assets/}, and \\href{https://github.com/Alef-Keuffer/qmde/blob/main/besser/docs/llm_usage_2.md}{\\texttt{besser/docs/llm\\_usage\\_2.md}}.",
+		"evidence": [
+			{
+				"path": "docs/llm_usage_2.md",
+				"quote": "assets/grilling-report-2.md"
+			}
+		]
+	}
+]
