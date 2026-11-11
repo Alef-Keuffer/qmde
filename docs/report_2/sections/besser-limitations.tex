@@ -1,0 +1,14 @@
+% Section 5, the BESSER chain's limitations: \input by report_2.tex, after the team's list.
+
+\placeholder{the BESSER rework}{The BESSER chain's limitations}{%
+\begin{itemize}[nosep]
+	\item Not the EMF chain's formulation: each exam in exactly one slot and no exam weights (EMF: at most
+	      one batch, weights as priorities, \texttt{emf/docs/adr/0009}); on the clique (\texttt{none}) the
+	      optima differ.
+	\item Fixed angles from the Solver Configuration, no optimiser loop (BESSER's gates take numbers).
+	\item QAOA only, on a simulator, at most 18 qubits; the Baseline enumerates every schedule.
+	\item $\lambda = (\Delta+1)w$ is derived from \cite[§2.3]{Lucas}; the scale $s$ of the angles has no
+	      reference.
+	\item Seven workarounds for the course fork (\texttt{besser/transformations/model\_io.py}, W1--W7).
+	\item The instances are not yet those of the EMF chain (names, weights, slots of the path).
+\end{itemize}}
