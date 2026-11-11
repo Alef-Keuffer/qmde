@@ -83,7 +83,7 @@
 - **Decisions we made:** both chains with equal weight, after a strategy
   section independent of either; the team writes the prose and a script sets up
   the rest; the template vendored into `docs/report_2/`; no page budget, the
-  appendices used freely; English; the Glossary's words, with one sidenote for
+  appendices used freely; English; the Glossary's words, with one footnote for
   BESSER's TimeSlot; each chain validated on its own instances against random
   chance; the numbers from CI's JSONs, the other QAOA settings copied by hand;
   coloured placeholders and a `final` mode; the EMF metamodel diagrams

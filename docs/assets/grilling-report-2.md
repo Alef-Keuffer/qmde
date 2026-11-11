@@ -94,7 +94,7 @@ accepting the recommendation.
 | Q | Question | AI recommended |
 | :- | :- | :- |
 | Q9 | Name the two formulations "Paper Formulation" and "Weighted Formulation", with clique/`none` as the example? | Yes |
-| Q10 | One vocabulary: `emf/GLOSSARY.md`'s terms, one sidenote mapping `TimeSlot` to Batch? | Yes |
+| Q10 | One vocabulary: `emf/GLOSSARY.md`'s terms, one footnote mapping `TimeSlot` to Batch? | Yes |
 | Q11 | Body: Strategy, EMF chain, BESSER chain, Validation, Limitations; appendices A traceability, B full results, C metamodels, D instances, E reproduce? | Yes, one section per chain |
 | Q12 | Validation across different instances? | (a) Each chain its own instances, headlined by P(optimal) against random chance |
 | Q13 | What does the script automate? | Sync the template, generate results tables (EMF needs a results JSON), generate Appendix A from the code's citations, build the PDF; not run the chains |
