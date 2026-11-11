@@ -464,6 +464,60 @@
 		]
 	},
 	{
+		"claim": "The strategy is implemented twice, independently: the EMF chain in \\texttt{emf/}, with Xtext, ATL and Acceleo (\\cref{sec:emf}), and the BESSER chain in \\texttt{besser/}, with Python transformations over B-UML models and BESSER's Qiskit generator (\\cref{sec:besser}).",
+		"evidence": [
+			{
+				"path": "AGENTS.md",
+				"quote": "Two independent implementations of the chain live side by side"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": ".exam file (Xtext, one grammar)"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "Problem ─► Conflict Graph                                            (ATL / EMFTVM)"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "Conflict Graph + SolverConfig ─► solve_<instance>.py                 (Acceleo 4)"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "in a folder of its own like `../emf/`"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "Source metamodel: ../metamodels/buml/problem_dsl.py (Part I)"
+			},
+			{
+				"path": "besser/transformations/t2_solution2quantum.py",
+				"quote": "from besser.BUML.metamodel.quantum import"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "through T3 (BESSER's `QiskitGenerator`) to a Qiskit script"
+			}
+		]
+	},
+	{
+		"claim": "They solve the two formulations above, so only the EMF chain's results depend on the Weight.",
+		"evidence": [
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "Exam.weight of Part I is not used: the paper has no exam weights"
+			},
+			{
+				"path": "emf/docs/adr/0009-weights-as-priorities-in-pyqubo.md",
+				"quote": "profit = −Σᵢ wᵢ Σₖ xᵢₖ"
+			},
+			{
+				"path": "emf/docs/adr/0009-weights-as-priorities-in-pyqubo.md",
+				"quote": "When not every exam fits, the lowest-weight exams are left unscheduled."
+			}
+		]
+	},
+	{
 		"claim": "The EMF chain turns one \\texttt{.exam} file into a Python script in three model-driven steps, run headless by an Eclipse application; the script then solves the Problem and validates what it finds.",
 		"evidence": [
 			{
