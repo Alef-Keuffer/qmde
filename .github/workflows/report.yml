@@ -1,6 +1,7 @@
 # Checks the report's prose against its evidence (docs/report_2/verify.py) and runs the report's unit tests.
 # No path filter: a claim may quote any file of the repository. A claim nobody has verified yet only warns here;
-# docs/report_2/build.sh final fails on it.
+# docs/report_2/build.sh final fails on it. Without pdftotext (apt cannot reach Ubuntu's mirrors from the runner),
+# quotes from the PDF references only warn here too; build.sh checks them.
 name: report
 
 on:
@@ -11,19 +12,12 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10 # a normal run takes about a minute; apt retries an unreachable mirror for minutes
+    timeout-minutes: 10
     permissions:
       contents: read
       issues: read # verify.py reads the state of the issues claims cite
     steps:
       - uses: actions/checkout@v7
-      # pdftotext, for the references' texts
-      - run: command -v pdftotext || { sudo apt-get update && sudo apt-get install -y poppler-utils; }
-      # The references' texts; the arXiv ones are downloaded again only when references.bib changes.
-      - uses: actions/cache@v6
-        with:
-          path: docs/report_2/sources
-          key: report-sources-${{ hashFiles('docs/report_2/references.bib') }}
       - run: python3 -m unittest discover -s docs/report_2
       - run: python3 docs/report_2/verify.py --allow-unverified
         env:

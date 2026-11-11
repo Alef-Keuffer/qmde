@@ -20,6 +20,7 @@ Usage: python3 verify.py [--sync] [--allow-unverified]
 import argparse
 import json
 import re
+import shutil
 import subprocess
 import sys
 import unicodedata
@@ -102,6 +103,8 @@ def source(key):
         if key == "Notebook":
             cells = json.loads(LOCAL[key].read_text(encoding="utf-8"))["cells"]
             text = "\n".join(f"[cell {c.get('execution_count')}]\n{''.join(c['source'])}" for c in cells)
+        elif not shutil.which("pdftotext"):
+            return None
         else:
             pdf = LOCAL.get(key)
             if pdf is None:
