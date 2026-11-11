@@ -19,6 +19,7 @@
 % BibTeX, not biber: TeX Live 2026's universal biber cannot unpack itself where lipo lacks -extract_family.
 \usepackage[style=numeric, backend=bibtex]{biblatex}
 \addbibresource{references.bib}
+\renewcommand*{\multicitedelim}{\addsemicolon\space} % a locator's commas would blur citations together
 \usepackage[pdfusetitle,hidelinks]{hyperref}
 \usepackage[capitalise]{cleveref}
 
@@ -52,20 +53,40 @@
 Terms are those of the EMF chain's glossary, \texttt{emf/GLOSSARY.md}.\sidenote{BESSER's metamodels, from
 Part~I, call a Batch a \emph{TimeSlot} (or slot) and a feasible Schedule \emph{valid}.}
 
-\placeholder{the team}{The strategy, independent of either chain}{%
-\begin{itemize}[nosep]
-	\item The problem: exams into a fixed number of batches so that no student sits two exams of the same
-	      batch; an exam's weight is its priority.
-	\item The pipeline of \cref{fig:strategy}, shared by both chains.
-	\item The two formulations: the paper's \cite[§5.3, Eqs. (5)--(10)]{Paper} (each exam in exactly one
-	      batch, penalties only), which BESSER implements, and the weighted one (each exam in at most one
-	      batch, weights as priorities; \texttt{emf/docs/adr/0009}), which EMF implements. On four mutually
-	      conflicting exams in three batches (BESSER's \texttt{none}, EMF's \texttt{clique}) their optima
-	      differ: one conflict accepted, or Statistics left unscheduled at cost~1.
-	\item Why simulated annealing as well: the paper samples by quantum annealing on D-Wave hardware; the
-	      chains use its classical counterpart, as the notebook \cite[cell 15]{Notebook} does (quantum
-	      annealing itself is issue~\#23).
-\end{itemize}}
+A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch
+take place at once. Two exams that share a student are in Conflict and must not share a batch
+\cite[§5.2, Algorithm 1]{Paper}. Each exam carries a Weight, its priority; in the EMF chain, the cost of
+leaving it unscheduled.
+
+Both chains follow \cref{fig:strategy}. The Problem is formulated as a QUBO over one Assignment Variable
+$x_{ik}$ per exam~$i$ and batch~$k$, $1$ when exam~$i$ is in batch~$k$ \cite[§5.3, Eq. (4)]{Paper}, with a
+penalty per Constraint. A Method samples the QUBO, and a sample is decoded into a Schedule: the
+lowest-energy one in the EMF chain, the most frequent optimal one in BESSER's. Independently of the QUBO, a
+Baseline enumerates every schedule, up to about $10^6$ (\cref{sec:limitations}), to find the optimum, and
+every sample, not only the best, is judged against it (\cref{sec:validation}).
+
+The chains implement two formulations. The paper's \cite[§5.3, Eqs. (5)--(10)]{Paper}, which the BESSER
+chain implements, places each exam in exactly one batch and has penalties only: a sample of energy zero is a
+schedule without conflicts, and nothing ranks one exam above another. The EMF chain implements a weighted
+one (\texttt{emf/docs/adr/0009}): each exam in at most one batch \cite[§4.2, Eq. (30)]{Lucas}, with every
+scheduled exam earning its weight, a weighted set packing \cite[§4.2]{Glover}:
+\[
+	H = -\sum_i w_i \sum_k x_{ik}
+	+ A \Bigl( \sum_i \sum_{k<l} x_{ik} x_{il} + \sum_{(i,j)\ \mathrm{in\ Conflict}} \sum_k x_{ik} x_{jk} \Bigr).
+\]
+With the Penalty Coefficient $A$ above every weight, leaving an exam unscheduled always costs less than
+breaking a Constraint \cite[§4.2]{Lucas}, so the optimum is a feasible Schedule of least Cost, the total
+weight of its Unscheduled Exams. The two optima differ wherever not every exam fits. On four mutually
+conflicting exams in three batches (BESSER's \texttt{none}, EMF's \texttt{clique}), the paper's
+formulation, with the penalty BESSER derives for an exam left out, above any number of conflicts, accepts one
+Conflict, two exams in one batch; the weighted one leaves the lightest exam, Statistics, unscheduled at Cost~1.
+
+The paper samples its QUBO on D-Wave's quantum annealer, its Leap Hybrid Sampler and, classically, by
+simulated annealing \cite[§5.4]{Paper}, as the notebook does \cite[cells 15--17]{Notebook}. The EMF chain
+samples its own QUBO by simulated annealing or by QAOA on a simulator; the BESSER chain by QAOA only.
+Simulated annealing needs no D-Wave account, so CI reruns the EMF chain's runs (\cref{tab:results-emf}), and
+it gives QAOA, which a simulator limits to small instances, a yardstick on the same QUBO. Quantum annealing
+itself is issue~\#23.
 
 \begin{figure}
 	\begin{tikzpicture}[node distance=6mm and 7mm, >={Stealth[]},
@@ -75,11 +96,10 @@ Part~I, call a Batch a \emph{TimeSlot} (or slot) and a feasible Schedule \emph{v
 		\node[stage, right=of problem] (qubo) {\textbf{QUBO}\\\footnotesize an Assignment Variable per
 			exam and batch, a penalty per Constraint};
 		\node[stage, right=of qubo] (method) {\textbf{Method}\\\footnotesize QAOA on a simulator, or
-			simulated annealing};
-		\node[stage, right=of method] (schedule) {\textbf{Schedule}\\\footnotesize the lowest-energy
-			sample, decoded};
+			simulated annealing (EMF)};
+		\node[stage, right=of method] (schedule) {\textbf{Schedule}\\\footnotesize a sample, decoded};
 		\node[stage, below=of qubo] (baseline) {\textbf{Baseline}\\\footnotesize every schedule
-			enumerated: the optimal cost};
+			enumerated: the optimum};
 		\node[stage, right=of baseline] (validation) {\textbf{Validation}\\\footnotesize P(optimal) and
 			P(feasible) against chance};
 		\draw[->] (problem) -- (qubo);
@@ -91,27 +111,50 @@ Part~I, call a Batch a \emph{TimeSlot} (or slot) and a feasible Schedule \emph{v
 		\draw[->] (schedule) |- (validation);
 	\end{tikzpicture}
 	\caption{The strategy of both chains: model the Problem, formulate it as a QUBO, sample it by a
-		Method, decode the lowest-energy sample into a Schedule, and judge every sample against a Baseline
+		Method, decode a sample into a Schedule, and judge every sample against a Baseline
 		that enumerates every schedule.}\label{fig:strategy}
 \end{figure}
 
 \section{EMF chain}\label{sec:emf}
 
-\placeholder{the team}{The EMF chain}{%
-\begin{itemize}[nosep]
-	\item Xtext: one \texttt{.exam} file holds a Problem and its Solver Configuration
-	      (\cref{app:instances}); every model is checked against its metamodel's OCL
-	      (\cref{app:metamodels}) between steps.
-	\item ATL (EMFTVM), Problem $\to$ Conflict Graph: an edge between two exams sharing a student
-	      \cite[§5.2, Algorithm 1]{Paper}.
-	\item Acceleo, Conflict Graph and Solver Configuration $\to$ \texttt{solve\_<name>.py}: the data, then
-	      the notebook's pyqubo formulation \cite{Notebook, pyqubo} made a weighted set packing
-	      \cite[§4.2]{Glover}.
-	\item The runtime samples the compiled model by simulated annealing or by QAOA \cite{Farhi} on Qiskit
-	      Aer \cite{Qiskit}, decodes the lowest-energy sample into a Schedule model and runs the Baseline.
-	\item Every rule, template section and runtime step cites its reference next to it, in the code;
-	      \cref{tab:traceability} lists them.
-\end{itemize}}
+The EMF chain turns one \texttt{.exam} file into a Python script in three model-driven steps, run headless by
+an Eclipse application; the script then solves the Problem and validates what it finds. The models parsed
+from the file, and the Conflict Graph, are checked against their metamodels' multiplicities and OCL
+invariants (\cref{app:metamodels}) before the next step uses them.
+
+\paragraph{Xtext.} The grammar imports the hand-written Problem and Solver Configuration metamodels, so one
+\texttt{.exam} file holds a Problem (its batches, its students, and each exam with its optional weight, 1 by
+default, and the students who sit it) and, optionally, its Solver Configuration: the Method, the Method's
+settings, the seed and the Penalty Coefficient, automatic unless given (\cref{app:instances}).
+
+\paragraph{ATL.} An EMFTVM transformation makes the Problem a Conflict Graph \cite[§5.2, Fig. 3]{Paper}. It
+copies the exams with their weights, creates the batches, the index~$k$ of $x_{ik}$
+\cite[§5.3, Eq. (4)]{Paper}, and adds one Conflict for each pair of exams that share a student, the
+paper's course conflict matrix~$C$ \cites[§5.2, Algorithm 1, Eq. (3)]{Paper}[cell 7]{Notebook}.
+
+\paragraph{Acceleo.} A template generates \texttt{solve\_<name>.py} from the Conflict Graph and the Solver
+Configuration: both as Python data, then the notebook's pyqubo construction
+\cites[cells 11--13]{Notebook}{pyqubo} (\texttt{emf/docs/adr/0007}), made the weighted set packing of
+\cref{sec:strategy} (\texttt{emf/docs/adr/0009}). Each
+Constraint is labelled in domain terms, \texttt{at-most-one-batch-<exam>} or
+\texttt{conflict-<exam>-<exam>-batch-<k>}, so a broken one names its exams. pyqubo compiles $H$ into the
+QUBO and its Ising form, so the chain models neither.
+
+\paragraph{The runtime.} The generated script holds only what depends on the models; it imports the
+hand-written \texttt{emf/python/examschedule.py}, which holds the rest (\texttt{emf/docs/adr/0005}). It sets
+$A$ to the largest weight plus one, or rejects an explicit $A$ not above every weight
+\cite[§4, Comment on the Scalar Penalty P]{Glover}, and samples by the Method chosen. Simulated annealing
+runs dwave-neal on the compiled model, as the notebook does \cite[cell 15]{Notebook}. QAOA \cite{Farhi}
+builds the QAOA Circuit from the Ising form, with $p$ alternating cost and mixer layers on the uniform
+superposition \cite[Eqs. (2)--(6)]{Farhi}, runs it on Qiskit Aer \cite{Qiskit}, and lets a classical
+optimiser tune the $2p$ angles to minimise the expected energy (Farhi et al.\ maximise theirs)
+\cite[Eqs. (7)--(8)]{Farhi}, starting on the annealing path \cite[§VI]{Farhi}. The runtime then decodes
+the lowest-energy sample into a Schedule model \cite[§5.5]{Paper}, runs the Baseline, and writes the run's
+results, from which \cref{tab:results-emf} is generated.
+
+Every ATL rule, and every template section and runtime step that implements the formulation or QAOA, cites
+its reference in a comment beside it, as
+\texttt{[Key locator]}; \cref{tab:traceability} is generated from those comments.
 
 \section{BESSER chain}\label{sec:besser}
 
