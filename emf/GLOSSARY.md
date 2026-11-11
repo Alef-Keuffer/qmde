@@ -104,3 +104,7 @@ _Avoid_: success rate
 **P(feasible)**:
 The fraction of QAOA shots or annealing reads that decode to a *feasible* *schedule*.
 _Avoid_: success rate
+
+**Random Odds**:
+The *P(optimal)* or *P(feasible)* of a bit string drawn uniformly at random: the bar a *method* must clear.
+_Avoid_: chance level, random baseline (the *Baseline* is the enumeration)

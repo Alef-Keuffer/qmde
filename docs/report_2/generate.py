@@ -4,7 +4,7 @@
 - generated/metamodel-<name>.tex: Appendix C, a class diagram of each EMF .ecore
 - generated/glossary.tex: the Glossary appendix, from emf/GLOSSARY.md
 - generated/glossary-terms.tex: what \\term looks up: each glossary term and its plural, in lower case
-- with --results: generated/validation-emf.tex (Section 4) and generated/results-emf.tex (Appendix B),
+- with --results: generated/validation-emf.tex and generated/results-emf.tex (Appendix B),
   and, when the results come from CI (--run-url), emf/CONTEXT.md's results table
 """
 import argparse
@@ -295,18 +295,22 @@ def times_chance(run):
     return rf"{prob(run['p_optimal'])} ({run['p_optimal'] / run['random_p_optimal']:.0f}$\times$)"
 
 
-def validation_table(runs, run_url):
-    """Section 4's table: P(optimal) of each Method on each instance, against chance."""
-    origin, placeholder = source(run_url)
-    by_problem = {}
+def by_problem(runs):
+    """Each instance's runs, by Method: {name: {"QAOA": run, "ANNEALING": run}}."""
+    problems = {}
     for r in runs:
-        by_problem.setdefault(base(r["instance"]), {})[r["solver"]["method"]] = r
+        problems.setdefault(base(r["instance"]), {})[r["solver"]["method"]] = r
+    return problems
+
+
+def validation_table(runs, run_url):
+    """Appendix B's table: the numbers of Section 4's chart, with how many times chance."""
+    origin, _ = source(run_url)
     rows = [rf"{tex(name)} & {next(iter(pair.values()))['variables']} "
             rf"& {prob(next(iter(pair.values()))['random_p_optimal'])} "
             rf"& {times_chance(pair.get('QAOA'))} & {times_chance(pair.get('ANNEALING'))} \\"
-            for name, pair in by_problem.items()]
+            for name, pair in by_problem(runs).items()]
     return "\n".join([
-        placeholder,
         r"\begin{table}",
         r"\caption{P(optimal) of the EMF chain on each test instance (\cref{app:instances}) by Method, against a "
         r"uniformly random bit string's; in brackets, how many times chance. Solver Configurations in \cref{tab:results-emf}; "

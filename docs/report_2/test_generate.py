@@ -151,7 +151,6 @@ feasible and optimal:
 | clique | 12 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 1, Statistics | 1 | 0.042 | 1.000 |
 | path | 12 | QAOA, depth 2, Nelder-Mead, 150 iterations, 4096 shots | 0, none | 0 | 0.00024 | 1.000 |""")
 
-
     def test_splice_replaces_only_what_is_between_the_markers(self):
         text = "Intro.\n\n<!-- results:begin -->\nold table\n<!-- results:end -->\n\nThe rest.\n"
         self.assertEqual(generate.splice(text, "new table"),
