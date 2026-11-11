@@ -10,22 +10,22 @@ annealing, not quantum hardware.
 
 # Running the QUBO pipeline
 
-Run from the `besser2/` directory so its installed BESSER dependency is not
-shadowed by the separate `besser/` project in the repository:
+From the repository root, run from `besser2/` so the installed BESSER
+dependency is not shadowed by the separate `besser/` project in the repository:
 
 ```bash
-/path/to/python pipeline.py object_diagram
+cd besser2
+python pipeline.py four_exams_three_batches
 ```
 
-Replace `/path/to/python` with the Python interpreter that has the
-pipeline's dependencies installed. The example name is the filename in
-`instances/` without its `.py` extension.
-
-For example, in the development environment used for this project:
+If the virtual environment is not activated, use its interpreter instead:
 
 ```bash
-../.venv/bin/python pipeline.py object_diagram
+cd besser2
+../.venv/bin/python pipeline.py four_exams_three_batches
 ```
+
+The example name is the filename in `instances/` without its `.py` extension.
 
 The command builds the QUBO, solves it, and prints the best exam-to-batch
 schedule(s) found. QUBOs with at most 16 binary variables are solved

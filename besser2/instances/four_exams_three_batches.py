@@ -24,6 +24,6 @@ chemistry_obj.problem = problem_1_obj
 
 # Object Model instance
 object_model: ObjectModel = ObjectModel(
-    name="Object_Diagram",
+    name="Four_Exams_Three_Batches",
     objects={alice_obj, biology_obj, bob_obj, carla_obj, chemistry_obj, david_obj, eva_obj, math_obj, physics_obj, problem_1_obj}
 )

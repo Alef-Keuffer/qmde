@@ -103,7 +103,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "example",
-        help="filename stem from besser2/instances (for example: object_diagram)",
+        help="filename stem from besser2/instances (for example: four_exams_three_batches)",
     )
     args = parser.parse_args(argv)
 
