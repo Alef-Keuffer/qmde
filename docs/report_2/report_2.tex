@@ -2,8 +2,7 @@
 % generated/*.tex from the code and from CI; latexmk -lualatex report_2.tex alone reuses the committed ones.
 \documentclass{article}
 
-\usepackage[textwidth=16cm, marginwidth=5cm, marginsep=0.8cm,
-	sidenotes=true, variablewidth=true, backref=true]{continuous-page}
+\usepackage[textwidth=16cm, sidenotes=false, variablewidth=true, backref=true]{continuous-page}
 
 \usepackage[english]{babel}
 \usepackage{csquotes}
@@ -49,7 +48,7 @@
 
 \section{Strategy}\label{sec:strategy}
 
-Terms are those of the EMF chain's glossary, \texttt{emf/GLOSSARY.md}.\sidenote{BESSER's metamodels, from
+Terms are those of the EMF chain's glossary, \texttt{emf/GLOSSARY.md}.\footnote{BESSER's metamodels, from
 Part~I, call a Batch a \emph{TimeSlot} (or slot); its chain calls a schedule \emph{valid} when it places every exam
 in one slot without a Conflict.}
 
@@ -115,6 +114,8 @@ itself is issue~\#23.
 		Method, decode a sample into a Schedule, and judge every sample against a Baseline
 		that enumerates every schedule.}\label{fig:strategy}
 \end{figure}
+
+\input{sections/two-chains}
 
 \input{sections/emf-chain}
 
