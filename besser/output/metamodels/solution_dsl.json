@@ -1,0 +1,972 @@
+{
+ "version": "3.0.0",
+ "type": "ClassDiagram",
+ "size": {
+  "width": 1200,
+  "height": 800
+ },
+ "interactive": {
+  "elements": {},
+  "relationships": {}
+ },
+ "elements": {
+  "0": {
+   "id": "0",
+   "name": "coefficient",
+   "type": "ClassAttribute",
+   "owner": "1",
+   "bounds": {
+    "x": -599.5,
+    "y": -260,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "float",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "1": {
+   "id": "1",
+   "name": "LinearTerm",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": -600,
+    "y": -300,
+    "width": 160,
+    "height": 70
+   },
+   "attributes": [
+    "0"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "2": {
+   "id": "2",
+   "name": "constraint",
+   "type": "ClassAttribute",
+   "owner": "3",
+   "bounds": {
+    "x": -299.5,
+    "y": -260,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "str",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "4": {
+   "id": "4",
+   "name": "weight",
+   "type": "ClassAttribute",
+   "owner": "3",
+   "bounds": {
+    "x": -299.5,
+    "y": -230,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "float",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "3": {
+   "id": "3",
+   "name": "Penalty",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": -300,
+    "y": -300,
+    "width": 160,
+    "height": 100
+   },
+   "attributes": [
+    "2",
+    "4"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "5": {
+   "id": "5",
+   "name": "offset",
+   "type": "ClassAttribute",
+   "owner": "6",
+   "bounds": {
+    "x": 0.5,
+    "y": -260,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "float",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "6": {
+   "id": "6",
+   "name": "QUBO",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": 0,
+    "y": -300,
+    "width": 160,
+    "height": 70
+   },
+   "attributes": [
+    "5"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "7": {
+   "id": "7",
+   "name": "coefficient",
+   "type": "ClassAttribute",
+   "owner": "8",
+   "bounds": {
+    "x": -599.5,
+    "y": -60,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "float",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "8": {
+   "id": "8",
+   "name": "QuadraticTerm",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": -600,
+    "y": -100,
+    "width": 160,
+    "height": 70
+   },
+   "attributes": [
+    "7"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "9": {
+   "id": "9",
+   "name": "index",
+   "type": "ClassAttribute",
+   "owner": "10",
+   "bounds": {
+    "x": -299.5,
+    "y": -60,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "int",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "11": {
+   "id": "11",
+   "name": "label",
+   "type": "ClassAttribute",
+   "owner": "10",
+   "bounds": {
+    "x": -299.5,
+    "y": -30,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "str",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "10": {
+   "id": "10",
+   "name": "Variable",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": -300,
+    "y": -100,
+    "width": 160,
+    "height": 100
+   },
+   "attributes": [
+    "9",
+    "11"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "12": {
+   "id": "12",
+   "name": "constraint_not_empty",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": 0,
+    "y": -100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context Penalty inv constraint_not_empty: self.constraint.size() > 0",
+   "description": "Constraint is not null"
+  },
+  "13": {
+   "id": "13",
+   "name": "label_not_empty",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": -600,
+    "y": 100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context Variable inv label_not_empty: self.label.size() > 0",
+   "description": "Label is not null"
+  },
+  "14": {
+   "id": "14",
+   "name": "non_negative_index",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": -300,
+    "y": 100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context Variable inv non_negative_index: self.index >= 0",
+   "description": "There are no negatives indexes"
+  },
+  "15": {
+   "id": "15",
+   "name": "positive_weight",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": 0,
+    "y": 100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context Penalty inv positive_weight: self.weight >0",
+   "description": "Weight gotta be higher than zero"
+  },
+  "16": {
+   "id": "16",
+   "name": "two_distinct_variables",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": -600,
+    "y": 300,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context QuadraticTerm inv two_distinct_variables: self.variable->size() = 2",
+   "description": "QuadraticTerm has two distinct variables"
+  },
+  "17": {
+   "id": "17",
+   "name": "unique_index",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": -300,
+    "y": 300,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context Variable inv unique_index: Variable.allInstances()->isUnique(index)",
+   "description": "Index is unique"
+  }
+ },
+ "relationships": {
+  "18": {
+   "id": "18",
+   "name": "LinearTerm_QUBO",
+   "type": "ClassComposition",
+   "source": {
+    "element": "1",
+    "multiplicity": "1..*",
+    "role": "linearterm",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -440,
+     "y": -265.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "6",
+    "multiplicity": "1",
+    "role": "qubo",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": 0,
+     "y": -265.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -450,
+    "y": -275.0,
+    "width": 460,
+    "height": 20.0
+   },
+   "path": [
+    {
+     "x": -440,
+     "y": -265.0
+    },
+    {
+     "x": -220.0,
+     "y": -265.0
+    },
+    {
+     "x": -220.0,
+     "y": -265.0
+    },
+    {
+     "x": 0,
+     "y": -265.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "19": {
+   "id": "19",
+   "name": "Penalty_LinearTerm",
+   "type": "ClassBidirectional",
+   "source": {
+    "element": "1",
+    "multiplicity": "0..*",
+    "role": "linearterm",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -440,
+     "y": -265.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "3",
+    "multiplicity": "1",
+    "role": "penalty",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": -300,
+     "y": -250.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -450,
+    "y": -275.0,
+    "width": 160,
+    "height": 35.0
+   },
+   "path": [
+    {
+     "x": -440,
+     "y": -265.0
+    },
+    {
+     "x": -370.0,
+     "y": -265.0
+    },
+    {
+     "x": -370.0,
+     "y": -250.0
+    },
+    {
+     "x": -300,
+     "y": -250.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "20": {
+   "id": "20",
+   "name": "Penalty_QUBO",
+   "type": "ClassComposition",
+   "source": {
+    "element": "3",
+    "multiplicity": "0..*",
+    "role": "penalty",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -140,
+     "y": -250.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "6",
+    "multiplicity": "1",
+    "role": "qubo",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": 0,
+     "y": -265.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -150,
+    "y": -275.0,
+    "width": 160,
+    "height": 35.0
+   },
+   "path": [
+    {
+     "x": -140,
+     "y": -250.0
+    },
+    {
+     "x": -70.0,
+     "y": -250.0
+    },
+    {
+     "x": -70.0,
+     "y": -265.0
+    },
+    {
+     "x": 0,
+     "y": -265.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "21": {
+   "id": "21",
+   "name": "Penalty_QuadraticTerm",
+   "type": "ClassBidirectional",
+   "source": {
+    "element": "3",
+    "multiplicity": "0..1",
+    "role": "penalty",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": -300,
+     "y": -250.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "8",
+    "multiplicity": "0..*",
+    "role": "quadraticterm",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -440,
+     "y": -65.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -450,
+    "y": -260.0,
+    "width": 160,
+    "height": 205.0
+   },
+   "path": [
+    {
+     "x": -300,
+     "y": -250.0
+    },
+    {
+     "x": -370.0,
+     "y": -250.0
+    },
+    {
+     "x": -370.0,
+     "y": -65.0
+    },
+    {
+     "x": -440,
+     "y": -65.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "22": {
+   "id": "22",
+   "name": "QuadraticTerm_QUBO",
+   "type": "ClassComposition",
+   "source": {
+    "element": "8",
+    "multiplicity": "1..*",
+    "role": "quadraticterm",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -440,
+     "y": -65.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "6",
+    "multiplicity": "1",
+    "role": "qubo",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": 0,
+     "y": -265.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -450,
+    "y": -275.0,
+    "width": 460,
+    "height": 220.0
+   },
+   "path": [
+    {
+     "x": -440,
+     "y": -65.0
+    },
+    {
+     "x": -220.0,
+     "y": -65.0
+    },
+    {
+     "x": -220.0,
+     "y": -265.0
+    },
+    {
+     "x": 0,
+     "y": -265.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "23": {
+   "id": "23",
+   "name": "Variable_LinearTerm",
+   "type": "ClassBidirectional",
+   "source": {
+    "element": "1",
+    "multiplicity": "1",
+    "role": "linearterm",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -440,
+     "y": -265.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "10",
+    "multiplicity": "1",
+    "role": "variable",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": -300,
+     "y": -50.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -450,
+    "y": -275.0,
+    "width": 160,
+    "height": 235.0
+   },
+   "path": [
+    {
+     "x": -440,
+     "y": -265.0
+    },
+    {
+     "x": -370.0,
+     "y": -265.0
+    },
+    {
+     "x": -370.0,
+     "y": -50.0
+    },
+    {
+     "x": -300,
+     "y": -50.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "24": {
+   "id": "24",
+   "name": "Variable_QUBO",
+   "type": "ClassComposition",
+   "source": {
+    "element": "10",
+    "multiplicity": "1..*",
+    "role": "variable",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -140,
+     "y": -50.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "6",
+    "multiplicity": "1",
+    "role": "qubo",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": 0,
+     "y": -265.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -150,
+    "y": -275.0,
+    "width": 160,
+    "height": 235.0
+   },
+   "path": [
+    {
+     "x": -140,
+     "y": -50.0
+    },
+    {
+     "x": -70.0,
+     "y": -50.0
+    },
+    {
+     "x": -70.0,
+     "y": -265.0
+    },
+    {
+     "x": 0,
+     "y": -265.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "25": {
+   "id": "25",
+   "name": "Variable_QuadraticTerm",
+   "type": "ClassBidirectional",
+   "source": {
+    "element": "8",
+    "multiplicity": "0..*",
+    "role": "quadraticterm",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -440,
+     "y": -65.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "10",
+    "multiplicity": "2",
+    "role": "variable",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": -300,
+     "y": -50.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -450,
+    "y": -75.0,
+    "width": 160,
+    "height": 35.0
+   },
+   "path": [
+    {
+     "x": -440,
+     "y": -65.0
+    },
+    {
+     "x": -370.0,
+     "y": -65.0
+    },
+    {
+     "x": -370.0,
+     "y": -50.0
+    },
+    {
+     "x": -300,
+     "y": -50.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "26": {
+   "id": "26",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "12",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "3",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "27": {
+   "id": "27",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "13",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "10",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "28": {
+   "id": "28",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "14",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "10",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "29": {
+   "id": "29",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "15",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "3",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "30": {
+   "id": "30",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "16",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "8",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "31": {
+   "id": "31",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "17",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "10",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  }
+ },
+ "assessments": {}
+}

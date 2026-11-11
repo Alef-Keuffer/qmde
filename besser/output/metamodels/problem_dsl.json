@@ -1,0 +1,399 @@
+{
+ "version": "3.0.0",
+ "type": "ClassDiagram",
+ "size": {
+  "width": 1200,
+  "height": 800
+ },
+ "interactive": {
+  "elements": {},
+  "relationships": {}
+ },
+ "elements": {
+  "0": {
+   "id": "0",
+   "name": "name",
+   "type": "ClassAttribute",
+   "owner": "1",
+   "bounds": {
+    "x": -599.5,
+    "y": -260,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "str",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "2": {
+   "id": "2",
+   "name": "weight",
+   "type": "ClassAttribute",
+   "owner": "1",
+   "bounds": {
+    "x": -599.5,
+    "y": -230,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "int",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "1": {
+   "id": "1",
+   "name": "Exam",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": -600,
+    "y": -300,
+    "width": 160,
+    "height": 100
+   },
+   "attributes": [
+    "0",
+    "2"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "3": {
+   "id": "3",
+   "name": "name",
+   "type": "ClassAttribute",
+   "owner": "4",
+   "bounds": {
+    "x": -299.5,
+    "y": -260,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "str",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "4": {
+   "id": "4",
+   "name": "Student",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": -300,
+    "y": -300,
+    "width": 160,
+    "height": 70
+   },
+   "attributes": [
+    "3"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "5": {
+   "id": "5",
+   "name": "id",
+   "type": "ClassAttribute",
+   "owner": "6",
+   "bounds": {
+    "x": 0.5,
+    "y": -260,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "int",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "6": {
+   "id": "6",
+   "name": "TimeSlot",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": 0,
+    "y": -300,
+    "width": 160,
+    "height": 70
+   },
+   "attributes": [
+    "5"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "7": {
+   "id": "7",
+   "name": "exam_has_name",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": -600,
+    "y": -100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context Exam inv exam_has_name: self.name.size() > 0",
+   "description": "Exam name can't be empty"
+  },
+  "8": {
+   "id": "8",
+   "name": "student_has_name",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": -300,
+    "y": -100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context Student inv student_has_name: self.name.size() > 0"
+  },
+  "9": {
+   "id": "9",
+   "name": "time_slot_has_non_negative_id",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": 0,
+    "y": -100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context TimeSlot inv time_slot_has_non_negative_id: self.id > 0",
+   "description": "TimeSlot Id can't be negative"
+  }
+ },
+ "relationships": {
+  "10": {
+   "id": "10",
+   "name": "Exam_Student",
+   "type": "ClassBidirectional",
+   "source": {
+    "element": "1",
+    "multiplicity": "1..*",
+    "role": "exams",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -440,
+     "y": -250.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "4",
+    "multiplicity": "0..*",
+    "role": "students",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": -300,
+     "y": -265.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -450,
+    "y": -275.0,
+    "width": 160,
+    "height": 35.0
+   },
+   "path": [
+    {
+     "x": -440,
+     "y": -250.0
+    },
+    {
+     "x": -370.0,
+     "y": -250.0
+    },
+    {
+     "x": -370.0,
+     "y": -265.0
+    },
+    {
+     "x": -300,
+     "y": -265.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "11": {
+   "id": "11",
+   "name": "Exam_TimeSlot",
+   "type": "ClassBidirectional",
+   "source": {
+    "element": "1",
+    "multiplicity": "0..*",
+    "role": "exams",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -440,
+     "y": -250.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "6",
+    "multiplicity": "1",
+    "role": "timeSlot",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": 0,
+     "y": -265.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -450,
+    "y": -275.0,
+    "width": 460,
+    "height": 35.0
+   },
+   "path": [
+    {
+     "x": -440,
+     "y": -250.0
+    },
+    {
+     "x": -220.0,
+     "y": -250.0
+    },
+    {
+     "x": -220.0,
+     "y": -265.0
+    },
+    {
+     "x": 0,
+     "y": -265.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "12": {
+   "id": "12",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "7",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "1",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "13": {
+   "id": "13",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "8",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "4",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "14": {
+   "id": "14",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "9",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "6",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  }
+ },
+ "assessments": {}
+}

@@ -1,0 +1,502 @@
+{
+ "version": "3.0.0",
+ "type": "ClassDiagram",
+ "size": {
+  "width": 1200,
+  "height": 800
+ },
+ "interactive": {
+  "elements": {},
+  "relationships": {}
+ },
+ "elements": {
+  "0": {
+   "id": "0",
+   "name": "beta",
+   "type": "ClassAttribute",
+   "owner": "1",
+   "bounds": {
+    "x": -599.5,
+    "y": -260,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "float",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "2": {
+   "id": "2",
+   "name": "gamma",
+   "type": "ClassAttribute",
+   "owner": "1",
+   "bounds": {
+    "x": -599.5,
+    "y": -230,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "float",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "3": {
+   "id": "3",
+   "name": "index",
+   "type": "ClassAttribute",
+   "owner": "1",
+   "bounds": {
+    "x": -599.5,
+    "y": -200,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "int",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "1": {
+   "id": "1",
+   "name": "QAOALayer",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": -600,
+    "y": -300,
+    "width": 160,
+    "height": 130
+   },
+   "attributes": [
+    "0",
+    "2",
+    "3"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "4": {
+   "id": "4",
+   "name": "conflictWeight",
+   "type": "ClassAttribute",
+   "owner": "5",
+   "bounds": {
+    "x": -299.5,
+    "y": -260,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "float",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "6": {
+   "id": "6",
+   "name": "depth",
+   "type": "ClassAttribute",
+   "owner": "5",
+   "bounds": {
+    "x": -299.5,
+    "y": -230,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "int",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "7": {
+   "id": "7",
+   "name": "name",
+   "type": "ClassAttribute",
+   "owner": "5",
+   "bounds": {
+    "x": -299.5,
+    "y": -200,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "str",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "8": {
+   "id": "8",
+   "name": "seed",
+   "type": "ClassAttribute",
+   "owner": "5",
+   "bounds": {
+    "x": -299.5,
+    "y": -170,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "int",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "9": {
+   "id": "9",
+   "name": "shots",
+   "type": "ClassAttribute",
+   "owner": "5",
+   "bounds": {
+    "x": -299.5,
+    "y": -140,
+    "width": 159,
+    "height": 30
+   },
+   "visibility": "public",
+   "attributeType": "int",
+   "isOptional": false,
+   "isId": false,
+   "isExternalId": false,
+   "isDerived": false
+  },
+  "5": {
+   "id": "5",
+   "name": "SolverConfig",
+   "type": "Class",
+   "owner": null,
+   "bounds": {
+    "x": -300,
+    "y": -300,
+    "width": 160,
+    "height": 190
+   },
+   "attributes": [
+    "4",
+    "6",
+    "7",
+    "8",
+    "9"
+   ],
+   "methods": [],
+   "stereotype": null
+  },
+  "10": {
+   "id": "10",
+   "name": "layer_index_in_range",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": 0,
+    "y": -300,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context QAOALayer inv layer_index_in_range: self.index >= 1 and self.index <= self.config.depth",
+   "description": "layers are numbered 1..p"
+  },
+  "11": {
+   "id": "11",
+   "name": "layers_match_depth",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": -600,
+    "y": -100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context SolverConfig inv layers_match_depth: self.layers->size() = self.depth",
+   "description": "one QAOALayer per layer"
+  },
+  "12": {
+   "id": "12",
+   "name": "positive_conflict_weight",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": -300,
+    "y": -100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context SolverConfig inv positive_conflict_weight: self.conflictWeight > 0",
+   "description": "w must be positive"
+  },
+  "13": {
+   "id": "13",
+   "name": "positive_depth",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": 0,
+    "y": -100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context SolverConfig inv positive_depth: self.depth > 0",
+   "description": "QAOA needs at least one layer"
+  },
+  "14": {
+   "id": "14",
+   "name": "positive_shots",
+   "type": "ClassOCLConstraint",
+   "owner": null,
+   "bounds": {
+    "x": -600,
+    "y": 100,
+    "width": 160,
+    "height": 100
+   },
+   "constraint": "context SolverConfig inv positive_shots: self.shots > 0",
+   "description": "at least one shot"
+  }
+ },
+ "relationships": {
+  "15": {
+   "id": "15",
+   "name": "SolverConfig_QAOALayer",
+   "type": "ClassComposition",
+   "source": {
+    "element": "1",
+    "multiplicity": "1..*",
+    "role": "layers",
+    "navigable": true,
+    "direction": "Right",
+    "bounds": {
+     "x": -440,
+     "y": -235.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "target": {
+    "element": "5",
+    "multiplicity": "1",
+    "role": "config",
+    "navigable": true,
+    "direction": "Left",
+    "bounds": {
+     "x": -300,
+     "y": -205.0,
+     "width": 0,
+     "height": 0
+    }
+   },
+   "bounds": {
+    "x": -450,
+    "y": -245.0,
+    "width": 160,
+    "height": 50.0
+   },
+   "path": [
+    {
+     "x": -440,
+     "y": -235.0
+    },
+    {
+     "x": -370.0,
+     "y": -235.0
+    },
+    {
+     "x": -370.0,
+     "y": -205.0
+    },
+    {
+     "x": -300,
+     "y": -205.0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "16": {
+   "id": "16",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "10",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "1",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "17": {
+   "id": "17",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "11",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "5",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "18": {
+   "id": "18",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "12",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "5",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "19": {
+   "id": "19",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "13",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "5",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  },
+  "20": {
+   "id": "20",
+   "name": "",
+   "type": "ClassOCLLink",
+   "owner": null,
+   "source": {
+    "direction": "Left",
+    "element": "14",
+    "multiplicity": "",
+    "role": ""
+   },
+   "target": {
+    "direction": "Right",
+    "element": "5",
+    "multiplicity": "",
+    "role": ""
+   },
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0
+   },
+   "path": [
+    {
+     "x": 0,
+     "y": 0
+    },
+    {
+     "x": 0,
+     "y": 0
+    }
+   ],
+   "isManuallyLayouted": false
+  }
+ },
+ "assessments": {}
+}

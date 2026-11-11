@@ -160,17 +160,27 @@ feasible and optimal:
 class MetamodelTest(unittest.TestCase):
 
     def test_class_diagram_shows_attributes_invariants_and_references(self):
-        tikz = generate.class_diagram(generate.MODELS / "problem.ecore")
+        tikz = generate.class_diagram(*generate.ecore_classes(generate.MODELS / "problem.ecore"))
         self.assertIn("weight: EDouble = 1.0", tikz)
         self.assertIn(r"\textit{inv} positiveWeight", tikz)
         self.assertIn(r'\path (Problem) edge[contain, "exams 1..*" role] (Exam);', tikz)
         self.assertIn(r'\path (Exam) edge[reference, "students 1..*" role] (Student);', tikz)
 
     def test_class_diagram_shows_enumerations(self):
-        tikz = generate.class_diagram(generate.MODELS / "solverconfig.ecore")
+        tikz = generate.class_diagram(*generate.ecore_classes(generate.MODELS / "solverconfig.ecore"))
         self.assertIn(r"\textbf{Optimizer}", tikz)
         self.assertIn(r"COBYLA\\NELDER\_MEAD\\POWELL", tikz)
         self.assertIn("method: Method = QAOA", tikz)
+
+    def test_besser_class_diagram_shows_both_ends_and_the_whole_of_a_composition(self):
+        tikz = generate.class_diagram(*generate.besser_classes(generate.BESSER_METAMODEL_JSON / "solver_config_dsl.json"))
+        self.assertIn("conflictWeight: float", tikz)
+        self.assertIn(r"\textit{inv} layers\_match\_depth", tikz)
+        self.assertIn(r'\path (SolverConfig) edge[contain, "config 1" source role, "layers 1..*" target role] (QAOALayer);',
+                      tikz)
+        tikz = generate.class_diagram(*generate.besser_classes(generate.BESSER_METAMODEL_JSON / "problem_dsl.json"))
+        self.assertIn(r'\path (Exam) edge[association, "exams 0..*" source role, "timeSlot 1" target role] (TimeSlot);',
+                      tikz)
 
 
 GLOSSARY = """\

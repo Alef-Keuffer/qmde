@@ -34,7 +34,8 @@ all generated (never edited by hand): `1_problem`, `1_config`, `2_solution` + `2
 `3_trace` (T2), `4_qiskit/qiskit_circuit.py` (T3) and its output, `5_solutions.json` (decoded counts) and
 `6_validation.json` (baseline and metrics) and, as the bonus of mapping solutions back, `7_problem_solved`: the
 problem model with every exam linked to the TimeSlot it was given. The table of all instances is in
-`output/summary.md`.
+`output/summary.md`, and each metamodel, in the JSON of BESSER's web editor, in `output/metamodels/` (the report
+draws its class diagrams from there).
 
 ## Do the tests catch mistakes?
 

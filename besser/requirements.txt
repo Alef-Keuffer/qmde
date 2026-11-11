@@ -5,4 +5,6 @@
 qiskit==2.6.2
 qiskit-aer==0.18.2
 numpy==2.5.4
+deep-translator==1.11.4  # the fork's web editor converters, which save_metamodels() calls, import these two
+PyYAML==6.0.3
 pytest==7.4.0  # bocl (the fork's OCL dependency) pins pluggy==1.2.0, which rules out pytest 8

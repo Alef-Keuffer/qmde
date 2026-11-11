@@ -38,13 +38,16 @@
 \definecolor{oiblue}{HTML}{0072B2}
 \definecolor{oigrey}{HTML}{999999}
 
-% The metamodel diagrams of generated/metamodel-*.tex.
+% The metamodel diagrams of generated/metamodel-*.tex, of both chains.
 \tikzset{
 	metamodel/.style={layered layout, level sep=1.2cm, sibling sep=1.8cm},
 	class/.style={draw, inner sep=0pt, font=\footnotesize},
 	contain/.style={{Diamond[]}-},
 	reference/.style={-{Straight Barb[]}, minimum layers=0}, % may join classes of one layer
+	association/.style={-},
 	role/.style={font=\scriptsize, auto, pos=0.6},
+	source role/.style={font=\scriptsize, auto, pos=0.2}, % the two ends of a B-UML association
+	target role/.style={font=\scriptsize, auto, pos=0.8},
 }
 
 \title{Exam-Slot Assignment with QAOA and Simulated Annealing: Part~II}
@@ -195,17 +198,26 @@ own words: \emph{slot} for a \term{Batch}, \emph{valid} for a \term{schedule} th
 
 \section{Metamodels}\label{app:metamodels}
 
-Containment is drawn with a diamond at the container, a reference with an open arrow; \textit{inv} names an
+Containment (composition) is drawn with a diamond at the container, a reference with an open arrow, and a B-UML
+association with a plain line, the role and multiplicity of each end next to its class; \textit{inv} names an
 OCL invariant.
+
+\subsection{EMF}\label{app:metamodels-emf}
 
 \input{generated/metamodel-problem}
 \input{generated/metamodel-solverconfig}
 \input{generated/metamodel-conflictgraph}
 \input{generated/metamodel-schedule}
 
-\placeholder{the BESSER rework}{The BESSER chain's metamodels}{Part~I's diagrams
-(\texttt{docs/imgs/problem-dsl-01.png}, \texttt{docs/imgs/solution-dsl-01.png}) once BESSER settles, with
-its \term{Solver Configuration} and quantum metamodels.}
+\subsection{BESSER}\label{app:metamodels-besser}
+
+The BESSER chain exports each of its B-UML metamodels with BESSER's own converter, the one of its web editor, and
+the diagrams are drawn from that export. Its fourth metamodel, the quantum circuit of T2, is BESSER's own
+(the module \texttt{besser.BUML.metamodel.quantum}, 61 classes) \cite{BESSER}, and is not drawn.
+
+\input{generated/metamodel-besser-problem-dsl}
+\input{generated/metamodel-besser-solution-dsl}
+\input{generated/metamodel-besser-solver-config-dsl}
 
 \section{Glossary}\label{app:glossary}
 
