@@ -116,46 +116,7 @@ itself is issue~\#23.
 		that enumerates every schedule.}\label{fig:strategy}
 \end{figure}
 
-\section{EMF chain}\label{sec:emf}
-
-The EMF chain turns one \texttt{.exam} file into a Python script in three model-driven steps, run headless by
-an Eclipse application; the script then solves the Problem and validates what it finds. The models parsed
-from the file, and the Conflict Graph, are checked against their metamodels' multiplicities and OCL
-invariants (\cref{app:metamodels}) before the next step uses them.
-
-\paragraph{Xtext.} The grammar imports the hand-written Problem and Solver Configuration metamodels, so one
-\texttt{.exam} file holds a Problem (its batches, its students, and each exam with its optional weight, 1 by
-default, and the students who sit it) and, optionally, its Solver Configuration: the Method, the Method's
-settings, the seed and the Penalty Coefficient, automatic unless given (\cref{app:instances}).
-
-\paragraph{ATL.} An EMFTVM transformation makes the Problem a Conflict Graph \cite[§5.2, Fig. 3]{Paper}. It
-copies the exams with their weights and the number of batches~$M$, the range of the index~$k$ of $x_{ik}$
-\cite[§5.3, Eq. (4)]{Paper}, and adds one Conflict for each pair of exams that share a student, the
-paper's course conflict matrix~$C$ \cites[§5.2, Algorithm 1, Eq. (3)]{Paper}[cell 7]{Notebook}.
-
-\paragraph{Acceleo.} A template generates \texttt{solve\_<name>.py} from the Conflict Graph and the Solver
-Configuration: both as Python data, then the notebook's pyqubo construction
-\cites[cells 11--13]{Notebook}{pyqubo} (\texttt{emf/docs/adr/0007}), made the weighted set packing of
-\cref{sec:strategy} (\texttt{emf/docs/adr/0009}). Each
-Constraint is labelled in domain terms, \texttt{at-most-one-batch-<exam>} or
-\texttt{conflict-<exam>-<exam>-batch-<k>}, so a broken one names its exams. pyqubo compiles $H$ into the
-QUBO and its Ising form, so the chain models neither.
-
-\paragraph{The runtime.} The generated script holds only what depends on the models; it imports the
-hand-written \texttt{emf/python/examschedule.py}, which holds the rest (\texttt{emf/docs/adr/0005}). It sets
-$A$ to the largest weight plus one, or rejects an explicit $A$ not above every weight
-\cite[§4, Comment on the Scalar Penalty P]{Glover}, and samples by the Method chosen. Simulated annealing
-runs dwave-neal on the compiled model, as the notebook does \cite[cell 15]{Notebook}. QAOA \cite{Farhi}
-builds the QAOA Circuit from the Ising form, with $p$ alternating cost and mixer layers on the uniform
-superposition \cite[Eqs. (2)--(6)]{Farhi}, runs it with Qiskit \cite{Qiskit} on the Aer simulator, and lets a classical
-optimiser tune the $2p$ angles to minimise the expected energy (Farhi et al.\ maximise theirs)
-\cite[Eqs. (7)--(8)]{Farhi}, starting on the annealing path \cite[§VI]{Farhi}. The runtime then decodes
-the lowest-energy sample into a Schedule model \cite[§5.5]{Paper}, runs the Baseline, and writes the run's
-results, from which \cref{tab:results-emf} is generated.
-
-Every ATL rule, and every template section and runtime step that implements the formulation or QAOA, cites
-its reference in a comment beside it, as
-\texttt{[Key locator]}; \cref{tab:traceability} is generated from those comments.
+\input{sections/emf-chain}
 
 \input{sections/besser-chain}
 
@@ -225,6 +186,8 @@ Constraint. Each chain is measured on its own instances (\cref{app:instances}); 
 \end{table}
 
 \input{sections/besser-results}
+
+\input{sections/emf-chain-detail}
 
 \section{Metamodels}\label{app:metamodels}
 
