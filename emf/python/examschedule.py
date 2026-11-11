@@ -2,8 +2,8 @@
 
 Everything instance-specific -- the Solver Configuration, the Conflict Graph data and the weighted
 pyqubo formulation, compiled -- is generated from the models. This module holds only the generic
-parts: sampling the compiled model by simulated annealing or QAOA, decoding, the classical
-baseline, the report and writing the Schedule model (ADR-0005, ADR-0007).
+parts: sampling the compiled model by simulated annealing, quantum annealing or QAOA, decoding, the
+classical baseline, the report and writing the Schedule model (ADR-0005, ADR-0007, ADR-0010).
 
 References: Paper = Zhou et al., Applied Soft Computing 184 (2025); Notebook = QuantumExamScheduling.ipynb;
 Farhi = arXiv:1411.4028; Lucas = arXiv:1302.5843; Glover = arXiv:1811.11538.
@@ -11,6 +11,7 @@ Farhi = arXiv:1411.4028; Lucas = arXiv:1302.5843; Glover = arXiv:1811.11538.
 
 import itertools
 import json
+import os
 import re
 import sys
 from dataclasses import asdict, dataclass
@@ -30,6 +31,7 @@ SCIPY_METHODS = {"COBYLA": "COBYLA", "NELDER_MEAD": "Nelder-Mead", "POWELL": "Po
 BASELINE_LIMIT = 10**6  # skip brute force above this many schedules (CONTEXT.md, Validation)
 TOLERANCE = 1e-6
 VARIABLE = re.compile(r"c\[(\d+)\]\[(\d+)\]")  # pyqubo's label for x[i, k] of Array.create('c', ...)
+LEAP_TOKEN_VARS = ("DWAVE_API_TOKEN", "DWAVE_TOKEN")
 
 
 @dataclass
@@ -43,15 +45,19 @@ class Problem:
 
 @dataclass
 class SolverConfig:
-    method: str  # QAOA or ANNEALING
+    method: str  # QAOA, ANNEALING or QUANTUM_ANNEALING
     penalty: float | None  # fed to the Placeholder A; None means automatic
     seed: int
     reads: int
     sweeps: int
-    depth: int
-    optimizer: str
-    max_iterations: int
-    shots: int
+    sampler: str = "QPU"  # QPU or HYBRID; quantum annealing only
+    annealing_time: int = 200  # microseconds on the QPU
+    chain_strength: float | None = None  # None means Ocean's default
+    time_limit: float | None = None  # seconds for LeapHybridSampler; None means Leap's default
+    depth: int = 1
+    optimizer: str = "COBYLA"
+    max_iterations: int = 100
+    shots: int = 1024
 
 
 @dataclass
@@ -105,6 +111,58 @@ def anneal(problem, config, model, feed_dict):
                                                        seed=config.seed)
     decoded = model.decode_sampleset(sampleset, feed_dict=feed_dict)
     return [(d, 1) for d in decoded], f"simulated annealing, {config.reads} reads x {config.sweeps} sweeps", config.reads
+
+
+def leap_token():
+    """D-Wave Leap API token from the environment, or None."""
+    for name in LEAP_TOKEN_VARS:
+        if token := os.environ.get(name):
+            return token
+    return None
+
+
+def leap_sampler(config, token=None):
+    """[Notebook cells 16–17]: EmbeddingComposite(DWaveSampler) or LeapHybridSampler (ADR-0010)."""
+    from dwave.system import DWaveSampler, EmbeddingComposite, LeapHybridSampler
+
+    token = token if token is not None else leap_token()
+    if not token:
+        sys.exit("quantum annealing needs DWAVE_API_TOKEN (or DWAVE_TOKEN) in the environment (ADR-0010)")
+    if config.sampler == "HYBRID":
+        return LeapHybridSampler(token=token)
+    return EmbeddingComposite(DWaveSampler(token=token, solver={"qpu": True}))
+
+
+def quantum_anneal(problem, config, model, feed_dict, sampler=None):
+    """[Notebook cells 16–17]: quantum annealing on Leap, then pyqubo decodes every sample."""
+    from dwave.embedding.chain_breaks import majority_vote
+
+    bqm = model.to_bqm(feed_dict=feed_dict)
+    sampler = leap_sampler(config) if sampler is None else sampler
+    if config.sampler == "HYBRID":
+        kwargs = {"label": f"Exam Schedule {problem.name}"}
+        if config.time_limit is not None:
+            kwargs["time_limit"] = config.time_limit
+        sampleset = sampler.sample(bqm, **kwargs)
+        description = "quantum annealing, Leap hybrid"
+        if config.time_limit is not None:
+            description += f", time_limit {config.time_limit:g}s"
+        total = sum(sampleset.record.num_occurrences)
+    else:
+        kwargs = {"num_reads": config.reads, "annealing_time": config.annealing_time,
+                  "chain_break_method": majority_vote, "label": f"Exam Schedule {problem.name}"}
+        if config.chain_strength is not None:
+            kwargs["chain_strength"] = config.chain_strength
+        sampleset = sampler.sample(bqm, **kwargs)
+        description = (f"quantum annealing, QPU, {config.reads} reads, "
+                       f"annealing_time {config.annealing_time}")
+        if config.chain_strength is not None:
+            description += f", chain_strength {config.chain_strength:g}"
+        total = config.reads
+    decoded = model.decode_sampleset(sampleset, feed_dict=feed_dict)
+    # Hybrid (and some QPU paths) collapse duplicates; keep occurrence counts when present.
+    counts = list(sampleset.record.num_occurrences) if len(decoded) == len(sampleset) else [1] * len(decoded)
+    return list(zip(decoded, counts)), description, total
 
 
 def bits_of(key, n):
@@ -189,9 +247,19 @@ def optimal_cost(problem):
     return None if costs is None else min(costs)
 
 
+METHODS = {
+    "ANNEALING": anneal,
+    "QUANTUM_ANNEALING": quantum_anneal,
+    "QAOA": qaoa,
+}
+
+
 def solve(problem, config, model):
     feed_dict = {"A": penalty(problem, config)}
-    run = anneal if config.method == "ANNEALING" else qaoa
+    try:
+        run = METHODS[config.method]
+    except KeyError:
+        sys.exit(f"unknown method {config.method!r}; expected one of {', '.join(METHODS)}")
     samples, description, total = run(problem, config, model, feed_dict)
     merged = {}  # identical samples (several annealing reads) counted once
     for decoded, count in samples:
@@ -218,7 +286,7 @@ def solve(problem, config, model):
            optimal_count, feasible_count)
     write_schedule(problem, schedule)
     bit_strings = 2 ** len(variables(problem))
-    write_results(problem, {
+    results = {
         "instance": problem.name, "variables": len(variables(problem)), "solver": asdict(config),
         "description": description, "penalty": feed_dict["A"],
         "schedule": {"assignments": schedule.assignments, "unscheduled": schedule.unscheduled,
@@ -227,7 +295,16 @@ def solve(problem, config, model):
         "optimal_cost": optimum, "optimal": None if optimum is None else is_optimal(schedule, optimum),
         "p_optimal": None if optimum is None else optimal_count / total, "p_feasible": feasible_count / total,
         "random_p_optimal": None if costs is None else costs.count(optimum) / bit_strings,
-        "random_p_feasible": None if costs is None else len(costs) / bit_strings})
+        "random_p_feasible": None if costs is None else len(costs) / bit_strings}
+    if config.method == "QUANTUM_ANNEALING":
+        from datetime import datetime, timezone
+        results["obtained"] = {
+            "how": description,
+            "when": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "token_env": next((n for n in LEAP_TOKEN_VARS if os.environ.get(n)), None),
+            "record_as": f"recorded/quantum_annealing/results_{problem.name}.json",
+        }
+    write_results(problem, results)
 
 
 def is_optimal(schedule, optimum):

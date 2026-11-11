@@ -1,0 +1,14 @@
+// BESSER's medium (besser/instances/medium.py) is this problem.
+// Q16 (ii): five exams whose conflicts form a 5-cycle, three batches. Feasible (needs 3 batches).
+// No weights: every exam weighs 1, so the schedule places as many exams as it can.
+// 2-cycle.exam solved by quantum annealing (D-Wave QPU) instead: keep the problems identical.
+// Needs DWAVE_API_TOKEN at run time; without it, run_generated copies recorded/quantum_annealing/ (ADR-0010).
+problem cycle_quantum_annealing batches 3
+students Ana Rui Eva Ivo Lia
+exam Algebra { Ana Lia }
+exam Calculus { Ana Rui }
+exam Physics { Rui Eva }
+exam Chemistry { Eva Ivo }
+exam Programming { Ivo Lia }
+
+solver { method quantum_annealing sampler qpu reads 500 annealing_time 200 seed 7 }

@@ -1,0 +1,14 @@
+// BESSER's limit (besser/instances/limit.py) in the Exam DSL: 4-semester with no weights.
+// Six exams of a semester, three batches. Feasible: cost 0.
+// 8-limit.exam solved by quantum annealing (D-Wave QPU) instead: keep the problems identical.
+// Needs DWAVE_API_TOKEN at run time; without it, run_generated copies recorded/quantum_annealing/ (ADR-0010).
+problem limit_quantum_annealing batches 3
+students Ana Rui Eva Ivo Lia Tom
+exam Algebra     { Ana Rui }
+exam Calculus    { Rui Eva Tom }
+exam Physics     { Ana Eva }
+exam Chemistry   { Ivo Lia }
+exam Programming { Lia Tom }
+exam Databases   { Ivo Ana }
+
+solver { method quantum_annealing sampler qpu reads 500 annealing_time 200 seed 7 }

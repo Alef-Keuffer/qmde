@@ -1,0 +1,11 @@
+// Q16 (i): four exams whose conflicts form a path, two batches. Feasible (a path is 2-colourable).
+// 1-path.exam solved by quantum annealing (D-Wave QPU) instead: keep the problems identical.
+// Needs DWAVE_API_TOKEN at run time; without it, run_generated copies recorded/quantum_annealing/ (ADR-0010).
+problem path_quantum_annealing batches 2
+students Ana Rui Eva
+exam Algebra   weight 2 { Ana }
+exam Calculus  weight 3 { Ana Rui }
+exam Physics   weight 1 { Rui Eva }
+exam Chemistry weight 2 { Eva }
+
+solver { method quantum_annealing sampler qpu reads 500 annealing_time 200 seed 7 }

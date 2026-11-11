@@ -3,7 +3,7 @@
 In the Exam-Slot Assignment Problem, a university needs to schedule its final exams into a limited number of batches so that no student has two exams in the same batch. Each exam has a weight, its priority; every exam goes in at most one batch, and when not every exam fits, the lowest-weight exams are left unscheduled (ADR-0009). A schedule that breaks constraints is reported with the constraints it breaks.
 
 - solution DSL: QUBO (Quadratic Unconstrained Binary Optimization), built with pyqubo the way the reference notebook does
-- solving: QAOA (Quantum Approximate Optimization Algorithm) simulated on Qiskit Aer, or simulated annealing (`neal`) as in the notebook; chosen per problem
+- solving: QAOA (Quantum Approximate Optimization Algorithm) simulated on Qiskit Aer, simulated annealing (`neal`) as in the notebook, or quantum annealing on D-Wave Leap (QPU by default, or hybrid); chosen per problem
 
 Vocabulary is defined in `GLOSSARY.md`; architectural decisions are in `docs/adr/`.
 
@@ -30,7 +30,7 @@ OCL constraints (`problem.ecore`): at least one batch, unique exam names, unique
 
 ## Solver Configuration DSL
 
-A separate input model for how the problem is solved, never hard-coded in transformations: the method (`QAOA`, the default, or `annealing`), the penalty coefficient A (automatic by default: the largest weight plus one) and the seed (7). Simulated annealing uses reads (50) and sweeps (10000), the notebook's values. QAOA uses depth p (1), optimiser (COBYLA, Nelder-Mead or Powell; COBYLA), maximum iterations (100) and shots (1024). OCL keeps every count ≥ 1 and an explicit penalty > 0; that it also exceeds every weight is checked by the generated script, since OCL cannot reach the Problem from the Solver Configuration.
+A separate input model for how the problem is solved, never hard-coded in transformations: the method (`QAOA`, the default, `annealing`, or `quantum_annealing`), the penalty coefficient A (automatic by default: the largest weight plus one) and the seed (7). Simulated annealing uses reads (50) and sweeps (10000), the notebook's values. Quantum annealing (ADR-0010) uses sampler (`qpu`, the default, or `hybrid`), reads (500 in the committed Leap companions), annealing_time (200 µs), optional chain_strength and, for hybrid, optional time_limit; it needs `DWAVE_API_TOKEN` at run time. QAOA uses depth p (1), optimiser (COBYLA, Nelder-Mead or Powell; COBYLA), maximum iterations (100) and shots (1024). OCL keeps every count ≥ 1 and an explicit penalty > 0; that it also exceeds every weight is checked by the generated script, since OCL cannot reach the Problem from the Solver Configuration.
 
 ## Textual syntax (`.exam`)
 
@@ -45,7 +45,7 @@ exam Physics { Rui Eva }
 solver { method annealing reads 50 sweeps 10000 seed 7 }
 ```
 
-(Physics, without `weight`, weighs 1) or `solver { method QAOA depth 2 optimizer COBYLA iterations 150 shots 4096 seed 7 penalty 10 }`; `penalty auto` is the same as leaving it out. Names are identifiers (no spaces; keywords such as `exam` or `method` are reserved).
+(Physics, without `weight`, weighs 1) or `solver { method QAOA depth 2 optimizer COBYLA iterations 150 shots 4096 seed 7 penalty 10 }`, or `solver { method quantum_annealing sampler qpu reads 500 annealing_time 200 seed 7 }`; `penalty auto` is the same as leaving it out. Names are identifiers (no spaces; keywords such as `exam` or `method` are reserved).
 
 ## Pipeline
 
@@ -56,14 +56,14 @@ All modelling artefacts are EMF (Ecore + OCL). No BESSER.
 Problem ─► Conflict Graph                                            (ATL / EMFTVM)
 Conflict Graph + SolverConfig ─► solve_<instance>.py                 (Acceleo 4)
 solve_<instance>.py: pyqubo formulation ─► compiled model
-    ─► simulated annealing (neal) or QAOA (Aer + SciPy optimiser loop)
+    ─► simulated annealing (neal), quantum annealing (Leap) or QAOA (Aer + SciPy optimiser loop)
     ─► lowest-energy sample ─► Schedule.xmi + report in domain terms
     + brute-force optimal cost
 ```
 
 - **Conflict Graph**: exams as nodes, with their weights, an edge between two exams sharing at least one student (Paper Algorithm 1); the number of batches.
 - **Generated code** (ADR-0007, ADR-0009): the exam names, their weights, the batch count and the conflicts as data, then the notebook's formulation in structure: `x = Array.create('c', (n_lesson, n_batch), 'BINARY')`, `constraint1` (each exam in at most one batch, Σ_{k<l} x[i,k]·x[i,l]) and `constraint2` (conflicting exams never share a batch) as `for` loops of pyqubo `Constraint`s, `profit = −Σᵢ wᵢ Σₖ x[i,k]`, `H = profit + A * (constraint1 + constraint2)`, `model = H.compile()`. Constraint labels name the exams and batch.
-- **Runtime** (`python/examschedule.py`, ADR-0005): samples the compiled model by simulated annealing on `model.to_bqm()`, or by QAOA built from `model.to_ising()` (H, then p × [RZ/RZZ cost, RX mixer], measure; pyqubo's spin s = 2x − 1 is −Z on a qubit), decodes with `model.decode_sample(set)`, picks the lowest-energy sample, writes the Schedule and prints the report. It sets A to the largest weight plus one unless given, and rejects an explicit A ≤ the largest weight.
+- **Runtime** (`python/examschedule.py`, ADR-0005, ADR-0010): samples the compiled model by simulated annealing on `model.to_bqm()`, by quantum annealing on Leap (`EmbeddingComposite(DWaveSampler)` or `LeapHybridSampler`), or by QAOA built from `model.to_ising()` (H, then p × [RZ/RZZ cost, RX mixer], measure; pyqubo's spin s = 2x − 1 is −Z on a qubit), decodes with `model.decode_sample(set)`, picks the lowest-energy sample, writes the Schedule and prints the report. It sets A to the largest weight plus one unless given, and rejects an explicit A ≤ the largest weight. Without `DWAVE_API_TOKEN`, `python/run_generated.py` skips quantum annealing and copies any JSON from `recorded/quantum_annealing/` into `out/`.
 - **Formulation check** in every run: a sample's energy equals minus the weight it places exactly when it breaks no constraint.
 - Every ATL rule, template section and runtime step of the formulation or of QAOA cites the reference it implements, next to it, as `[Key locator]` (e.g. `[Paper §5.3, Eq. (4)]`); departures from the paper cite their ADR.
 - Four metamodels: Problem, SolverConfig, ConflictGraph, Schedule — plus the small Xtext wrapper root for the `.exam` file.
@@ -111,7 +111,7 @@ The same instances with other QAOA settings: replace the contents of the instanc
 
 For scale, a uniformly random bit string is optimal with probability 0.0078 (path), 0.0009 (cycle), 0.0015 (clique) and 0.00005 (semester). COBYLA stops well before 150 iterations (29 to 54 evaluations), so `iterations` does not limit it; for Powell an iteration is a line search over every angle (398 evaluations on cycle).
 
-Test instances (variables = exams × batches), each solved by both methods: `<n>-<name>.exam` and its twin `<n>-<name>-qaoa.exam` or `<n>-<name>-annealing.exam`, the same problem named `<name>_qaoa` or `<name>_annealing` (`python/test_instances.py` keeps the twins identical):
+Test instances (variables = exams × batches), each solved by QAOA and simulated annealing: `<n>-<name>.exam` and its twin `<n>-<name>-qaoa.exam` or `<n>-<name>-annealing.exam`, plus a Leap companion `<n>-<name>-quantum_annealing.exam` named `<name>_quantum_annealing` (`python/test_instances.py` keeps them identical). Quantum annealing results are recorded under `recorded/quantum_annealing/` after a Leap run (see that folder's README); CI without a token copies them into the `emf-results` artifact:
 
 1. 4-exam path, 2 batches — feasible (8 variables)
 2. 5 exams, 3 batches, with a cycle — feasible (15 variables); BESSER's `medium`
@@ -136,5 +136,6 @@ Run everything with `./build.sh` (see README.md); the Eclipse IDE is provisioned
 - QAOA is far behind annealing. On the weighted formulation it finds an optimal schedule on every instance, where on the penalty-only formulation of ADR-0006 it did no better than chance on cycle. With COBYLA at depth 2, P(optimal) is 7 (path), 30 (clique), 36 (cycle) and 37 (semester: 18 variables, 0.0017, seven shots in 4096) times chance, while P(feasible) is 0.61 to 0.75: minimising the expected energy also rewards feasible schedules that leave cheap exams out. Annealing reaches 0.96 to 1.00 everywhere.
 - The initial QAOA angles are a fixed linear ramp in `python/examschedule.py` on Farhi's annealing path (§VI), not part of the Solver Configuration. From there a deeper circuit raises P(feasible) on path and cycle (0.72 to 0.88 and 0.52 to 0.86 from depth 1 to 3), but there P(optimal) stays between 0.028 and 0.062 whatever the depth or optimiser: the extra feasible schedules leave an exam out.
 - The Schedule written by the generated script is not validated against `schedule.ecore`'s OCL.
-- The only unit tests cover the baseline (`python/test_examschedule.py`), the twin instances (`python/test_instances.py`) and the rejection of a Problem without students or exams (`pt.up.feup.examschedule.chain.tests`, run by `./build.sh`); correctness rests on OCL validation between steps, the formulation check and the brute-force baseline in every run.
+- The only unit tests cover the baseline and quantum-annealing plumbing (`python/test_examschedule.py`), the twin/companion instances (`python/test_instances.py`), Leap skip/copy (`python/test_run_generated.py`) and the rejection of a Problem without students or exams (`pt.up.feup.examschedule.chain.tests`, run by `./build.sh`); correctness rests on OCL validation between steps, the formulation check and the brute-force baseline in every run.
+- Quantum annealing needs a D-Wave Leap account; CI cannot call the QPU. Live numbers must be recorded once under `recorded/quantum_annealing/` (ADR-0010).
 - Python 3.12 is required (Qiskit Aer wheels); `./build.sh` needs a JDK 21+.

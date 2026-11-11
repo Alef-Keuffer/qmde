@@ -119,8 +119,8 @@ def citations(path):
 
 
 def base(name):
-    """The problem a run solves: a twin instance is named <name>_<method>."""
-    return re.sub(r"_(qaoa|annealing)$", "", name)
+    """The problem a run solves: a twin or Leap companion is named <name>_<method>."""
+    return re.sub(r"_(qaoa|annealing|quantum_annealing)$", "", name)
 
 
 def load_runs(results, instances):
@@ -139,6 +139,17 @@ def method(run):
     s = run["solver"]
     if s["method"] == "ANNEALING":
         text = f"annealing, {s['reads']} reads × {s['sweeps']} sweeps"
+    elif s["method"] == "QUANTUM_ANNEALING":
+        sampler = s.get("sampler", "QPU")
+        if sampler == "HYBRID":
+            text = "quantum annealing, Leap hybrid"
+            if s.get("time_limit") is not None:
+                text += f", time_limit {s['time_limit']:g}s"
+        else:
+            text = (f"quantum annealing, QPU, {s['reads']} reads × "
+                    f"annealing_time {s.get('annealing_time', 200)}")
+            if s.get("chain_strength") is not None:
+                text += f", chain_strength {s['chain_strength']:g}"
     else:
         optimizer = {"NELDER_MEAD": "Nelder-Mead", "POWELL": "Powell"}.get(s["optimizer"], s["optimizer"])
         text = f"QAOA, depth {s['depth']}, {optimizer}, {s['max_iterations']} iterations, {s['shots']} shots"
@@ -303,7 +314,8 @@ def validation_table(runs, run_url):
         by_problem.setdefault(base(r["instance"]), {})[r["solver"]["method"]] = r
     rows = [rf"{tex(name)} & {next(iter(pair.values()))['variables']} "
             rf"& {prob(next(iter(pair.values()))['random_p_optimal'])} "
-            rf"& {times_chance(pair.get('QAOA'))} & {times_chance(pair.get('ANNEALING'))} \\"
+            rf"& {times_chance(pair.get('QAOA'))} & {times_chance(pair.get('ANNEALING'))} "
+            rf"& {times_chance(pair.get('QUANTUM_ANNEALING'))} \\"
             for name, pair in by_problem.items()]
     return "\n".join([
         placeholder,
@@ -311,9 +323,9 @@ def validation_table(runs, run_url):
         r"\caption{P(optimal) of the EMF chain on each test instance (\cref{app:instances}) by Method, against a "
         r"uniformly random bit string's; in brackets, how many times chance. Solver Configurations in \cref{tab:results-emf}; "
         rf"from {origin}.}}\label{{tab:validation-emf}}",
-        r"\begin{tabular}{@{}lrrrr@{}}",
+        r"\begin{tabular}{@{}lrrrrr@{}}",
         r"\toprule",
-        r"Instance & Variables & Random & QAOA & Simulated annealing \\",
+        r"Instance & Variables & Random & QAOA & Simulated annealing & Quantum annealing \\",
         r"\midrule",
         *rows,
         r"\bottomrule",
@@ -336,12 +348,13 @@ def results_tables(runs, run_url):
     metrics = [rf"{tex(base(r['instance']))} & {r['variables']} & {tex(method(r))} & {r['penalty']:g} "
                rf"& {tex(outcome(r))} & {optimum(r)} & {prob(r['p_optimal'])} & {prob(r['random_p_optimal'])} "
                rf"& {prob(r['p_feasible'])} & {prob(r['random_p_feasible'])} \\" for r in runs]
-    schedules = [rf"{tex(base(r['instance']))} & {'QAOA' if r['solver']['method'] == 'QAOA' else 'annealing'} "
+    method_label = {"QAOA": "QAOA", "ANNEALING": "annealing", "QUANTUM_ANNEALING": "quantum annealing"}
+    schedules = [rf"{tex(base(r['instance']))} & {method_label.get(r['solver']['method'], r['solver']['method'])} "
                  rf"& {schedule(r)} & {tex(', '.join(r['schedule']['unscheduled']) or 'none')} \\" for r in runs]
     return "\n".join([
         placeholder,
         r"\begin{table}",
-        r"\caption{Every run of the EMF chain: each test instance solved by both Methods, with the committed "
+        r"\caption{Every run of the EMF chain: each test instance solved by its Methods, with the committed "
         r"seeds; the Penalty Coefficient $A$ used, the Schedule's cost and Unscheduled Exams, the Baseline's "
         r"optimal cost, and P(optimal) and P(feasible) against a uniformly random bit string's. From "
         rf"{origin}.}}\label{{tab:results-emf}}",

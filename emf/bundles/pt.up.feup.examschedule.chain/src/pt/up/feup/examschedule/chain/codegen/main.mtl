@@ -20,6 +20,9 @@
       # Solver Configuration (solverconfig.xmi); penalty None means automatic, the largest weight plus one
       CONFIG = SolverConfig(method='[cfg.method/]', penalty=[if (cfg.penaltyCoefficient = null)]None[else][cfg.penaltyCoefficient/][/if], seed=[cfg.seed/],
                             reads=[cfg.reads/], sweeps=[cfg.sweeps/],
+                            sampler='[cfg.sampler/]', annealing_time=[cfg.annealingTime/],
+                            chain_strength=[if (cfg.chainStrength = null)]None[else][cfg.chainStrength/][/if],
+                            time_limit=[if (cfg.timeLimit = null)]None[else][cfg.timeLimit/][/if],
                             depth=[cfg.depth/], optimizer='[cfg.optimizer/]', max_iterations=[cfg.maxIterations/], shots=[cfg.shots/])
 
       # Conflict Graph (conflictgraph.xmi)

@@ -1,6 +1,6 @@
 # emf
 
-Exam-slot assignment with weighted exams, as a QUBO built like the reference paper's, solved by QAOA or simulated annealing, built as an EMF model chain. See `CONTEXT.md` for the problem and pipeline, `GLOSSARY.md` for vocabulary and `docs/adr/` for decisions.
+Exam-slot assignment with weighted exams, as a QUBO built like the reference paper's, solved by QAOA, simulated annealing or quantum annealing (D-Wave Leap), built as an EMF model chain. See `CONTEXT.md` for the problem and pipeline, `GLOSSARY.md` for vocabulary and `docs/adr/` for decisions.
 
 ## Run
 
@@ -29,7 +29,7 @@ Add a `.exam` file to `instances/` (syntax in `CONTEXT.md`, "Textual syntax"); `
 - `bundles/pt.up.feup.examschedule.model`: every metamodel (`model/*.ecore`, with OCL); EMF code generated at build.
 - `bundles/pt.up.feup.examschedule.dsl`: Xtext grammar for `.exam` files (imports `problem.ecore` and `solverconfig.ecore`) and its parser; runs headless. `.dsl.ide` and `.dsl.ui`: the `.exam` editor in Eclipse. Xtext's customisation stubs (validator, scoping, labels, outline, quick fixes, content assist) are switched off in `GenerateExam.mwe2`, so Xtext's defaults apply; set that fragment's `generateStub = true` and regenerate to customise one.
 - `bundles/pt.up.feup.examschedule.chain`: headless application: parse, OCL-validate, ATL (`transforms/`), Acceleo (`src/.../codegen/`). `.chain.tests`: its JUnit tests, a fragment Tycho runs at `verify`.
-- `python/examschedule.py`: model-independent runtime the generated scripts import (simulated annealing, QAOA, decoding, baseline, Schedule writer). `python/run_generated.py` runs them all.
+- `python/examschedule.py`: model-independent runtime the generated scripts import (simulated annealing, quantum annealing, QAOA, decoding, baseline, Schedule writer). `python/run_generated.py` runs them all; without `DWAVE_API_TOKEN` it skips Leap and copies `recorded/quantum_annealing/`.
 - `instances/`: the test problems.
 - `build.sh`: runs Maven with a JDK 21+. `emf.setup`: Oomph setup for the Eclipse IDE. `bundles/pt.up.feup.examschedule.chain/launch/`: Eclipse launch configurations.
 - `CONTEXT.md` (problem, pipeline, validation results, known limitations), `GLOSSARY.md`, `docs/adr/`.
