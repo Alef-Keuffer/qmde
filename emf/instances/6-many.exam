@@ -1,0 +1,10 @@
+// BESSER's many (besser/instances/many.py) in the Exam DSL: 1-path in three batches, no weights.
+// Four exams whose conflicts form a path. Feasible: cost 0.
+problem many batches 3
+students Ana Rui Eva
+exam Algebra   { Ana }
+exam Calculus  { Ana Rui }
+exam Physics   { Rui Eva }
+exam Chemistry { Eva }
+
+solver { method annealing reads 50 sweeps 10000 seed 7 }

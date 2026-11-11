@@ -1,0 +1,9 @@
+// BESSER's tiny (besser/instances/tiny.py), Part I's hand-made example, in the Exam DSL.
+// Three exams whose conflicts form a path, three batches, no weights. Feasible: cost 0.
+problem tiny batches 3
+students Alice Bob Carla David Eva
+exam Math      { Alice Carla }
+exam Physics   { Alice Bob Eva }
+exam Chemistry { Bob David }
+
+solver { method annealing reads 50 sweeps 10000 seed 7 }

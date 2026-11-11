@@ -1,0 +1,11 @@
+// BESSER's none (besser/instances/none.py) in the Exam DSL: 3-clique with no weights.
+// Four exams that all conflict, three batches. No schedule places them all: one exam is left
+// unscheduled, at cost 1 (ADR-0009), where BESSER's formulation accepts one conflict instead.
+problem none batches 3
+students Ana Rui Eva
+exam Algebra    { Ana Rui Eva }
+exam Calculus   { Ana Rui Eva }
+exam Physics    { Ana Rui Eva }
+exam Statistics { Ana Rui Eva }
+
+solver { method annealing reads 50 sweeps 10000 seed 7 }

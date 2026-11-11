@@ -1,0 +1,12 @@
+// BESSER's limit (besser/instances/limit.py) in the Exam DSL: 4-semester with no weights.
+// Six exams of a semester, three batches. Feasible: cost 0.
+problem limit batches 3
+students Ana Rui Eva Ivo Lia Tom
+exam Algebra     { Ana Rui }
+exam Calculus    { Rui Eva Tom }
+exam Physics     { Ana Eva }
+exam Chemistry   { Ivo Lia }
+exam Programming { Lia Tom }
+exam Databases   { Ivo Ana }
+
+solver { method annealing reads 50 sweeps 10000 seed 7 }

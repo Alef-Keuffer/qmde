@@ -1,0 +1,11 @@
+// BESSER's many (besser/instances/many.py) in the Exam DSL: 1-path in three batches, no weights.
+// 6-many.exam solved by QAOA instead: keep the two files' problems identical.
+// Four exams whose conflicts form a path. Feasible: cost 0.
+problem many_qaoa batches 3
+students Ana Rui Eva
+exam Algebra   { Ana }
+exam Calculus  { Ana Rui }
+exam Physics   { Rui Eva }
+exam Chemistry { Eva }
+
+solver { method QAOA depth 2 optimizer COBYLA iterations 150 shots 4096 seed 7 }
