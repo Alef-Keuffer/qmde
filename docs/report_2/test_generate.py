@@ -161,7 +161,7 @@ class MetamodelTest(unittest.TestCase):
         tikz = generate.class_diagram(generate.MODELS / "problem.ecore")
         self.assertIn("weight: EDouble = 1.0", tikz)
         self.assertIn(r"\textit{inv} positiveWeight", tikz)
-        self.assertIn(r'\path (Problem) edge[contain, "exams 0..*" role] (Exam);', tikz)
+        self.assertIn(r'\path (Problem) edge[contain, "exams 1..*" role] (Exam);', tikz)
         self.assertIn(r'\path (Exam) edge[reference, "students 1..*" role] (Student);', tikz)
 
     def test_class_diagram_shows_enumerations(self):
