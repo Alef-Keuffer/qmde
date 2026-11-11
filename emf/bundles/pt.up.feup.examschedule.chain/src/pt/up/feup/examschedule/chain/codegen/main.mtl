@@ -25,7 +25,7 @@
       # Conflict Graph (conflictgraph.xmi)
       EXAMS = ([for (e | g.exams)]'[e.name/]', [/for])
       WEIGHTS = ([for (e | g.exams)][e.weight/], [/for])
-      N_BATCHES = [g.batches->size()/]
+      N_BATCHES = [g.nBatches/]
       # ['['/]Paper §5.2, Algorithm 1, Eq. (3)] ['['/]Notebook cell 7]: C, the contradiction matrix, as pairs (i, j), i < j.
       CONFLICTS = ([for (c | g.conflicts)]([g.exams->indexOf(c.first) - 1/], [g.exams->indexOf(c.second) - 1/]), [/for])
 

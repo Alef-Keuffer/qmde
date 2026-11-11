@@ -61,7 +61,7 @@ solve_<instance>.py: pyqubo formulation ─► compiled model
     + brute-force optimal cost
 ```
 
-- **Conflict Graph**: exams as nodes, with their weights, an edge between two exams sharing at least one student (Paper Algorithm 1); the batches 1..M as elements.
+- **Conflict Graph**: exams as nodes, with their weights, an edge between two exams sharing at least one student (Paper Algorithm 1); the number of batches.
 - **Generated code** (ADR-0007, ADR-0009): the exam names, their weights, the batch count and the conflicts as data, then the notebook's formulation in structure: `x = Array.create('c', (n_lesson, n_batch), 'BINARY')`, `constraint1` (each exam in at most one batch, Σ_{k<l} x[i,k]·x[i,l]) and `constraint2` (conflicting exams never share a batch) as `for` loops of pyqubo `Constraint`s, `profit = −Σᵢ wᵢ Σₖ x[i,k]`, `H = profit + A * (constraint1 + constraint2)`, `model = H.compile()`. Constraint labels name the exams and batch.
 - **Runtime** (`python/examschedule.py`, ADR-0005): samples the compiled model by simulated annealing on `model.to_bqm()`, or by QAOA built from `model.to_ising()` (H, then p × [RZ/RZZ cost, RX mixer], measure; pyqubo's spin s = 2x − 1 is −Z on a qubit), decodes with `model.decode_sample(set)`, picks the lowest-energy sample, writes the Schedule and prints the report. It sets A to the largest weight plus one unless given, and rejects an explicit A ≤ the largest weight.
 - **Formulation check** in every run: a sample's energy equals minus the weight it places exactly when it breaks no constraint.
