@@ -46,6 +46,17 @@ With $A$ above every weight, it costs less.
             "path & 8",
         ])
 
+    def test_the_prose_of_input_sections_but_not_of_input_generated(self):
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(verify, "HERE", Path(tmp)):
+            for name, text in {"sections/a.tex": "% Not a claim.\nIn a.\n\\input{sections/b}\n",
+                               "sections/b.tex": "In b, 27\\% of it.\n",
+                               "generated/c.tex": "Generated.\n"}.items():
+                (Path(tmp) / name).parent.mkdir(exist_ok=True)
+                (Path(tmp) / name).write_text(text, encoding="utf-8")
+            tex = "\\begin{document}\nFirst.\n\\input{sections/a}\n% \\input{sections/gone}\n" \
+                  "\\input{generated/c}\nLast.\n\\end{document}\n"
+            self.assertEqual(verify.claims(tex), ["First.", "In a.", r"In b, 27\% of it.", "Last."])
+
 
 class ProblemsTest(unittest.TestCase):
 
