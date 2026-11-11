@@ -2,6 +2,8 @@
 
 - generated/traceability.tex: Appendix A, one row per comment of the EMF chain that cites [Key locator]
 - generated/metamodel-<name>.tex: Appendix C, a class diagram of each EMF .ecore
+- generated/metamodel-besser-<name>.tex: Appendix C, a class diagram of each BESSER metamodel, from the JSON that
+  besser/pipeline.py exports
 - generated/glossary.tex: the Glossary appendix, from emf/GLOSSARY.md
 - generated/glossary-terms.tex: what \\term looks up: each glossary term and its plural, in lower case
 - with --results: generated/validation-emf.tex and generated/results-emf.tex (Appendix B),
@@ -26,6 +28,17 @@ XSI_TYPE = "{http://www.w3.org/2001/XMLSchema-instance}type"
 ECORE = "http://www.eclipse.org/emf/2002/Ecore"  # the annotation listing a class's OCL invariants
 TEX = {"\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$", "#": r"\#", "_": r"\_", "{": r"\{",
        "}": r"\}", "~": r"\textasciitilde{}", "^": r"\textasciicircum{}"}
+
+REPO = HERE.parents[1]
+BESSER_METAMODEL_JSON = REPO / "besser/output/metamodels"  # exported by besser/pipeline.py
+BESSER_METAMODELS = {  # file stem: (name, the B-UML file it is exported from, what the caption adds)
+    "problem_dsl": ("Problem DSL", "metamodels/buml/problem_dsl.py",
+                    r" Part~I makes \texttt{timeSlot} 1; the chain checks it only on the solved problem model, since "
+                    r"an unsolved problem has no slots. T1 does not use \texttt{weight}: the paper has no \term{exam} "
+                    r"weights."),
+    "solution_dsl": ("Solution DSL", "metamodels/buml/solution_dsl.py", ""),
+    "solver_config_dsl": (r"\term{Solver Configuration} DSL", "besser/config/solver_config_dsl.py", ""),
+}
 
 CHAIN = EMF / "bundles/pt.up.feup.examschedule.chain"
 SOURCES = [  # what Appendix A reads: (artefact, file, what it does)
@@ -199,38 +212,74 @@ def box(title, *compartments):
     return rf"\begin{{tabular}}{{l}}{lines}\end{{tabular}}"
 
 
-def class_diagram(path):
-    """A TikZ class diagram of an .ecore: classes with their attributes and OCL invariant names, enumerations,
-    containments and references, laid out by graph drawing (styles in report_2.tex)."""
+def ecore_classes(path):
+    """The classes and edges of an .ecore, for class_diagram: classes with their attributes and OCL invariant
+    names, enumerations, containments and references."""
     # shortcut: no generalisations (no eSuperTypes in the metamodels yet); draw them when one appears.
     nodes, edges = [], []
     for c in ET.parse(path).getroot().findall("eClassifiers"):
         name = c.get("name")
         if c.get(XSI_TYPE) == "ecore:EEnum":
             literals = [tex(l.get("name")) for l in c.findall("eLiterals")]
-            nodes.append(rf"\node[class] ({name}) {{{box(['«enumeration»', rf'\textbf{{{name}}}'], literals)}}};")
+            nodes.append((name, ["«enumeration»", rf"\textbf{{{name}}}"], [literals]))
             continue
         attributes = []
         for f in c.findall("eStructuralFeatures"):
             m = multiplicity(f)
             if f.get(XSI_TYPE) == "ecore:EReference":
                 style = "contain" if f.get("containment") == "true" else "reference"
-                edges.append((name, type_name(f), style, tex(f"{f.get('name')} {m}")))
+                edges.append((name, type_name(f), style, [(tex(f"{f.get('name')} {m}"), "role")]))
             else:
                 default = f.get("defaultValueLiteral")
                 attributes.append(tex(f"{f.get('name')}: {type_name(f)}" + ("" if m == "0..1" else f" [{m}]")
                                       + (f" = {default}" if default else "")))
         invariants = [rf"\textit{{inv}} {tex(n)}" for a in c.findall("eAnnotations") if a.get("source") == ECORE
                       for d in a.findall("details") if d.get("key") == "constraints" for n in d.get("value").split()]
-        compartments = [attributes, invariants] if invariants else [attributes]
-        nodes.append(rf"\node[class] ({name}) {{{box([rf'\textbf{{{name}}}'], *compartments)}}};")
+        nodes.append((name, [rf"\textbf{{{name}}}"], [attributes, invariants] if invariants else [attributes]))
+    return nodes, edges
+
+
+def besser_classes(path):
+    """The classes and edges of a B-UML metamodel in the JSON of BESSER's web editor, for class_diagram: classes
+    with their attributes and the OCL constraints linked to them, and associations with a role and multiplicity
+    at each end, a composition with a diamond at the whole (the converter makes the whole the target)."""
+    model = json.loads(path.read_text(encoding="utf-8"))
+    elements = model["elements"]
+    invariants = {}
+    for r in model["relationships"].values():
+        if r["type"] == "ClassOCLLink":
+            invariants.setdefault(r["target"]["element"], []).append(elements[r["source"]["element"]]["name"])
+    nodes = []
+    for i, c in elements.items():
+        if c["type"] != "Class":
+            continue
+        attributes = [tex(f"{a['name']}: {a['attributeType']}") for a in map(elements.get, c["attributes"])]
+        constraints = [rf"\textit{{inv}} {tex(n)}" for n in sorted(invariants.get(i, []))]
+        nodes.append((c["name"], [rf"\textbf{{{c['name']}}}"], [attributes, constraints] if constraints else [attributes]))
+    edges, styles = [], {"ClassComposition": "contain", "ClassBidirectional": "association"}
+    for r in model["relationships"].values():
+        if r["type"] == "ClassOCLLink":
+            continue
+        if r["type"] not in styles:  # shortcut: the two kinds the metamodels use; draw others when one appears
+            raise ValueError(f"{path.name}: {r['name']} is a {r['type']}, which class_diagram cannot draw yet")
+        ends = [r["target"], r["source"]] if r["type"] == "ClassComposition" else [r["source"], r["target"]]
+        labels = [(tex(f"{e['role']} {e['multiplicity']}"), side) for e, side in zip(ends, ["source role", "target role"])]
+        edges.append((*(elements[e["element"]]["name"] for e in ends), styles[r["type"]], labels))
+    return nodes, edges
+
+
+def class_diagram(nodes, edges):
+    """A TikZ class diagram, laid out by graph drawing (styles in report_2.tex): nodes are (name, title lines,
+    compartments), edges (source, target, style, [(label, label style)])."""
+    tikz = [rf"\node[class] ({name}) {{{box(title, *compartments)}}};" for name, title, compartments in nodes]
     pairs, seen = Counter((s, t) for s, t, *_ in edges), Counter()
-    for source, target, style, label in edges:
+    for source, target, style, labels in edges:
         # shortcut: two parallel edges at most (Conflict's first and second); fan out more when needed.
         bend = "" if pairs[source, target] == 1 else [", bend left=20", ", bend right=20, swap"][seen[source, target]]
         seen[source, target] += 1
-        nodes.append(rf'\path ({source}) edge[{style}{bend}, "{label}" role] ({target});')
-    return "\n".join([r"\begin{tikzpicture}[metamodel]", *nodes, r"\end{tikzpicture}"])
+        quoted = ", ".join(f'"{label}" {label_style}' for label, label_style in labels)
+        tikz.append(rf'\path ({source}) edge[{style}{bend}, {quoted}] ({target});')
+    return "\n".join([r"\begin{tikzpicture}[metamodel]", *tikz, r"\end{tikzpicture}"])
 
 
 def splice(text, block):
@@ -271,13 +320,9 @@ def traceability():
         r"\end{table}"])
 
 
-def metamodel_figure(path):
-    name = ET.parse(path).getroot().get("name")
-    return "\n".join([
-        r"\begin{figure}",
-        class_diagram(path),
-        rf"\caption{{The {name} metamodel, drawn from \texttt{{{path.name}}}.}}\label{{fig:metamodel-{path.stem}}}",
-        r"\end{figure}"])
+def metamodel_figure(diagram, caption, label):
+    return "\n".join([r"\begin{figure}", diagram, rf"\caption{{{caption}}}\label{{fig:metamodel-{label}}}",
+                      r"\end{figure}"])
 
 
 def source(run_url):
@@ -485,7 +530,16 @@ def main():
     (HERE / "generated").mkdir(exist_ok=True)
     write("traceability.tex", traceability())
     for ecore in MODELS.glob("*.ecore"):
-        write(f"metamodel-{ecore.stem}.tex", metamodel_figure(ecore))
+        name = ET.parse(ecore).getroot().get("name")
+        write(f"metamodel-{ecore.stem}.tex", metamodel_figure(
+            class_diagram(*ecore_classes(ecore)), rf"The {name} metamodel, drawn from \texttt{{{ecore.name}}}.",
+            ecore.stem))
+    for stem, (name, source, note) in BESSER_METAMODELS.items():
+        path = BESSER_METAMODEL_JSON / f"{stem}.json"
+        write(f"metamodel-besser-{stem.replace('_', '-')}.tex", metamodel_figure(
+            class_diagram(*besser_classes(path)),
+            rf"The {name} metamodel of the BESSER chain, drawn from \texttt{{{tex(path.relative_to(REPO).as_posix())}}}, "
+            rf"which the chain exports from \texttt{{{tex(source)}}}.{note}", f"besser-{stem.replace('_', '-')}"))
     text = (EMF / "GLOSSARY.md").read_text(encoding="utf-8")
     write("glossary.tex", glossary(text))
     write("glossary-terms.tex", glossary_terms(text))

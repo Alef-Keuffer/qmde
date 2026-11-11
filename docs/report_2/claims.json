@@ -2971,7 +2971,7 @@
 		"evidence": [
 			{
 				"path": "docs/report_2/build.sh",
-				"quote": "fetches the EMF results from CI, generates the tables, Appendix A, the EMF metamodel diagrams"
+				"quote": "fetches the EMF results from CI, generates the\n# tables, Appendix A, the metamodel diagrams of both chains"
 			},
 			{
 				"path": "docs/report_2/build.sh",
