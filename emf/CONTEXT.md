@@ -75,7 +75,7 @@ Report per instance: the schedule, its unscheduled exams and cost, whether it is
 
 <!-- results:begin -->
 
-Results with the committed instances and seeds, from CI's `./build.sh` (Linux, the pinned `requirements.txt`), [run 42879932659](https://github.com/Alef-Keuffer/qmde/actions/runs/42879932659), written here by `docs/report_2/build.sh`; every schedule found is feasible and optimal:
+Results with the committed instances and seeds, from CI's `./build.sh` (Linux, the pinned `requirements.txt`), [run 43071895789](https://github.com/Alef-Keuffer/qmde/actions/runs/43071895789), written here by `docs/report_2/build.sh`; every schedule found is feasible and optimal:
 
 | Instance | Variables | Method | Result (cost, unscheduled exams) | Optimal cost (baseline) | P(optimal) | P(feasible) |
 |---|---|---|---|---|---|---|
@@ -87,6 +87,14 @@ Results with the committed instances and seeds, from CI's `./build.sh` (Linux, t
 | clique | 12 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 1, Statistics | 1 | 0.044 | 0.657 |
 | semester | 18 | annealing, 50 reads × 10000 sweeps | 0, none | 0 | 0.980 | 1.000 |
 | semester | 18 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 0, none | 0 | 0.0017 | 0.611 |
+| tiny | 9 | annealing, 50 reads × 10000 sweeps | 0, none | 0 | 1.000 | 1.000 |
+| tiny | 9 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 0, none | 0 | 0.212 | 0.807 |
+| many | 12 | annealing, 50 reads × 10000 sweeps | 0, none | 0 | 1.000 | 1.000 |
+| many | 12 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 0, none | 0 | 0.113 | 0.681 |
+| none | 12 | annealing, 50 reads × 10000 sweeps | 1, Algebra | 1 | 1.000 | 1.000 |
+| none | 12 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 1, Statistics | 1 | 0.146 | 0.771 |
+| limit | 18 | annealing, 50 reads × 10000 sweeps | 0, none | 0 | 0.980 | 1.000 |
+| limit | 18 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 0, none | 0 | 0.0022 | 0.650 |
 
 <!-- results:end -->
 

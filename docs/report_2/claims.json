@@ -994,6 +994,39 @@
 		]
 	},
 	{
+		"claim": "Instances 5 to 8 are the BESSER chain's instances, \\texttt{besser/instances/}, written in the Exam DSL, and \\texttt{2-cycle} is its \\texttt{medium}.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "5 to 8 are the BESSER chain's other instances (`besser/instances/`)"
+			},
+			{
+				"path": "emf/instances/5-tiny.exam",
+				"quote": "BESSER's tiny (besser/instances/tiny.py), Part I's hand-made example, in the Exam DSL."
+			},
+			{
+				"path": "emf/instances/6-many.exam",
+				"quote": "BESSER's many (besser/instances/many.py) in the Exam DSL"
+			},
+			{
+				"path": "emf/instances/7-none.exam",
+				"quote": "BESSER's none (besser/instances/none.py) in the Exam DSL"
+			},
+			{
+				"path": "emf/instances/8-limit.exam",
+				"quote": "BESSER's limit (besser/instances/limit.py) in the Exam DSL"
+			},
+			{
+				"path": "emf/instances/2-cycle.exam",
+				"quote": "BESSER's medium (besser/instances/medium.py) is this problem."
+			},
+			{
+				"path": "besser/instances/medium.py",
+				"quote": "medium: the cycle of the EMF chain (../emf/instances/2-cycle.exam)."
+			}
+		]
+	},
+	{
 		"claim": "The EMF chain: \\texttt{cd emf \\&\\& ./build.sh} (JDK 21+, Python 3.12) builds the chain and runs it on every instance, writing \\texttt{emf/out/<name>/results\\_<name>.json}.",
 		"evidence": [
 			{
