@@ -1,8 +1,9 @@
 """Checks the report's prose against its evidence (build.sh runs it; ./build.sh final fails on what it reports).
 
-Every sentence, list item, caption and table row of report_2.tex outside a \\placeholder is a claim. claims.json
-gives each claim its evidence, which the verifier (see .claude/skills/verify-report) finds and this script
-re-checks on every build, so that a claim whose evidence changes or disappears shows up again:
+Every sentence, list item, caption and table row of report_2.tex and of the files it \\inputs from sections/,
+outside a \\placeholder, is a claim; generated/ is not prose (generate.py writes it from CI's results and the
+code). claims.json gives each claim its evidence, which the verifier (see .claude/skills/verify-report) finds
+and this script re-checks on every build, so that a claim whose evidence changes or disappears shows up again:
 - {"path": "<repository path>", "quote": "<text>"}: the quote is in that file
 - {"cite": "<bib key>", "quote": "<text>"}: the quote is in the reference's text (sources/<key>.txt)
 - {"issue": <number>, "state": "OPEN" | "CLOSED"}: the GitHub issue is still in that state
@@ -63,10 +64,17 @@ def drop(text, command, n, keep_last=False, around=""):
     return text
 
 
+def inlined(tex):
+    """tex without comments, with each \\input{sections/...} replaced by that file's text, recursively."""
+    tex = re.sub(r"(?<!\\)%.*", "", tex)
+    return re.sub(r"\\input\{(sections/[^}]*)\}",
+                  lambda m: inlined((HERE / m[1]).with_suffix(".tex").read_text(encoding="utf-8")), tex)
+
+
 def claims(tex):
-    """Each sentence, list item, caption and table row of the document's body, whitespace collapsed."""
-    body = tex.split(r"\begin{document}")[1].split(r"\end{document}")[0]
-    body = re.sub(r"(?<!\\)%.*", "", body)
+    """Each sentence, list item, caption and table row of the document's body and the sections it \\inputs,
+    whitespace collapsed."""
+    body = inlined(tex.split(r"\begin{document}")[1].split(r"\end{document}")[0])
     body = re.sub(r"\\begin\{tikzpicture\}.*?\\end\{tikzpicture\}", "", body, flags=re.S)
     body = drop(body, "placeholder", 3)
     for command in ("section", "subsection", "paragraph", "label"):
@@ -74,8 +82,8 @@ def claims(tex):
     body = drop(body, "caption", 1, keep_last=True)
     for note in ("sidenote", "footnote"):  # a claim of its own
         body = drop(body, note, 1, keep_last=True, around="\n\n")
-    body = re.sub(r"^\s*\\(?:begin|end|input|VerbatimInput|[a-z]*rule|footnotesize|small|maketitle|tableofcontents"
-                  r"|appendix|printbibliography)\b.*$", "", body, flags=re.M)
+    body = re.sub(r"^\s*\\(?:begin|end|input|includegraphics|VerbatimInput|[a-z]*rule|footnotesize|small|maketitle"
+                  r"|tableofcontents|appendix|printbibliography)\b.*$", "", body, flags=re.M)
     body = re.sub(r"([.!?])\s*\\\]", r"\1\\]", body)  # a sentence ending in display maths ends after it
     units = re.split(r"\n\s*\n|\\item\b|\\\\|(?:(?<=[.!?])|(?<=[.!?]\\\]))\s+(?=[A-Za-z])", body)
     units = [" ".join(u.split()) for u in units]

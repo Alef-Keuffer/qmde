@@ -1,13 +1,14 @@
 ---
 name: verify-report
-description: Fact-check the report's prose (docs/report_2/report_2.tex) claim by claim against the code, the CI results and the cited references, and record each claim's evidence in docs/report_2/claims.json. Use after report prose is written or changed, when docs/report_2/verify.py or ./build.sh final reports unverified or broken claims, or when asked to check the report.
+description: Fact-check the report's prose (docs/report_2/report_2.tex and the sections/*.tex it \inputs) claim by claim against the code, the CI results and the cited references, and record each claim's evidence in docs/report_2/claims.json. Use after report prose is written or changed, when docs/report_2/verify.py or ./build.sh final reports unverified or broken claims, or when asked to check the report.
 ---
 
 # Verify the report
 
-`docs/report_2/verify.py` splits the prose into claims (sentences, list items, captions, table rows; placeholders
-excluded) and re-checks, on every build, the evidence that `claims.json` gives each one. Its docstring defines
-the evidence kinds. You supply the judgement it cannot: is the claim true, and does the evidence say so?
+`docs/report_2/verify.py` splits the prose of `report_2.tex` and of the `sections/*.tex` it `\input`s into
+claims (sentences, list items, captions, table rows; placeholders excluded) and re-checks, on every build, the
+evidence that `claims.json` gives each one. Its docstring defines the evidence kinds. You supply the judgement
+it cannot: is the claim true, and does the evidence say so?
 
 **Independence.** If you wrote or edited any of the prose in this session, do not verify it yourself: hand this
 skill to a fresh subagent. A writer reads its own intent into the sources.
@@ -20,7 +21,8 @@ skill to a fresh subagent. A writer reads its own intent into the sources.
 2. For each such claim, split it into its assertions and check every one against its primary source:
    - what the code does: the code (`emf/`, `besser/`), not a document describing it;
    - numbers and results: `docs/report_2/generated/*.tex` (from the newest CI run) or `emf/CONTEXT.md`'s
-     results table, both written by `build.sh`;
+     results table, both written by `build.sh`; the BESSER chain's in `besser/output/` (`summary.md`
+     and each instance's files);
    - decisions and reasons: the ADRs (`emf/docs/adr/`);
    - a citation `\cite[locator]{Key}`: the reference itself, at that locator. `verify.py` makes its text in
      `docs/report_2/sources/<Key>.txt` (the notebook's cells marked `[cell N]`). The locator must name the
