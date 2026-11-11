@@ -106,9 +106,16 @@ For scale, a uniformly random bit string is optimal with probability 0.0078 (pat
 Test instances (variables = exams × batches), each solved by both methods: `<n>-<name>.exam` and its twin `<n>-<name>-qaoa.exam` or `<n>-<name>-annealing.exam`, the same problem named `<name>_qaoa` or `<name>_annealing` (`python/test_instances.py` keeps the twins identical):
 
 1. 4-exam path, 2 batches — feasible (8 variables)
-2. 5 exams, 3 batches, with a cycle — feasible (15 variables)
+2. 5 exams, 3 batches, with a cycle — feasible (15 variables); BESSER's `medium`
 3. 4 mutually conflicting exams, 3 batches — not all fit: Statistics, the lowest weight, is left unscheduled (12 variables)
 4. 6 exams, 3 batches (18 variables)
+
+5 to 8 are the BESSER chain's other instances (`besser/instances/`), all in 3 batches with no weights:
+
+5. `tiny`, Part I's hand-made example: 3 exams whose conflicts form a path — feasible (9 variables)
+6. `many`: 1 in 3 batches — feasible (12 variables)
+7. `none`: 3 — not all fit: one exam is left unscheduled, at cost 1, where BESSER accepts one conflict (12 variables)
+8. `limit`: 4 — feasible (18 variables)
 
 ## Build
 
