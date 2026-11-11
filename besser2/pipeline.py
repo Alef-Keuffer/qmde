@@ -8,8 +8,10 @@ from besser.BUML.metamodel.object import ObjectModel
 
 if __package__:
     from .transformations.transformation1 import transform_problem_to_qubo
+    from .transformations.transformation2 import QuboSolution, solve_qubo
 else:
     from transformations.transformation1 import transform_problem_to_qubo
+    from transformations.transformation2 import QuboSolution, solve_qubo
 
 
 ROOT = Path(__file__).resolve().parent
@@ -47,7 +49,52 @@ def convert_problem_to_qubo(problem_model: ObjectModel) -> ObjectModel:
 
 
 def run_pipeline(example: str) -> ObjectModel:
-    return convert_problem_to_qubo(load_problem_instance(example))
+    qubo_model = convert_problem_to_qubo(load_problem_instance(example))
+    counts: dict[str, int] = {}
+    for obj in qubo_model.objects:
+        counts[obj.classifier.name] = counts.get(obj.classifier.name, 0) + 1
+    print(
+        "Generated QUBO: "
+        f"{counts.get('Variable', 0)} variables, "
+        f"{counts.get('LinearTerm', 0)} linear terms, "
+        f"{counts.get('QuadraticTerm', 0)} quadratic terms, "
+        f"{counts.get('Penalty', 0)} penalties"
+    )
+    print_solution(solve_qubo(qubo_model))
+    return qubo_model
+
+
+def print_solution(solution: QuboSolution) -> None:
+    """Print the best QUBO schedules found and whether optimality is proven."""
+    solver_name = "Exact QUBO search" if solution.exact else "Simulated annealing"
+    optimality = "proven optimal" if solution.exact else "best found; optimality not proven"
+    print(
+        f"{solver_name} ({solution.variable_count} binary variables; {optimality})"
+    )
+    print(f"Best QUBO energy: {solution.best_energy:g}")
+
+    candidates = [candidate for candidate in solution.candidates if candidate.is_feasible]
+    if candidates:
+        print(
+            f"Found {solution.feasible_solution_count} best conflict-free "
+            "schedule(s)"
+        )
+    else:
+        candidates = list(solution.candidates)
+        print("No conflict-free schedule was found among the best assignments.")
+
+    for number, candidate in enumerate(candidates, start=1):
+        print(f"Solution {number}:")
+        for _, exam_name, batches in candidate.assignments:
+            if len(batches) == 1:
+                print(f"  {exam_name}: Batch {batches[0] + 1}")
+            elif batches:
+                batch_list = ", ".join(str(batch + 1) for batch in batches)
+                print(f"  {exam_name}: assigned to multiple batches ({batch_list})")
+            else:
+                print(f"  {exam_name}: unassigned")
+        for violation in candidate.violations:
+            print(f"  Violation: {violation}")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -61,20 +108,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        qubo_model = run_pipeline(args.example)
+        run_pipeline(args.example)
     except (FileNotFoundError, TypeError, ValueError) as error:
         parser.error(str(error))
-
-    counts: dict[str, int] = {}
-    for obj in qubo_model.objects:
-        counts[obj.classifier.name] = counts.get(obj.classifier.name, 0) + 1
-    print(
-        "Generated QUBO: "
-        f"{counts.get('Variable', 0)} variables, "
-        f"{counts.get('LinearTerm', 0)} linear terms, "
-        f"{counts.get('QuadraticTerm', 0)} quadratic terms, "
-        f"{counts.get('Penalty', 0)} penalties"
-    )
     return 0
 
 
