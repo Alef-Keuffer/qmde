@@ -1,0 +1,11 @@
+// BESSER's tiny (besser/instances/tiny.py), Part I's hand-made example, in the Exam DSL.
+// Three exams whose conflicts form a path, three batches, no weights. Feasible: cost 0.
+// 5-tiny.exam solved by quantum annealing (D-Wave QPU) instead: keep the problems identical.
+// Needs DWAVE_API_TOKEN at run time; without it, run_generated copies recorded/quantum_annealing/ (ADR-0010).
+problem tiny_quantum_annealing batches 3
+students Alice Bob Carla David Eva
+exam Math      { Alice Carla }
+exam Physics   { Alice Bob Eva }
+exam Chemistry { Bob David }
+
+solver { method quantum_annealing sampler qpu reads 500 annealing_time 200 seed 7 }

@@ -1,0 +1,13 @@
+// Q16 (iv): six exams of a semester, three batches. Feasible.
+// 4-semester.exam solved by quantum annealing (D-Wave QPU) instead: keep the problems identical.
+// Needs DWAVE_API_TOKEN at run time; without it, run_generated copies recorded/quantum_annealing/ (ADR-0010).
+problem semester_quantum_annealing batches 3
+students Ana Rui Eva Ivo Lia Tom
+exam Algebra     weight 3 { Ana Rui }
+exam Calculus    weight 3 { Rui Eva Tom }
+exam Physics     weight 2 { Ana Eva }
+exam Chemistry   weight 2 { Ivo Lia }
+exam Programming weight 1 { Lia Tom }
+exam Databases   weight 1 { Ivo Ana }
+
+solver { method quantum_annealing sampler qpu reads 500 annealing_time 200 seed 7 }

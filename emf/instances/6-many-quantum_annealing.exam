@@ -1,0 +1,12 @@
+// BESSER's many (besser/instances/many.py) in the Exam DSL: 1-path in three batches, no weights.
+// Four exams whose conflicts form a path. Feasible: cost 0.
+// 6-many.exam solved by quantum annealing (D-Wave QPU) instead: keep the problems identical.
+// Needs DWAVE_API_TOKEN at run time; without it, run_generated copies recorded/quantum_annealing/ (ADR-0010).
+problem many_quantum_annealing batches 3
+students Ana Rui Eva
+exam Algebra   { Ana }
+exam Calculus  { Ana Rui }
+exam Physics   { Rui Eva }
+exam Chemistry { Eva }
+
+solver { method quantum_annealing sampler qpu reads 500 annealing_time 200 seed 7 }

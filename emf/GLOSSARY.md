@@ -1,6 +1,6 @@
 # Exam-Slot Assignment
 
-Scheduling a university's final exams into a limited number of batches so that no student sits two exams at once, leaving the lowest-priority exams unscheduled when not all fit, via a QUBO formulation built like the reference paper's, solved by QAOA or simulated annealing.
+Scheduling a university's final exams into a limited number of batches so that no student sits two exams at once, leaving the lowest-priority exams unscheduled when not all fit, via a QUBO formulation built like the reference paper's, solved by QAOA, simulated annealing or quantum annealing.
 
 ## Language
 
@@ -40,7 +40,7 @@ The choices about how a *problem* is solved rather than what the *problem* is: t
 _Avoid_: settings, parameters
 
 **Method**:
-How the compiled formulation is sampled: QAOA or *simulated annealing*.
+How the compiled formulation is sampled: QAOA, *simulated annealing* or *quantum annealing*.
 _Avoid_: solver (ambiguous with the *Solver Configuration*), backend
 
 **Assignment Variable**:
@@ -69,7 +69,11 @@ _Avoid_: ansatz, program, quantum model
 
 **Simulated Annealing**:
 The classical sampler the notebook uses (`neal`): a number of reads, each a run of a number of sweeps.
-_Avoid_: quantum annealing (the paper's D-Wave hardware, which the chain does not use)
+_Avoid_: quantum annealing
+
+**Quantum Annealing**:
+Sampling the compiled *QUBO* on D-Wave Leap: the QPU (`DWaveSampler` with minor embedding) by default, or the Leap Hybrid Sampler. Chosen with `method quantum_annealing` in a *Solver Configuration*; needs a Leap API token at run time (ADR-0010).
+_Avoid_: annealing (that is *simulated annealing*), simulated annealing
 
 ### Solution
 
@@ -98,9 +102,9 @@ Enumerating every *schedule* (each *exam* in one *batch* or none), independently
 _Avoid_: reference solution, ground truth
 
 **P(optimal)**:
-The fraction of QAOA shots or annealing reads that decode to an *optimal* *schedule*.
+The fraction of QAOA shots or annealing reads (simulated or quantum) that decode to an *optimal* *schedule*.
 _Avoid_: success rate
 
 **P(feasible)**:
-The fraction of QAOA shots or annealing reads that decode to a *feasible* *schedule*.
+The fraction of QAOA shots or annealing reads (simulated or quantum) that decode to a *feasible* *schedule*.
 _Avoid_: success rate

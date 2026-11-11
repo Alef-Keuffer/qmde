@@ -1,0 +1,12 @@
+// Q16 (iii): four exams that all conflict, three batches. No schedule places them all: the
+// lowest-weight exam, Statistics, is left unscheduled, at cost 1 (ADR-0009).
+// 3-clique.exam solved by quantum annealing (D-Wave QPU) instead: keep the problems identical.
+// Needs DWAVE_API_TOKEN at run time; without it, run_generated copies recorded/quantum_annealing/ (ADR-0010).
+problem clique_quantum_annealing batches 3
+students Ana Rui Eva
+exam Algebra    weight 4 { Ana Rui Eva }
+exam Calculus   weight 3 { Ana Rui Eva }
+exam Physics    weight 2 { Ana Rui Eva }
+exam Statistics weight 1 { Ana Rui Eva }
+
+solver { method quantum_annealing sampler qpu reads 500 annealing_time 200 seed 7 }

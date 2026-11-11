@@ -23,8 +23,10 @@ Exam returns problem::Exam:
 	'exam' name=ID ('weight' weight=Number)? '{' students+=[problem::Student|ID]+ '}';
 
 // Settings in any order; omitted ones keep the metamodel defaults. depth, optimizer, iterations and
-// shots apply to QAOA; reads and sweeps to simulated annealing. 'penalty auto' (or no penalty) means
-// automatic, the largest weight plus one.
+// shots apply to QAOA; reads and sweeps to simulated annealing; sampler, reads, annealing_time,
+// chain_strength and time_limit to quantum annealing. 'penalty auto' (or no penalty) means
+// automatic, the largest weight plus one. 'chain_strength auto' / 'time_limit auto' mean Ocean/Leap
+// defaults (an absent value is the same).
 SolverConfig returns solver::SolverConfig:
 	{solver::SolverConfig} 'solver' '{' (
 		('method' method=Method)? &
@@ -32,6 +34,10 @@ SolverConfig returns solver::SolverConfig:
 		('seed' seed=INT)? &
 		('reads' reads=INT)? &
 		('sweeps' sweeps=INT)? &
+		('sampler' sampler=Sampler)? &
+		('annealing_time' annealingTime=INT)? &
+		('chain_strength' ('auto' | chainStrength=OptionalNumber))? &
+		('time_limit' ('auto' | timeLimit=OptionalNumber))? &
 		('depth' depth=INT)? &
 		('optimizer' optimizer=Optimizer)? &
 		('iterations' maxIterations=INT)? &
@@ -39,7 +45,10 @@ SolverConfig returns solver::SolverConfig:
 	) '}';
 
 enum Method returns solver::Method:
-	QAOA='QAOA' | ANNEALING='annealing';
+	QAOA='QAOA' | ANNEALING='annealing' | QUANTUM_ANNEALING='quantum_annealing';
+
+enum Sampler returns solver::Sampler:
+	QPU='qpu' | HYBRID='hybrid';
 
 enum Optimizer returns solver::Optimizer:
 	COBYLA='COBYLA' | NELDER_MEAD='Nelder-Mead' | POWELL='Powell';
