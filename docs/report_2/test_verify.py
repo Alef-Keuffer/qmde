@@ -19,7 +19,7 @@ pyqubo compiles $H$:
 \[
 	H = x.
 \]
-With $A$ above every weight, it costs less.
+With $A$ above every weight, it costs less. \term{Batches} are fixed.
 \placeholder{the team}{The chain}{Notes. With claims.}
 \begin{itemize}[nosep]
 	\item One item.
@@ -42,6 +42,7 @@ With $A$ above every weight, it costs less.
             r"Farhi et al.\ maximise theirs.",
             r"pyqubo compiles $H$: \[ H = x.\]",
             "With $A$ above every weight, it costs less.",
+            r"\term{Batches} are fixed.",
             "One item.",
             r"A caption, \texttt{x}.",
             "path & 8",

@@ -2,6 +2,8 @@
 
 - generated/traceability.tex: Appendix A, one row per comment of the EMF chain that cites [Key locator]
 - generated/metamodel-<name>.tex: Appendix C, a class diagram of each EMF .ecore
+- generated/glossary.tex: the Glossary appendix, from emf/GLOSSARY.md
+- generated/glossary-terms.tex: what \\term looks up: each glossary term and its plural, in lower case
 - with --results: generated/validation-emf.tex (Section 4) and generated/results-emf.tex (Appendix B),
   and, when the results come from CI (--run-url), emf/CONTEXT.md's results table
 """
@@ -368,6 +370,105 @@ def results_tables(runs, run_url):
         r"\end{table}"])
 
 
+ENTRY = re.compile(r"\*\*([^*]+)\*\*(?: (\([^)]*\)))?:$")  # **Name**: or **Name** (qualifier):
+CODE_BLOCK = re.compile(r"^(```|~~~|    )")
+UNUSED = [  # Markdown GLOSSARY.md does not use, matched outside code spans: rendering it would go wrong silently
+    ("a heading", re.compile(r"^\s*(#|[-=]{2,}\s*$)")), ("a list", re.compile(r"^\s*([-*+]|\d+[.)])\s")),
+    ("a table", re.compile(r"^\s*\|")), ("a quote", re.compile(r"^\s*>")),
+    ("a link", re.compile(r"\]\(|^\s*\[[^\]]*\]:")), ("HTML", re.compile(r"<[A-Za-z/!]|&#?\w+;")),
+    ("emphasis", re.compile(r"[*_]"))]
+TERM = re.compile(r"\*([^*\s][^*]*)\*")  # *Term*: a domain use of a glossary term, rendered as \term
+
+
+def inline(text):
+    """A glossary line's text for TeX: `code` monospace, "quotes" curly, *Term* through \\term."""
+    parts = re.split(r"`([^`]*)`", text)
+    return "".join(rf"\texttt{{{tex(p)}}}" if i % 2 else
+                   TERM.sub(r"\\term{\1}", re.sub(r'"([^"]*)"', r"\\enquote{\1}", tex(p)))
+                   for i, p in enumerate(parts))
+
+
+def anchor(term):
+    """The hypertarget of a glossary entry."""
+    return "term:" + re.sub(r"[^a-z0-9]+", "-", term.lower()).strip("-")
+
+
+def plural(term):
+    """A term's plural by the regular English rule, on its last word."""
+    if re.search(r"(s|x|z|ch|sh)$", term, re.I):
+        return term + "es"
+    if re.search(r"[^aeiou]y$", term, re.I):
+        return term[:-1] + "ies"
+    return term + "s"
+
+
+def glossary_terms(text):
+    """What \\term looks up: each entry's name and its plural, in lower case, with the entry's anchor."""
+    names = [name for _, entries in parse_glossary(text) for name, *_ in entries]
+    table = {}
+    for name in names:
+        target = anchor(name)
+        for form in (name, plural(name)):
+            if table.setdefault(form.lower(), target) != target:
+                sys.exit(f"GLOSSARY.md: {form} is both a term and a plural")
+    return "\n".join(rf"\glossaryterm{{{form}}}{{{target}}}" for form, target in table.items())
+
+
+def parse_glossary(text):
+    """GLOSSARY.md's Language section as [group, [[name, qualifier, definition lines, avoid]]]; any Markdown the
+    glossary does not use stops the build."""
+    lines = text.splitlines()
+    if "## Language" not in lines:
+        sys.exit("GLOSSARY.md: no ## Language section")
+    language = lines.index("## Language")
+    groups = []  # [name, [[name, qualifier, definition lines, avoid]]]
+    for n, line in enumerate(lines[language + 1:], language + 2):
+        def reject(what):
+            sys.exit(f"GLOSSARY.md line {n}: {what}: {line}")
+        if not line.strip():
+            continue
+        if CODE_BLOCK.match(line):
+            reject("a code block")
+        group, entry = line.startswith("### "), ENTRY.match(line)
+        avoid = line.startswith("_Avoid_: ")
+        content = line[4:] if group else " ".join(filter(None, entry.groups())) if entry else \
+            line[len("_Avoid_: "):] if avoid else line
+        for what, pattern in UNUSED:
+            if pattern.search(TERM.sub("", re.sub(r"`[^`]*`", "", content))):
+                reject(what)
+        if group:
+            groups.append([content, []])
+        elif entry:
+            if not groups:
+                reject("an entry outside a group")
+            groups[-1][1].append([entry[1], entry[2], [], None])
+        elif not groups or not groups[-1][1] or groups[-1][1][-1][3]:
+            reject("text outside an entry")
+        elif avoid and not groups[-1][1][-1][2]:
+            reject("an Avoid line before the definition")
+        elif avoid:
+            groups[-1][1][-1][3] = content
+        else:
+            groups[-1][1][-1][2].append(content)
+    return groups
+
+
+def glossary(text):
+    """The Glossary appendix from GLOSSARY.md's Language section: its groups in order, each a description list of
+    its entries, each name the target of its \\term links, with their Avoid lines."""
+    out = []
+    for name, entries in parse_glossary(text):
+        out += [rf"\subsection*{{{inline(name)}}}", r"\begin{description}"]
+        for term, qualifier, definition, avoid in entries:
+            label = rf"\hypertarget{{{anchor(term)}}}{{{inline(term)}}}" + \
+                (rf" {{\normalfont{inline(qualifier)}}}" if qualifier else "")
+            out.append(rf"\item[{label}] {inline(' '.join(definition))}" + (r"\par" if avoid else ""))
+            if avoid:
+                out.append(rf"{{\small\itshape Avoid: {inline(avoid)}}}")
+        out.append(r"\end{description}")
+    return "\n".join(out)
+
+
 def write(name, text):
     (HERE / "generated" / name).write_text(f"% Generated by generate.py; do not edit.\n{text}\n", encoding="utf-8")
 
@@ -381,6 +482,9 @@ def main():
     write("traceability.tex", traceability())
     for ecore in MODELS.glob("*.ecore"):
         write(f"metamodel-{ecore.stem}.tex", metamodel_figure(ecore))
+    text = (EMF / "GLOSSARY.md").read_text(encoding="utf-8")
+    write("glossary.tex", glossary(text))
+    write("glossary-terms.tex", glossary_terms(text))
     if args.results:
         runs = load_runs(args.results, EMF / "instances")
         write("validation-emf.tex", validation_table(runs, args.run_url))

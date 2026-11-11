@@ -1,5 +1,8 @@
 """Tests for the report's generator: python3 -m unittest discover -s docs/report_2"""
 import json
+import os
+import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -169,6 +172,116 @@ class MetamodelTest(unittest.TestCase):
         self.assertIn(r"\textbf{Optimizer}", tikz)
         self.assertIn(r"COBYLA\\NELDER\_MEAD\\POWELL", tikz)
         self.assertIn("method: Method = QAOA", tikz)
+
+
+GLOSSARY = """\
+# Exam-Slot Assignment
+
+Scheduling exams, with a `code` intro that is not rendered.
+
+## Language
+
+### Problem
+
+**Batch**:
+One of a fixed number of exam periods; the "slot" in
+the problem's name.
+_Avoid_: slot, `TimeSlot`
+
+### Solution
+
+**Cost** (of a schedule):
+The total weight: x[Exam, Batch] & 100%, in *batches*.
+"""
+
+
+class TermTest(unittest.TestCase):
+
+    def test_plural_follows_the_regular_english_rule(self):
+        for term, plural in [("Batch", "Batches"), ("Exam", "Exams"), ("QUBO", "QUBOs"), ("Box", "Boxes"),
+                             ("Bus", "Buses"), ("Wish", "Wishes"), ("Penalty", "Penalties"),
+                             ("Day", "Days"), ("Conflict Graph", "Conflict Graphs"),
+                             ("Assignment Variable", "Assignment Variables")]:
+            with self.subTest(term=term):
+                self.assertEqual(generate.plural(term), plural)
+
+    def test_term_table_maps_each_term_and_its_plural_to_its_entry(self):
+        self.assertEqual(generate.glossary_terms(GLOSSARY), r"""\glossaryterm{batch}{term:batch}
+\glossaryterm{batches}{term:batch}
+\glossaryterm{cost}{term:cost}
+\glossaryterm{costs}{term:cost}""")
+
+    def test_a_plural_that_is_another_term_stops_the_build(self):
+        with self.assertRaisesRegex(SystemExit, "GLOSSARY.md: Exams is both a term and a plural"):
+            generate.glossary_terms("## Language\n\n### G\n\n**Exam**:\na\n\n**Exams**:\nb\n")
+
+    @unittest.skipUnless(shutil.which("lualatex"), "needs LuaLaTeX, which CI's report job lacks")
+    def test_term_links_a_known_term_and_stops_on_an_unknown_one(self):
+        """A tiny LuaLaTeX document with the report's own \\term, on a table of one term."""
+        folder = Path(tempfile.mkdtemp(dir=TMP.name))
+        (folder / "generated").mkdir()
+        (folder / "generated/glossary-terms.tex").write_text(
+            "\\glossaryterm{batch}{term:batch}\n\\glossaryterm{batches}{term:batch}\n", encoding="utf-8")
+
+        def build(body):
+            (folder / "doc.tex").write_text(r"""\pdfvariable compresslevel=0 \pdfvariable objcompresslevel=0
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{term}
+\begin{document}
+\tableofcontents
+\section{The \term{Batch}}
+\begin{figure}\caption{Two \term{batches}.}\end{figure}
+\hypertarget{term:batch}{Batch} %s
+\end{document}
+""" % body, encoding="utf-8")
+            env = {**os.environ, "TEXINPUTS": f"{generate.HERE}:"}
+            for _ in range(2):  # the second run reads the contents and the bookmarks back
+                run = subprocess.run(["lualatex", "-interaction=nonstopmode", "-halt-on-error", "doc.tex"],
+                                     cwd=folder, env=env, capture_output=True, text=True)
+                if run.returncode:
+                    break
+            return run
+
+        known = build(r"\term{BATCHES}")
+        self.assertEqual(known.returncode, 0, known.stdout[-2000:])
+        pdf = (folder / "doc.pdf").read_bytes()
+        self.assertEqual(pdf.count(b"/D (term:batch)"), 4)  # contents, heading, caption, text
+        self.assertIn(rb"(\376\377\000T\000h\000e\000\040\000B\000a\000t\000c\000h)", pdf)  # bookmark: the text
+        unknown = build(r"\term{Slots}")
+        self.assertNotEqual(unknown.returncode, 0)
+        self.assertIn("Slots", unknown.stdout[unknown.stdout.find("Error"):])
+
+
+class GlossaryTest(unittest.TestCase):
+
+    def test_groups_entries_and_avoid_lines_in_order(self):
+        self.assertEqual(generate.glossary(GLOSSARY), r"""\subsection*{Problem}
+\begin{description}
+\item[\hypertarget{term:batch}{Batch}] One of a fixed number of exam periods; the \enquote{slot} in the problem's name.\par
+{\small\itshape Avoid: slot, \texttt{TimeSlot}}
+\end{description}
+\subsection*{Solution}
+\begin{description}
+\item[\hypertarget{term:cost}{Cost} {\normalfont(of a schedule)}] The total weight: x[Exam, Batch] \& 100\%, in \term{batches}.
+\end{description}""")
+
+    def test_the_glossary_renders(self):
+        self.assertIn(r"\item[\hypertarget{term:batch}{Batch}]",
+                      generate.glossary((generate.EMF / "GLOSSARY.md").read_text(encoding="utf-8")))
+
+    def test_markdown_the_glossary_does_not_use_is_rejected(self):
+        for name, line in [("a list", "- one"), ("a list", "1. one"), ("a table", "| a | b |"),
+                           ("a link", "See [the paper](https://x)."), ("a heading", "#### Deeper"),
+                           ("a quote", "> said"), ("emphasis", "a _word_"), ("emphasis", "a **word**"),
+                           ("emphasis", "a * b *"), ("emphasis", "a __word__"),
+                           ("HTML", "<br>"), ("HTML", "a &amp; b"), ("a code block", "```"), ("a heading", "---"),
+                           ("a heading", "==="), ("emphasis", "### A _b_"), ("a link", "**[a](b)**:"),
+                           ("text outside an entry", "### G\nstray"),
+                           ("an Avoid line before the definition", "**U**:\n_Avoid_: x")]:
+            with self.subTest(line=line):
+                with self.assertRaisesRegex(SystemExit, f"GLOSSARY.md line \\d+: {name}"):
+                    generate.glossary(f"## Language\n\n### G\n\n**T**:\ntext\n{line}\n")
 
 
 if __name__ == "__main__":

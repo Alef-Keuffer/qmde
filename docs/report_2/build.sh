@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Builds report_2.pdf: syncs the Continuous Page template, fetches the EMF results from CI, generates the
-# tables, Appendix A, the EMF metamodel diagrams and emf/CONTEXT.md's results table (generate.py), then runs
-# latexmk, and checks the prose's claims against their evidence (verify.py). It does not run the chains:
+# tables, Appendix A, the EMF metamodel diagrams, the Glossary and emf/CONTEXT.md's results table (generate.py),
+# then runs latexmk, and checks the prose's claims against their evidence (verify.py). It does not run the chains:
 # emf/build.sh does. Needs TeX Live (LuaLaTeX, BibTeX), python3, pdftotext and gh.
 #
 # Usage: ./build.sh [final] [--run <id> | --results <dir>]

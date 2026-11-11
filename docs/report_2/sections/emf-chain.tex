@@ -1,9 +1,9 @@
 % Section: EMF chain map. \input by report_2.tex. Detail in app:emf.
 \section{EMF chain}\label{sec:emf}
 
-\paragraph{One problem, followed end to end.}
-Take the smallest instance, \texttt{emf/instances/1-path.exam}: four exams whose conflicts form a path,
-two batches.
+\paragraph{One \term{problem}, followed end to end.}
+Take the smallest instance, \texttt{emf/instances/1-path.exam}: four \term{exams} whose \term{conflicts} form a path,
+two \term{batches}.
 
 \VerbatimInput[fontsize=\footnotesize, frame=topline, label=\texttt{1-path.exam}]{../../emf/instances/1-path.exam}
 
@@ -18,8 +18,8 @@ happens to it, in order:
 	      \texttt{conflictgraph.xmi}, which conforms to \texttt{conflictgraph.ecore}.
 	\item OCL validation, then Acceleo \texttt{main.mtl} (model~$\to$~text) yields
 	      \texttt{solve\_path.py}.
-	\item Python at run time: pyqubo builds the QUBO, then QAOA or annealing samples it, writing
-	      \texttt{schedule\_path.xmi} and a printed report; the schedule conforms to \texttt{schedule.ecore}.
+	\item Python at run time: pyqubo builds the \term{QUBO}, then QAOA or annealing samples it, writing
+	      \texttt{schedule\_path.xmi} and a printed report; the \term{schedule} conforms to \texttt{schedule.ecore}.
 \end{enumerate}
 
 The Java that glues the first three arrows is one class,
@@ -40,7 +40,7 @@ XMI is how EMF serialises those models.
 		Level & In this repo & Says \\
 		\midrule
 		Meta-metamodel & Ecore itself & there are classes, attributes, references \\
-		Metamodel & \texttt{problem.ecore} & a Problem has exams; an Exam has students \\
+		Metamodel & \texttt{problem.ecore} & a \term{Problem} has \term{exams}; an \term{Exam} has \term{students} \\
 		Model & \texttt{emf/out/path/problem.xmi} & Calculus is sat by Ana and Rui \\
 		\bottomrule
 	\end{tabular}
@@ -56,11 +56,11 @@ Model-driven engineering names transformations by what goes in and out. The chai
 \begin{itemize}[nosep]
 	\item \textbf{Text~$\to$~model}: Xtext. The grammar does not invent its own classes; its rules say
 	      \texttt{returns problem::Problem}, so the parser builds instances of the hand-written metamodel.
-	\item \textbf{Model~$\to$~model}: ATL. Rules map a Problem to a Conflict Graph and add an edge for each
-	      pair of exams sharing a student, the paper's Algorithm~1 \cite[§5.2, Algorithm 1]{Paper}.
-	\item \textbf{Model~$\to$~text}: Acceleo. A template walks the Conflict Graph and prints Python.
+	\item \textbf{Model~$\to$~model}: ATL. Rules map a \term{Problem} to a \term{Conflict Graph} and add an edge for each
+	      pair of \term{exams} sharing a \term{student}, the paper's Algorithm~1 \cite[§5.2, Algorithm 1]{Paper}.
+	\item \textbf{Model~$\to$~text}: Acceleo. A template walks the \term{Conflict Graph} and prints Python.
 \end{itemize}
 
-The last model the chain itself produces is the Conflict Graph. The QUBO never becomes an \texttt{.xmi}:
+The last model the chain itself produces is the \term{Conflict Graph}. The \term{QUBO} never becomes an \texttt{.xmi}:
 pyqubo builds it in memory when the generated script runs (\texttt{emf/docs/adr/0007}), the hand-off chosen
 in \cref{sec:strategy}.
