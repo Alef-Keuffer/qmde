@@ -1,1 +1,35 @@
-% Section 4, the BESSER chain's validation: \input by report_2.tex.
+\subsection*{BESSER}
+
+The BESSER chain is validated in two ways: every run is compared against a classical answer that is known to be correct, and a set of automated tests verifies each transformation individually.
+
+\paragraph{The reference answer.} A classical program (\texttt{besser/tests/baseline.py}) tries every possible schedule, assigning one slot to each exam, and identifies the valid ones (no student with two exams in the same slot) and the best ones (the fewest conflicts). This is only feasible because the instances are small, but it provides an answer we can trust.
+
+\paragraph{Is the QUBO correct?} Before examining the quantum results, the chain verifies that the penalty points from T1 yield the right answer: the schedules with the fewest points must be exactly the best schedules found by the reference. To achieve this, it computes the points for every one of the $2^n$ bit strings. This holds on all five instances (\cref{tab:validation-besser}, column ``QUBO = baseline'').
+
+\paragraph{How good is the circuit?} Every bit string measured by the simulator is decoded into a schedule, and three metrics are computed across all 4096 shots:
+\begin{itemize}[nosep]
+	\item \textbf{P(valid)}: how often the circuit produced a valid schedule;
+	\item \textbf{P(optimal)}: how often it produced one of the best schedules;
+	\item \textbf{the approximation ratio}: the average penalty of the samples on a scale where 1 is the best possible bit string and 0 the worst, $(E_{\max} - \langle E\rangle)/(E_{\max} - E_{\min})$.
+\end{itemize}
+Each metric is compared with picking a bit string at random, which is the baseline the circuit must beat.
+
+\begin{table}
+	\caption{The BESSER chain on its instances: QAOA with the fixed angles of each Solver Configuration (depth 3, 4096 shots, seed 7), against a bit string drawn at random from all $2^n$. From \texttt{besser/output/summary.md}.}\label{tab:validation-besser}
+	\footnotesize
+	\begin{tabular}{@{}lrrcrrrrr@{}}
+		\toprule
+		Instance & Qubits & Valid schedules & QUBO = baseline & P(valid) & P(optimal) & P(optimal), random & Ratio & Ratio, random \\
+		\midrule
+		tiny     & 9      & 12 of 27        & yes             & 0.3250   & 0.3250     & 0.023              & 0.910 & 0.750         \\
+		many     & 12     & 24 of 81        & yes             & 0.2012   & 0.2012     & 0.0059             & 0.908 & 0.750         \\
+		none     & 12     & 0 of 81         & yes             & 0        & 0.2698     & 0.0088             & 0.918 & 0.759         \\
+		medium   & 15     & 30 of 243       & yes             & 0.0779   & 0.0779     & 0.00092            & 0.901 & 0.750         \\
+		limit    & 18     & 12 of 729       & yes             & 0.0098   & 0.0098     & 0.000046           & 0.911 & 0.750         \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+On every instance, the circuit finds a best schedule far more often than chance, ranging from about 14 times (\texttt{tiny}) to about 200 times (\texttt{limit}), but less often as the problem grows. The instance \texttt{none} has no valid schedule at all, so P(valid) is 0 there; its best schedules have one conflict, and the circuit finds them in 27\% of the shots.
+
+\paragraph{Automated tests.} 47 tests (\texttt{cd besser \&\& python -m pytest}) verify each step individually: that the penalty points are zero exactly for valid schedules, that the quantum form of the QUBO gives the same value as the QUBO on every bit string, that the generated Qiskit code gives each schedule the phase its penalty predicts, that the bits are read in Qiskit's order (right to left), and that two runs produce exactly the same files. To confirm that the tests really catch mistakes, we intentionally reintroduced three typical errors: a penalty for a missing slot as weak as a conflict caused 17 tests to fail, a flipped sign caused 3, and bits read in the wrong order caused 2.
