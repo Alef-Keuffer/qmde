@@ -1,0 +1,1097 @@
+[
+	{
+		"claim": "Terms are those of the EMF chain's glossary, \\texttt{emf/GLOSSARY.md}.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "## Language"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "**Batch**:"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "**Schedule**:"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "**Baseline**:"
+			}
+		]
+	},
+	{
+		"claim": "BESSER's metamodels, from Part~I, call a Batch a \\emph{TimeSlot} (or slot); its chain calls a schedule \\emph{valid} when it places every exam in one slot without a Conflict.",
+		"evidence": [
+			{
+				"path": "besser/README.md",
+				"quote": "It reads Part I's metamodels from `../metamodels/`"
+			},
+			{
+				"path": "metamodels/buml/problem_dsl.py",
+				"quote": "TimeSlot = Class(name=\"TimeSlot\")"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "_Avoid_: slot, time slot, TimeSlot, period"
+			},
+			{
+				"path": "besser/transformations/map_back.py",
+				"quote": "whether it is a valid schedule (every exam in exactly one slot, no two\n    conflicting exams in one slot)"
+			}
+		]
+	},
+	{
+		"claim": "A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch take place at once.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "One instance to be scheduled: a set of students, a set of exams, and the number of batches available."
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "A single final exam sat by one or more students"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "One of a fixed number of exam periods; all exams in the same batch take place simultaneously."
+			},
+			{
+				"path": "metamodels/buml/problem_dsl.py",
+				"quote": "TimeSlot = Class(name=\"TimeSlot\")"
+			},
+			{
+				"path": "metamodels/buml/problem_dsl.py",
+				"quote": "Exam_Student: BinaryAssociation"
+			}
+		]
+	},
+	{
+		"claim": "Two exams that share a student are in Conflict and must not share a batch \\cite[§5.2, Algorithm 1]{Paper}.",
+		"evidence": [
+			{
+				"cite": "Paper",
+				"quote": "as detailed in Algorithm 1, the matrix A is converted to the course conflict matrix C to detect examination scheduling conflicts"
+			},
+			{
+				"cite": "Paper",
+				"quote": "edges connect courses that cannot be scheduled simultaneously due to student examination conflicts"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "A relation between two distinct exams that share at least one student, so they must not be in the same batch."
+			}
+		]
+	},
+	{
+		"claim": "Each exam carries a Weight, its priority; in the EMF chain, the cost of leaving it unscheduled.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "The priority of an exam: the cost of leaving it unscheduled."
+			},
+			{
+				"path": "metamodels/buml/problem_dsl.py",
+				"quote": "Exam_weight: Property = Property(name=\"weight\", type=IntegerType)"
+			},
+			{
+				"path": "docs/report_1.md",
+				"quote": "weights are added to each exam to establish priorities"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "Exam.weight of Part I is not used: the paper has no exam weights"
+			}
+		]
+	},
+	{
+		"claim": "Both chains follow \\cref{fig:strategy}.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": ".exam file (Xtext, one grammar) ─► Problem.xmi + SolverConfig.xmi"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "A problem written in the Problem DSL of Part I goes through T1 (M2M) to a QUBO in the Solution DSL of Part I"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "and back to schedules in domain terms, validated against a brute-force baseline"
+			}
+		]
+	},
+	{
+		"claim": "The Problem is formulated as a QUBO over one Assignment Variable $x_{ik}$ per exam~$i$ and batch~$k$, $1$ when exam~$i$ is in batch~$k$ \\cite[§5.3, Eq. (4)]{Paper}, with a penalty per Constraint.",
+		"evidence": [
+			{
+				"cite": "Paper",
+				"quote": "indicates whether the Course i is tested in Batch k"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "The binary decision x[Exam, Batch]: 1 when that exam is placed in that batch."
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "One pyqubo `Constraint` term of the Hamiltonian"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "One Penalty per exam, linked to\n    every term it generates"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "one quadratic term per conflict and slot"
+			}
+		]
+	},
+	{
+		"claim": "A Method samples the QUBO, and a sample is decoded into a Schedule: the lowest-energy one in the EMF chain, the most frequent optimal one in BESSER's.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "How the compiled formulation is sampled: QAOA or simulated annealing."
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "best, count = min(samples, key=lambda s: s[0].energy)"
+			},
+			{
+				"path": "besser/transformations/map_back.py",
+				"quote": "The most frequent measured schedule with every exam in one slot and the fewest conflicts, or None."
+			},
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "P(optimal)  share of shots that decode to a schedule with every exam in one slot and the fewest conflicts"
+			}
+		]
+	},
+	{
+		"claim": "Independently of the QUBO, a Baseline enumerates every schedule to find the optimum (the EMF chain's stops at about $10^6$, \\cref{sec:limitations}), and every sample, not only the best, is judged against it (\\cref{sec:validation}).",
+		"evidence": [
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "brute_force() enumerates every schedule (each exam in one of the k slots: k^N schedules) straight from the\nproblem model"
+			},
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "not from the QUBO"
+			},
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "P(optimal)  share of shots that decode to a schedule"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "Classical baseline straight from the problem data: the cost of every feasible schedule"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "for batch in itertools.product((None, *range(problem.n_batches)), repeat=n)"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "BASELINE_LIMIT = 10**6  # skip brute force above this many schedules"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "schedules = [(schedule_of(problem, d), c) for d, c in samples]"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "optimal_count = sum(c for s, c in schedules if is_optimal(s, optimum))"
+			}
+		]
+	},
+	{
+		"claim": "The chains implement two formulations.",
+		"evidence": [
+			{
+				"path": "emf/docs/adr/0009-weights-as-priorities-in-pyqubo.md",
+				"quote": "constraint1` becomes \"at most one batch\""
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "The QUBO is the paper's H = lambda * H_const1 + w * H_const2 [Zhou eq. (10)], with no objective term"
+			}
+		]
+	},
+	{
+		"claim": "The paper's \\cite[§5.3, Eqs. (5)--(10)]{Paper}, which the BESSER chain implements, places each exam in exactly one batch and has penalties only: a sample of energy zero is a schedule without conflicts, and nothing ranks one exam above another.",
+		"evidence": [
+			{
+				"cite": "Paper",
+				"quote": "To ensure each course is scheduled for exactly one exam"
+			},
+			{
+				"cite": "Paper",
+				"quote": "H = λHconst1 + γHconst2"
+			},
+			{
+				"cite": "Paper",
+				"quote": "When H reaches zero, indicating that all constraints are satisfied, we will have obtained a feasible examination scheduling solution."
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "The QUBO is the paper's H = lambda * H_const1 + w * H_const2 [Zhou eq. (10)], with no objective term"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "Exam.weight of Part I is not used: the paper has no exam weights"
+			}
+		]
+	},
+	{
+		"claim": "The EMF chain implements a weighted one (\\texttt{emf/docs/adr/0009}): each exam in at most one batch \\cite[§4.2, Eq. (30)]{Lucas}, with every scheduled exam earning its weight, a weighted set packing \\cite[§4.2]{Glover}: \\[ H = -\\sum_i w_i \\sum_k x_{ik} + A \\Bigl( \\sum_i \\sum_{k<l} x_{ik} x_{il} + \\sum_{(i,j)\\ \\mathrm{in\\ Conflict}} \\sum_k x_{ik} x_{jk} \\Bigr).\\]",
+		"evidence": [
+			{
+				"path": "emf/docs/adr/0009-weights-as-priorities-in-pyqubo.md",
+				"quote": "`constraint1` becomes \"at most one batch\" (Σ_{k<l} xᵢₖxᵢₗ, labelled `at-most-one-batch-<exam>`), `constraint2` is unchanged, and `profit = −Σᵢ wᵢ Σₖ xᵢₖ`, so H = profit + A·(constraint1 + constraint2)"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "scheduling exam i earns its weight; an unscheduled exam costs it"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "H = profit + A * (constraint1 + constraint2)"
+			},
+			{
+				"cite": "Lucas",
+				"quote": "which is minimized only when all subsets are disjoint"
+			},
+			{
+				"cite": "Glover",
+				"quote": "4.2 The Set Packing Problem"
+			},
+			{
+				"cite": "Glover",
+				"quote": "the 𝑤) are weights and the 𝑥) variables are binary"
+			}
+		]
+	},
+	{
+		"claim": "With the Penalty Coefficient $A$ above every weight, leaving an exam unscheduled always costs less than breaking a Constraint \\cite[§4.2]{Lucas}, so the optimum is a feasible Schedule of least Cost, the total weight of its Unscheduled Exams.",
+		"evidence": [
+			{
+				"cite": "Lucas",
+				"quote": "Choosing B < A ensures that it is never favorable to violate the constraint HA"
+			},
+			{
+				"path": "emf/docs/adr/0009-weights-as-priorities-in-pyqubo.md",
+				"quote": "then leaving an exam unscheduled always costs less than breaking a constraint"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "Feasible, with the lowest cost any feasible schedule of the problem has."
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "The total weight of its unscheduled exams."
+			}
+		]
+	},
+	{
+		"claim": "The two optima differ wherever not every exam fits.",
+		"evidence": [
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "on an instance without such a\nschedule it is w times the fewest conflicts"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "every minimum puts each exam in exactly\n    one slot"
+			},
+			{
+				"path": "emf/docs/adr/0009-weights-as-priorities-in-pyqubo.md",
+				"quote": "When not every exam fits, the lowest-weight exams are left unscheduled."
+			}
+		]
+	},
+	{
+		"claim": "On four mutually conflicting exams in three batches (BESSER's \\texttt{none}, EMF's \\texttt{clique}), the paper's formulation, with the penalty BESSER derives for an exam left out, above the most conflicts placing it can add, accepts one Conflict, two exams in one batch; the weighted one leaves the lightest exam, Statistics, unscheduled at Cost~1.",
+		"evidence": [
+			{
+				"path": "besser/instances/none.py",
+				"quote": "4 exams sat by the same 3 students, so every pair conflicts (a 4-clique), and only 3 slots"
+			},
+			{
+				"path": "besser/instances/none.py",
+				"quote": "the best schedules put two exams together\nand have 1 conflict"
+			},
+			{
+				"path": "emf/instances/3-clique.exam",
+				"quote": "four exams that all conflict, three batches"
+			},
+			{
+				"path": "emf/instances/3-clique.exam",
+				"quote": "problem clique batches 3"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "The QUBO is the paper's H = lambda * H_const1 + w * H_const2 [Zhou eq. (10)]"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "an exam left out of every slot costs lambda; putting it in any slot\n    removes that cost and adds at most D conflicts, so at most D * w"
+			},
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| none | 12 | 0 of 81 | 1 | yes |"
+			},
+			{
+				"path": "emf/instances/3-clique.exam",
+				"quote": "the\n// lowest-weight exam, Statistics, is left unscheduled, at cost 1"
+			}
+		]
+	},
+	{
+		"claim": "The paper samples its QUBO on D-Wave's quantum annealer, its Leap Hybrid Sampler and, classically, by simulated annealing \\cite[§5.4]{Paper}, as the notebook does \\cite[cells 15--17]{Notebook}.",
+		"evidence": [
+			{
+				"cite": "Paper",
+				"quote": "The quantum annealing algorithm runs on the D-Wave Advantage"
+			},
+			{
+				"cite": "Paper",
+				"quote": "The Leap Hybrid Sampler uses the hybrid"
+			},
+			{
+				"cite": "Paper",
+				"quote": "The classical simulated annealing\nalgorithm runs on an Intel i5 10400 CPU."
+			},
+			{
+				"cite": "Notebook",
+				"quote": "sa = neal.SimulatedAnnealingSampler()"
+			},
+			{
+				"cite": "Notebook",
+				"quote": "sa = EmbeddingComposite(DWaveSampler("
+			},
+			{
+				"cite": "Notebook",
+				"quote": "sa = LeapHybridSampler(token=\"\")"
+			}
+		]
+	},
+	{
+		"claim": "The EMF chain samples its own QUBO by simulated annealing or by QAOA on a simulator; the BESSER chain by QAOA only.",
+		"evidence": [
+			{
+				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
+				"quote": "The compiled model is sampled either by simulated annealing (`neal`, as in the notebook) or by QAOA on the Qiskit Aer simulator"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "a\nQiskit script that runs on Aer"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "through T2 (M2M) to a QAOA circuit in BESSER's quantum metamodel"
+			}
+		]
+	},
+	{
+		"claim": "Simulated annealing needs no D-Wave account, so CI reruns the EMF chain's runs (\\cref{tab:results-emf}), and it gives QAOA a yardstick on the same QUBO.",
+		"evidence": [
+			{
+				"cite": "Notebook",
+				"quote": "sa = neal.SimulatedAnnealingSampler()"
+			},
+			{
+				"cite": "Notebook",
+				"quote": "Provide your D-Wave token here"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "The classical sampler the notebook uses (`neal`)"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "- run: ./build.sh"
+			},
+			{
+				"path": "emf/README.md",
+				"quote": "runs the chain headlessly on every `.exam` file in `instances/`"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "Every run's results, for the tables of docs/report_2"
+			},
+			{
+				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
+				"quote": "Both share the compiled model"
+			}
+		]
+	},
+	{
+		"claim": "Quantum annealing itself is issue~\\#23.",
+		"evidence": [
+			{
+				"issue": 23,
+				"state": "OPEN"
+			}
+		]
+	},
+	{
+		"claim": "The strategy of both chains: model the Problem, formulate it as a QUBO, sample it by a Method, decode a sample into a Schedule, and judge every sample against a Baseline that enumerates every schedule.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "Conflict Graph + SolverConfig ─► solve_<instance>.py"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "─► lowest-energy sample ─► Schedule.xmi + report in domain terms"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "Enumerating every schedule (each exam in one batch or none), independently of the QUBO, to find the optimal cost."
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "The fraction of QAOA shots or annealing reads that decode to an optimal schedule."
+			},
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "brute_force() enumerates every schedule (each exam in one of the k slots: k^N schedules) straight from the\nproblem model"
+			},
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "share of shots that decode to a schedule with every exam in one slot and no conflict"
+			}
+		]
+	},
+	{
+		"claim": "The EMF chain turns one \\texttt{.exam} file into a Python script in three model-driven steps, run headless by an Eclipse application; the script then solves the Problem and validates what it finds.",
+		"evidence": [
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "Headless entry point: runs the whole model chain for one problem"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "public class ChainApplication implements IApplication"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": ".exam file (Xtext, one grammar) ─► Problem.xmi + SolverConfig.xmi"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "Problem ─► Conflict Graph                                            (ATL / EMFTVM)"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "Conflict Graph + SolverConfig ─► solve_<instance>.py                 (Acceleo 4)"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "+ brute-force optimal cost"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "**Formulation check** in every run"
+			}
+		]
+	},
+	{
+		"claim": "The models parsed from the file, and the Conflict Graph, are checked against their metamodels' multiplicities and OCL invariants (\\cref{app:metamodels}) before the next step uses them.",
+		"evidence": [
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/Validation.java",
+				"quote": "Checks a model against its metamodel's multiplicities and embedded OCL constraints."
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "if (!Validation.isValid(source)) {"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "if (!Validation.isValid(conflictGraph)) {"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "Acceleo.generate(CODEGEN_MODULE, conflictGraph, outDir);"
+			}
+		]
+	},
+	{
+		"claim": "The grammar imports the hand-written Problem and Solver Configuration metamodels, so one \\texttt{.exam} file holds a Problem (its batches, its students, and each exam with its optional weight, 1 by default, and the students who sit it) and, optionally, its Solver Configuration: the Method, the Method's settings, the seed and the Penalty Coefficient, automatic unless given (\\cref{app:instances}).",
+		"evidence": [
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.dsl/src/pt/up/feup/examschedule/dsl/Exam.xtext",
+				"quote": "It imports the\n// hand-written metamodels"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.dsl/src/pt/up/feup/examschedule/dsl/Exam.xtext",
+				"quote": "ExamFile:\n\tproblem=Problem\n\tsolver=SolverConfig?;"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.dsl/src/pt/up/feup/examschedule/dsl/Exam.xtext",
+				"quote": "'problem' name=ID 'batches' nBatches=INT\n\t'students' students+=Student+\n\texams+=Exam+;"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.dsl/src/pt/up/feup/examschedule/dsl/Exam.xtext",
+				"quote": "'exam' name=ID ('weight' weight=Number)? '{' students+=[problem::Student|ID]+ '}';"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.model/model/problem.ecore",
+				"quote": "defaultValueLiteral=\"1.0\""
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.dsl/src/pt/up/feup/examschedule/dsl/Exam.xtext",
+				"quote": "('method' method=Method)? &"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.dsl/src/pt/up/feup/examschedule/dsl/Exam.xtext",
+				"quote": "('penalty' ('auto' | penaltyCoefficient=OptionalNumber))? &"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.dsl/src/pt/up/feup/examschedule/dsl/Exam.xtext",
+				"quote": "('seed' seed=INT)? &"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.dsl/src/pt/up/feup/examschedule/dsl/Exam.xtext",
+				"quote": "'penalty auto' (or no penalty) means\n// automatic, the largest weight plus one."
+			}
+		]
+	},
+	{
+		"claim": "An EMFTVM transformation makes the Problem a Conflict Graph \\cite[§5.2, Fig. 3]{Paper}.",
+		"evidence": [
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "-- @atlcompiler emftvm"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "create OUT : ConflictGraph from IN : Problem;"
+			},
+			{
+				"cite": "Paper",
+				"quote": "These examination conflicts are represented in an undirected graph\nG shown in Fig. 3, where nodes denote courses"
+			}
+		]
+	},
+	{
+		"claim": "It copies the exams with their weights, creates the batches, the index~$k$ of $x_{ik}$ \\cite[§5.3, Eq. (4)]{Paper}, and adds one Conflict for each pair of exams that share a student, the paper's course conflict matrix~$C$ \\cites[§5.2, Algorithm 1, Eq. (3)]{Paper}[cell 7]{Notebook}.",
+		"evidence": [
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "exams <- p.exams,"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "weight <- e.weight"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "batches <- thisModule.range(p.nBatches)->collect(k | thisModule.NewBatch(k)),"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "index <- k"
+			},
+			{
+				"cite": "Paper",
+				"quote": "indicates whether the Course i is tested in Batch k"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "p.exams->select(b | p.exams->indexOf(a) < p.exams->indexOf(b) and a.sharesStudentWith(b))"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "self.students->exists(s | other.students->includes(s));"
+			},
+			{
+				"cite": "Paper",
+				"quote": "as detailed in Algorithm 1, the matrix A is converted to the course conflict matrix C"
+			},
+			{
+				"cite": "Paper",
+				"quote": "The course conflict matrix C is defined as:"
+			},
+			{
+				"cite": "Notebook",
+				"quote": "# Calculate the conflict matrix"
+			}
+		]
+	},
+	{
+		"claim": "A template generates \\texttt{solve\\_<name>.py} from the Conflict Graph and the Solver Configuration: both as Python data, then the notebook's pyqubo construction \\cites[cells 11--13]{Notebook}{pyqubo} (\\texttt{emf/docs/adr/0007}), made the weighted set packing of \\cref{sec:strategy} (\\texttt{emf/docs/adr/0009}).",
+		"evidence": [
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "[file ('solve_' + g.name + '.py', overwrite, 'UTF-8')]"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "# Solver Configuration (solverconfig.xmi)"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "# Conflict Graph (conflictgraph.xmi)"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "x = Array.create('c', (n_lesson, n_batch), 'BINARY')"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "From here on, the notebook's formulation, made a weighted set packing (ADR-0009)"
+			},
+			{
+				"cite": "Notebook",
+				"quote": "x = Array.create('c', (n_lesson, n_batch), 'BINARY')"
+			},
+			{
+				"cite": "Notebook",
+				"quote": "constraint2 += Constraint(x[i, k] * x[j, k], label=\"threshold2-{}_{}_{}\".format(i, j, k))"
+			},
+			{
+				"cite": "Notebook",
+				"quote": "H = profit + A * (constraint1+constraint2)"
+			},
+			{
+				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
+				"quote": "followed by the reference notebook's pyqubo construction"
+			}
+		]
+	},
+	{
+		"claim": "Each Constraint is labelled in domain terms, \\texttt{at-most-one-batch-<exam>} or \\texttt{conflict-<exam>-<exam>-batch-<k>}, so a broken one names its exams.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "labelled in domain terms: `at-most-one-batch-<exam>`, or `conflict-<exam>-<exam>-batch-<k>`."
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "label=\"at-most-one-batch-{}\".format(EXAMS"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "label=\"conflict-{}-{}-batch-{}\".format(EXAMS"
+			},
+			{
+				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
+				"quote": "The constraint labels name exams and batches"
+			}
+		]
+	},
+	{
+		"claim": "pyqubo compiles $H$ into the QUBO and its Ising form, so the chain models neither.",
+		"evidence": [
+			{
+				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
+				"quote": "pyqubo derives the QUBO and its Ising form, so the chain no longer models them"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "model = H.compile()"
+			}
+		]
+	},
+	{
+		"claim": "The generated script holds only what depends on the models; it imports the hand-written \\texttt{emf/python/examschedule.py}, which holds the rest (\\texttt{emf/docs/adr/0005}).",
+		"evidence": [
+			{
+				"path": "emf/docs/adr/0005-python-runtime-for-generic-code.md",
+				"quote": "Acceleo generates `solve_<name>.py` with everything that depends on the models"
+			},
+			{
+				"path": "emf/docs/adr/0005-python-runtime-for-generic-code.md",
+				"quote": "The model-independent machinery"
+			},
+			{
+				"path": "emf/docs/adr/0005-python-runtime-for-generic-code.md",
+				"quote": "lives in the hand-written `python/examschedule.py`, which the generated scripts import."
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "from examschedule import Problem, SolverConfig, solve"
+			}
+		]
+	},
+	{
+		"claim": "It sets $A$ to the largest weight plus one, or rejects an explicit $A$ not above every weight \\cite[§4, Comment on the Scalar Penalty P]{Glover}, and samples by the Method chosen.",
+		"evidence": [
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "if config.penalty is None:\n        return largest + 1"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "if config.penalty <= largest:\n        sys.exit("
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "run = anneal if config.method == \"ANNEALING\" else qaoa"
+			},
+			{
+				"cite": "Glover",
+				"quote": "Comment on the Scalar Penalty P:"
+			},
+			{
+				"cite": "Glover",
+				"quote": "If a constraint must absolutely be satisfied, i.e., a “hard” constraint, then P\nmust be large enough to preclude a violation."
+			}
+		]
+	},
+	{
+		"claim": "Simulated annealing runs dwave-neal on the compiled model, as the notebook does \\cite[cell 15]{Notebook}.",
+		"evidence": [
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "bqm = model.to_bqm(feed_dict=feed_dict)\n    sampleset = neal.SimulatedAnnealingSampler().sample(bqm"
+			},
+			{
+				"path": "emf/requirements.txt",
+				"quote": "dwave-neal==0.6.0"
+			},
+			{
+				"cite": "Notebook",
+				"quote": "sa = neal.SimulatedAnnealingSampler()\nsampleset = sa.sample(bqm, num_reads=50, num_sweeps=10000)"
+			}
+		]
+	},
+	{
+		"claim": "QAOA \\cite{Farhi} builds the QAOA Circuit from the Ising form, with $p$ alternating cost and mixer layers on the uniform superposition \\cite[Eqs. (2)--(6)]{Farhi}, runs it with Qiskit \\cite{Qiskit} on the Aer simulator, and lets a classical optimiser tune the $2p$ angles to minimise the expected energy (Farhi et al.\\ maximise theirs) \\cite[Eqs. (7)--(8)]{Farhi}, starting on the annealing path \\cite[§VI]{Farhi}.",
+		"evidence": [
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "fields, couplings, _ = model.to_ising(feed_dict=feed_dict)"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "qc.h(range(n))  # [Farhi Eq. (5)]: |s>, the uniform superposition"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "# [Farhi Eq. (6)]: p alternating cost and mixer layers."
+			},
+			{
+				"cite": "Farhi",
+				"quote": "The initial state |si will be the uniform superposition over\ncomputational basis states"
+			},
+			{
+				"cite": "Farhi",
+				"quote": "|γ, βi = U(B, βp ) U(C, γp ) · · · U(B, β1 ) U(C, γ1) |si"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "simulator = AerSimulator(seed_simulator=config.seed)"
+			},
+			{
+				"cite": "Qiskit",
+				"quote": "We describe Qiskit, a software development kit for quantum information science."
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "# [Farhi Eq. (8)]: the classical loop optimises the 2p angles."
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "result = minimize(expected_energy, theta0"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "with C = H and\n    the expectation minimised, where Farhi maximises it."
+			},
+			{
+				"cite": "Farhi",
+				"quote": "Let Fp be the expectation of C in this state"
+			},
+			{
+				"cite": "Farhi",
+				"quote": "let Mp be the maximum of Fp over the angles"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "# [Farhi §VI]: a linear ramp (gamma grows, |beta| shrinks) on the Trotterised adiabatic path"
+			},
+			{
+				"cite": "Farhi",
+				"quote": "A Trotterized approximation to the evolution consists of an alternation of the operators U(C, γ)\nand U(B, β)"
+			}
+		]
+	},
+	{
+		"claim": "The runtime then decodes the lowest-energy sample into a Schedule model \\cite[§5.5]{Paper}, runs the Baseline, and writes the run's results, from which \\cref{tab:results-emf} is generated.",
+		"evidence": [
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "best, count = min(samples, key=lambda s: s[0].energy)\n    schedule = schedule_of(problem, best)"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "write_schedule(problem, schedule)"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "costs = feasible_costs(problem)"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "write_results(problem, {"
+			},
+			{
+				"path": "docs/report_2/generate.py",
+				"quote": "Every results_<name>.json under results"
+			},
+			{
+				"cite": "Paper",
+				"quote": "Following the completion of the quantum annealing process, the\nsolution must be translated into a structured exam timetable"
+			},
+			{
+				"cite": "Paper",
+				"quote": "An element xij = 1 indicates that the Course i is assigned to the Batch j."
+			}
+		]
+	},
+	{
+		"claim": "Every ATL rule, and every template section and runtime step that implements the formulation or QAOA, cites its reference in a comment beside it, as \\texttt{[Key locator]}; \\cref{tab:traceability} is generated from those comments.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "Every ATL rule, template section and runtime step of the formulation or of QAOA cites the reference it implements, next to it, as `[Key locator]`"
+			},
+			{
+				"path": "docs/report_2/generate.py",
+				"quote": "generated/traceability.tex: Appendix A, one row per comment of the EMF chain that cites [Key locator]"
+			}
+		]
+	},
+	{
+		"claim": "The EMF chain with other QAOA settings, every one reaching the optimal cost.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "The same instances with other QAOA settings"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "All reach the optimal cost."
+			}
+		]
+	},
+	{
+		"claim": "Measured locally on macOS (arm64) with the pinned \\texttt{emf/requirements.txt}, not in CI, so a rerun on Linux may differ in the second digit; copied by hand from \\texttt{emf/CONTEXT.md}.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "These were measured locally on macOS (arm64) with the pinned `requirements.txt`, not in CI, so a rerun on Linux may differ in the second digit."
+			}
+		]
+	},
+	{
+		"claim": "COBYLA stops well before 150 iterations (29 to 54 evaluations); a Powell iteration is a line search over every angle (398 evaluations on cycle).",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "COBYLA stops well before 150 iterations (29 to 54 evaluations), so `iterations` does not limit it; for Powell an iteration is a line search over every angle (398 evaluations on cycle)."
+			}
+		]
+	},
+	{
+		"claim": "Instance & Variables & Method & P(optimal) & P(feasible)",
+		"evidence": []
+	},
+	{
+		"claim": "path & 8 & QAOA, depth 1, COBYLA, 150 iterations, 2048 shots & 0.031 & 0.723",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| path | 8 | `method QAOA depth 1 optimizer COBYLA iterations 150 shots 2048` | 0, none | 0 | 0.031 | 0.723 |"
+			}
+		]
+	},
+	{
+		"claim": "path & 8 & QAOA, depth 3, COBYLA, 150 iterations, 2048 shots & 0.062 & 0.881",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| path | 8 | `method QAOA depth 3 optimizer COBYLA iterations 150 shots 2048` | 0, none | 0 | 0.062 | 0.881 |"
+			}
+		]
+	},
+	{
+		"claim": "path & 8 & QAOA, depth 2, Nelder-Mead, 150 iterations, 2048 shots & 0.049 & 0.796",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| path | 8 | `method QAOA depth 2 optimizer Nelder-Mead iterations 150 shots 2048` | 0, none | 0 | 0.049 | 0.796 |"
+			}
+		]
+	},
+	{
+		"claim": "cycle & 15 & QAOA, depth 1, COBYLA, 150 iterations, 4096 shots & 0.028 & 0.517",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| cycle | 15 | `method QAOA depth 1 optimizer COBYLA iterations 150 shots 4096` | 0, none | 0 | 0.028 | 0.517 |"
+			}
+		]
+	},
+	{
+		"claim": "cycle & 15 & QAOA, depth 3, COBYLA, 150 iterations, 4096 shots & 0.047 & 0.865",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| cycle | 15 | `method QAOA depth 3 optimizer COBYLA iterations 150 shots 4096` | 0, none | 0 | 0.047 | 0.865 |"
+			}
+		]
+	},
+	{
+		"claim": "cycle & 15 & QAOA, depth 2, Powell, 150 iterations, 4096 shots & 0.036 & 0.809",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "| cycle | 15 | `method QAOA depth 2 optimizer Powell iterations 150 shots 4096` | 0, none | 0 | 0.036 | 0.809 |"
+			}
+		]
+	},
+	{
+		"claim": "Containment is drawn with a diamond at the container, a reference with an open arrow; \\textit{inv} names an OCL invariant.",
+		"evidence": [
+			{
+				"path": "docs/report_2/report_2.tex",
+				"quote": "contain/.style={{Diamond[]}-}"
+			},
+			{
+				"path": "docs/report_2/report_2.tex",
+				"quote": "reference/.style={-{Straight Barb[]}"
+			},
+			{
+				"path": "docs/report_2/generate.py",
+				"quote": "invariants = [rf\"\\textit{{inv}} {tex(n)}\""
+			}
+		]
+	},
+	{
+		"claim": "The EMF chain's instances, \\texttt{emf/instances/}.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "Test instances (variables = exams × batches), each solved by both methods"
+			}
+		]
+	},
+	{
+		"claim": "Each has a twin, \\texttt{<n>-<name>-qaoa.exam} or \\texttt{<n>-<name>-annealing.exam}, holding the same problem solved by the other Method.",
+		"evidence": [
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "`<n>-<name>.exam` and its twin `<n>-<name>-qaoa.exam` or `<n>-<name>-annealing.exam`, the same problem"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "each solved by both methods"
+			}
+		]
+	},
+	{
+		"claim": "The EMF chain: \\texttt{cd emf \\&\\& ./build.sh} (JDK 21+, Python 3.12) builds the chain and runs it on every instance, writing \\texttt{emf/out/<name>/results\\_<name>.json}.",
+		"evidence": [
+			{
+				"path": "emf/README.md",
+				"quote": "Requires a JDK 21+ and Python 3.12"
+			},
+			{
+				"path": "emf/README.md",
+				"quote": "runs the chain headlessly on every `.exam` file in `instances/`"
+			},
+			{
+				"path": "emf/README.md",
+				"quote": "For each problem, `out/<name>/` holds"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "writes it as `results_<name>.json` next to the Schedule"
+			}
+		]
+	},
+	{
+		"claim": "The Python packages, pyqubo \\cite{pyqubo}, Qiskit \\cite{Qiskit}, Qiskit Aer and dwave-neal among them, are pinned in \\texttt{emf/requirements.txt}.",
+		"evidence": [
+			{
+				"path": "emf/requirements.txt",
+				"quote": "pyqubo==1.5.0"
+			},
+			{
+				"path": "emf/requirements.txt",
+				"quote": "qiskit==2.6.2"
+			},
+			{
+				"path": "emf/requirements.txt",
+				"quote": "qiskit-aer==0.18.2"
+			},
+			{
+				"path": "emf/requirements.txt",
+				"quote": "dwave-neal==0.6.0"
+			},
+			{
+				"cite": "Qiskit",
+				"quote": "We describe Qiskit, a software development kit for quantum information science."
+			}
+		]
+	},
+	{
+		"claim": "CI runs the same on every pull request and push to main that changes \\texttt{emf/} (\\texttt{.github/workflows/emf.yml}) and uploads the results as the \\texttt{emf-results} artifact.",
+		"evidence": [
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "branches: [main]"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "pull_request:\n    paths: ['emf/**', '.github/workflows/emf.yml']"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "working-directory: emf"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "- run: ./build.sh"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "name: emf-results\n          path: emf/out/*/results_*.json"
+			}
+		]
+	},
+	{
+		"claim": "This report: \\texttt{docs/report\\_2/build.sh} (TeX Live, \\texttt{gh}) fetches those results from CI, generates its tables, \\cref{app:traceability} and the diagrams of \\cref{app:metamodels}, and runs latexmk; it does not run the chains.",
+		"evidence": [
+			{
+				"path": "docs/report_2/build.sh",
+				"quote": "fetches the EMF results from CI, generates the tables, Appendix A, the EMF metamodel diagrams"
+			},
+			{
+				"path": "docs/report_2/build.sh",
+				"quote": "It does not run the chains"
+			},
+			{
+				"path": "docs/report_2/build.sh",
+				"quote": "Needs TeX Live (LuaLaTeX, BibTeX), python3, pdftotext and gh."
+			},
+			{
+				"path": "docs/report_2/build.sh",
+				"quote": "latexmk -lualatex"
+			}
+		]
+	},
+	{
+		"claim": "The LLM logs of Part~II: \\href{https://github.com/Alef-Keuffer/qmde/blob/main/docs/llm_usage_2.md}{\\texttt{docs/llm\\_usage\\_2.md}}, with the session records it links in \\texttt{docs/assets/}, and \\href{https://github.com/Alef-Keuffer/qmde/blob/main/besser/docs/llm_usage_2.md}{\\texttt{besser/docs/llm\\_usage\\_2.md}}.",
+		"evidence": [
+			{
+				"path": "docs/llm_usage_2.md",
+				"quote": "assets/grilling-report-2.md"
+			}
+		]
+	}
+]

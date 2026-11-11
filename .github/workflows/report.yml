@@ -1,0 +1,24 @@
+# Checks the report's prose against its evidence (docs/report_2/verify.py) and runs the report's unit tests.
+# No path filter: a claim may quote any file of the repository. A claim nobody has verified yet only warns here;
+# docs/report_2/build.sh final fails on it. Without pdftotext (apt cannot reach Ubuntu's mirrors from the runner),
+# quotes from the PDF references only warn here too; build.sh checks them.
+name: report
+
+on:
+  push:
+    branches: [main] # other branches are covered by their pull request
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: read # verify.py reads the state of the issues claims cite
+    steps:
+      - uses: actions/checkout@v7
+      - run: python3 -m unittest discover -s docs/report_2
+      - run: python3 docs/report_2/verify.py --allow-unverified
+        env:
+          GH_TOKEN: ${{ github.token }}

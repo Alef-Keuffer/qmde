@@ -9,3 +9,5 @@
 *.out
 *.run.xml
 *.toc
+# The references' texts verify.py makes on demand (the paper's and arXiv's PDFs as text).
+sources/
