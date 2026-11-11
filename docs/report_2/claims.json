@@ -1,5 +1,127 @@
 [
 	{
+		"claim": "Our group was assigned the exam-slot assignment problem, which describes the process of scheduling \\term{exams} within a given number of \\term{batches} while avoiding conflicts, a conflict being a \\term{student} having to attend several \\term{exams} that take place in the same \\term{batch}.",
+		"evidence": [
+			{
+				"path": "docs/report_1.md",
+				"quote": "**Problem:** A3 (Optimisation with QAOA - Exam-slot assignment)"
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "a university needs to schedule its final exams into a limited number of batches so that no student has two exams in the same batch"
+			}
+		]
+	},
+	{
+		"claim": "At the start, we struggled to understand the problem's context and how to formulate it.",
+		"evidence": []
+	},
+	{
+		"claim": "Afterwards, we found a very useful paper that deals with the same problem as ours, \\enquote{Hybrid quantum annealing for large-scale exam scheduling} \\cite{Paper}.",
+		"evidence": [
+			{
+				"cite": "Paper",
+				"quote": "Hybrid quantum annealing for large-scale exam scheduling"
+			},
+			{
+				"cite": "Paper",
+				"quote": "to address complex exam scheduling challenges"
+			}
+		]
+	},
+	{
+		"claim": "We based the output of our model-to-text transformations on it: the generated scripts of both chains solve a \\term{QUBO} over the paper's \\term{assignment variables} \\cite[§5.3, Eq. (4)]{Paper}, the BESSER chain's in the paper's formulation, the EMF chain's in a weighted variant of it (\\cref{sec:strategy}).",
+		"evidence": [
+			{
+				"cite": "Paper",
+				"quote": "The binary qubit matrix X is defined as the exam schedule, where Xi,k"
+			},
+			{
+				"cite": "Paper",
+				"quote": "indicates whether the Course i is tested in Batch k"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "The QUBO is the paper's H = lambda * H_const1 + w * H_const2 [Zhou eq. (10)]"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "Each (exam, time slot) pair becomes a binary variable X[i,k] = 1 iff exam i is in slot k"
+			},
+			{
+				"path": "besser/pipeline.py",
+				"quote": "T3: BESSER's QiskitGenerator, then run the generated script unchanged on Aer"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "the weighted QUBO (ADR-0009), built with pyqubo as in the paper's notebook"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "exactly-one ['['/]Paper §5.3, Eqs. (5)-(7)] relaxed (ADR-0009)"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "x = Array.create('c', (n_lesson, n_batch), 'BINARY')"
+			}
+		]
+	},
+	{
+		"claim": "It helped us formulate the problem and its constraints.",
+		"evidence": [
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "One function per rule (R1-R6), each citing the reference it implements"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "Sections 5.2-5.3"
+			}
+		]
+	},
+	{
+		"claim": "Our solutions were heavily inspired by the way the paper framed the problem: transforming students' course registrations into a course conflict matrix \\cite[§5.2]{Paper}, which the EMF chain models as a \\term{Conflict Graph}.",
+		"evidence": [
+			{
+				"cite": "Paper",
+				"quote": "Ai,j indicates whether the Student i is taking the exam for the Course j"
+			},
+			{
+				"cite": "Paper",
+				"quote": "the matrix A is converted to the course conflict matrix C"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "[Paper §5.2, Algorithm 1, Eq. (3)]: C[i,j] = 1 iff some student sits both exam i and exam j."
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/transforms/problem2conflictgraph.atl",
+				"quote": "[Paper §5.2, Fig. 3]: one edge of G per pair with C[i,j] = 1"
+			}
+		]
+	},
+	{
+		"claim": "We decided to implement two chains, one using BESSER and one using EMF, to compare the two technologies and to get the whole team familiar with the problem and the implementation process.",
+		"evidence": [
+			{
+				"path": "AGENTS.md",
+				"quote": "Two independent implementations of the chain live side by side"
+			},
+			{
+				"path": "AGENTS.md",
+				"quote": "`besser/`: the BESSER (Python) chain"
+			},
+			{
+				"path": "AGENTS.md",
+				"quote": "`emf/`: the Eclipse EMF chain"
+			}
+		]
+	},
+	{
+		"claim": "More details on the chains can be found in \\cref{sec:besser,sec:emf}.",
+		"evidence": []
+	},
+	{
 		"claim": "The EMF chain's terms are those of the glossary (\\cref{app:glossary}); the BESSER chain's sections keep its own words: \\emph{slot} for a \\term{Batch}, \\emph{valid} for a \\term{schedule} that places every \\term{exam} without a \\term{Conflict}.",
 		"evidence": [
 			{
