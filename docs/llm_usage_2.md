@@ -130,3 +130,45 @@
   `CONTEXT.md`'s table (then reverted); the PDF, read slice by slice. Not
   checked: `build.sh --run` and the default download, since no artifact exists
   yet.
+
+## Requiring students and exams through the problem's multiplicities ([#38](https://github.com/Alef-Keuffer/qmde/issues/38), [#40](https://github.com/Alef-Keuffer/qmde/pull/40)) (2026-11-11)
+
+- **Who:** Alef Keuffer.
+- **Tool:** Claude Code (Claude Opus 5.5), with the `implement`, `code-review`
+  and `pr` skills.
+- **What we asked:** to implement #38; then to rerun the Eclipse setup, to open
+  the PR, what the leftover branch it mentioned was, and to delete that branch.
+- **What the assistant produced:** lower bound 1 on `students` and `exams` in
+  `problem.ecore`, replacing the `atLeastOneExam` invariant (`atLeastOneBatch`
+  stays), with `CONTEXT.md` and `README.md` to match; the first test of the
+  validation step, a fragment `pt.up.feup.examschedule.chain.tests` whose
+  `ValidationTest` accepts a valid Problem and rejects one without exams and one
+  without students with EMF's multiplicity message, run by Tycho at `verify`;
+  the JUnit engines it needs in `releng/emf.target` and `emf.setup`; the
+  regenerated report figure (`1..*` for both) and its unit test; commits
+  `dc6b35f` and `70f633b`; PR #40 on `alef/problem-multiplicities`, cut from
+  `origin/main`; the deletion of my local `alef/report-verify`.
+- **Decisions we made:** the assistant chose: two commits, since the local
+  pre-commit hook keeps `emf/` commits apart, rather than bypassing the hook;
+  ADR-0003 left unchanged; the test matching EMF's exact English message, as
+  the ticket asks for it; the report commit landing before the `emf/` one on
+  #40, since reordering needed a `git reset --hard`, which was blocked. I chose
+  to delete the local `alef/report-verify`, which held unpushed duplicates of
+  the two commits (made there first because it was checked out); whether to
+  delete `origin/alef/report-verify` (merged as #37) was left open.
+- **Assumptions we accepted:** the two `Exam.xtext` import warnings from
+  `tools/headless-problems` predate the change, since the DSL bundle was not
+  touched.
+- **Corrections we made:** none.
+- **How we checked it:** the two rejection tests failed against the old
+  `problem.ecore`, and all three passed with the change; `emf/build.sh` passed,
+  chain run included; the Python, tools and report unit tests passed;
+  `verify.py` reported 52 claims, none with problems; `tools/headless-problems`
+  exited 0 in a scratch worktree; a review by two subagents (standards and
+  spec): the spec one found `test_generate.py` still expecting `exams 0..*`,
+  which would have failed the report CI job, and the standards one led to
+  renaming a test helper; both fixes were retested; the PR branch's files were
+  compared with the tested commits. Not checked: the new `.tests` project in
+  the IDE (Eclipse was started to rerun the setup, but the session ended before
+  the import or the Problems view was seen, so `headless-problems` did not
+  cover it either); whether the warnings are also on `main`; CI on #40.
