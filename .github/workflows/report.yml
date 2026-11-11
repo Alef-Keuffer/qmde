@@ -11,12 +11,14 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 10 # a normal run takes about a minute; apt retries an unreachable mirror for minutes
     permissions:
       contents: read
       issues: read # verify.py reads the state of the issues claims cite
     steps:
       - uses: actions/checkout@v7
-      - run: sudo apt-get update && sudo apt-get install -y poppler-utils # pdftotext, for the references' texts
+      # pdftotext, for the references' texts
+      - run: command -v pdftotext || { sudo apt-get update && sudo apt-get install -y poppler-utils; }
       # The references' texts; the arXiv ones are downloaded again only when references.bib changes.
       - uses: actions/cache@v6
         with:
