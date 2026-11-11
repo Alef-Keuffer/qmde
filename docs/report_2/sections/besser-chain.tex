@@ -1,7 +1,7 @@
 % Section 3, the BESSER chain: \input by report_2.tex.
 \section{BESSER chain}\label{sec:besser}
 
-The BESSER chain takes a description of the exams, transforms it step by step into a quantum circuit, runs that circuit on a simulator, and converts the results back into a timetable that is easy for a person to read. Every step reads a model and writes a new one, and every model it generates is saved in \texttt{besser/output/<instance>/}, so each step can be opened and checked independently. \Cref{fig:besser-chain} illustrates the smallest example, \texttt{tiny} (3 exams, 3 time slots, 9 qubits).
+The BESSER chain takes a description of the exams, transforms it step by step into a quantum circuit, runs that circuit on a simulator, and converts the results back into a timetable that is easy for a person to read. Every step writes its result to \texttt{besser/output/<instance>/}, one file per step, so each step can be opened and checked independently. \Cref{fig:besser-chain} illustrates the smallest example, \texttt{tiny} (3 exams, 3 time slots, 9 qubits).
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{../imgs/cadeia_besser-1.png}
@@ -24,4 +24,4 @@ Everything starts with two files written by a person. The first one describes \e
 	\item \textbf{Map back.} The best schedule found is written into the problem model itself, with each exam linked to its slot, and checked again against the OCL rules. Saved: \texttt{7\_problem\_solved}.
 \end{enumerate}
 
-The whole chain runs with one command, \texttt{cd besser \&\& python pipeline.py}, taking about two seconds for the five instances.
+The whole chain runs with one command, \texttt{cd besser \&\& python pipeline.py}, in a few seconds for the five instances.
