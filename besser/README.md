@@ -36,6 +36,22 @@ all generated (never edited by hand): `1_problem`, `1_config`, `2_solution` + `2
 problem model with every exam linked to the TimeSlot it was given. The table of all instances is in
 `output/summary.md`.
 
+## Do the tests catch mistakes?
+
+`python -m pytest` runs 47 tests: `47 passed`. `tests/mutations.py` puts three typical mistakes back, one at a
+time, into a temporary copy of `besser/` (the real files are never changed), runs the tests there and counts the
+failures:
+
+```bash
+~/venv-qmde-fork/bin/python tests/mutations.py
+```
+
+| Mistake put back | Where | Tests that fail |
+|---|---|---|
+| the one-hot weight as weak as a conflict (lambda = w) | `t1_problem2solution.py`, R4 | 17 of 47 |
+| the flipped sign of the cost layer (C = +H, fields and couplings) | `t2_solution2quantum.py`, Q4 | 4 of 47 |
+| count keys read left to right | `map_back.py`, `bits_of` | 2 of 47 |
+
 ## Layout
 
 | Path | Contents |
@@ -46,4 +62,4 @@ problem model with every exam linked to the TimeSlot it was given. The table of 
 | `transformations/` | `t1_problem2solution.py` (rules R1-R6), `t2_solution2quantum.py` (rules Q1-Q7), `map_back.py` (decoding, and writing the schedule back into the problem model), `model_io.py` (model I/O and every workaround W1-W7 for the BESSER fork) |
 | `pipeline.py` | the whole chain for every instance |
 | `docs/` | `llm_usage_2.md`: the LLM usage log of Part II |
-| `tests/` | `baseline.py` (classical brute force and metrics) and the tests: `test_t1.py` (energy 0 exactly on valid schedules, minima = optimal schedules, the lambda rule, Part I's structure and OCL), `test_t2.py` (Ising = QUBO, circuit structure, phases and bit order in the statevector of the generated code), `test_pipeline.py` (end to end, little-endian decoding, saved models reload, reproducibility, the solved problem model), `test_baseline.py` |
+| `tests/` | `baseline.py` (classical brute force and metrics) and the tests: `test_t1.py` (energy 0 exactly on valid schedules, minima = optimal schedules, the lambda rule, Part I's structure and OCL), `test_t2.py` (Ising = QUBO, circuit structure, phases and bit order in the statevector of the generated code), `test_pipeline.py` (end to end, little-endian decoding, saved models reload, reproducibility, the solved problem model), `test_baseline.py`; `mutations.py` (do the tests catch mistakes?) |
