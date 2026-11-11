@@ -1,0 +1,23 @@
+\subsection*{BESSER chain}
+
+Every instance was run with the same Solver Configuration (\texttt{besser/config/<instance>.py}): conflict weight $w = 1$, depth 3, 4096 shots and seed 7, using the angles of a linear ramp, identical for every instance: $\gamma = (0.2667, 0.5333, 0.8)$ and $\beta = (0.8, 0.5333, 0.2667)$. The weight of the one-slot rule, $\lambda$, is not configured: T1 computes it as $(\Delta + 1)\,w$, where $\Delta$ is the largest number of conflicts of a single exam.
+
+\Cref{tab:results-besser} shows what each run produced: the size of the circuit, how many different bit strings appeared in the 4096 shots, and the schedule the chain wrote back into the problem model, which is the best schedule that was measured most often.
+
+\begin{table}
+	\label{tab:results-besser}
+	\footnotesize
+	\begin{tabularx}{\linewidth}{@{}lrrrrr>{\raggedright\arraybackslash}Xrr@{}}
+		\toprule
+		Instance & Qubits & $\Delta$ & $\lambda$ & Operations & Bit strings & Schedule found & Shots & Conflicts \\
+		\midrule
+		tiny   & 9  & 2 & 3 & 207 & 269  & Mon\_0900: Chemistry; Mon\_1400: Physics; Tue\_0900: Math                                    & 130 & 0 \\
+		many   & 12 & 2 & 3 & 285 & 846  & Mon\_0900: Physics; Mon\_1400: Algebra, Chemistry; Tue\_0900: Calculus                       & 44  & 0 \\
+		none   & 12 & 3 & 4 & 366 & 855  & Mon\_0900: Calculus, Physics; Mon\_1400: Statistics; Tue\_0900: Algebra                      & 46  & 1 \\
+		medium & 15 & 2 & 3 & 390 & 1787 & Mon\_0900: Algebra, Physics; Mon\_1400: Chemistry; Tue\_0900: Calculus, Programming          & 17  & 0 \\
+		limit  & 18 & 3 & 4 & 522 & 2826 & Mon\_0900: Algebra, Chemistry; Mon\_1400: Physics, Programming; Tue\_0900: Calculus, Databases & 6   & 0 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+On every instance, the chain found and wrote back a best schedule: a valid one on the four instances that have one, and on \texttt{none}, which has none, a schedule with a single conflict (Calculus and Physics in the same slot), which is the best possible there. As the problem grows, the 4096 shots spread across more and more bit strings (from 269 on \texttt{tiny} to 2826 on \texttt{limit}), so the schedule found appears fewer times: 130 shots on \texttt{tiny}, only 6 on \texttt{limit}. The chain still finds it, but with fewer shots it could be missed; this reflects the trend of P(optimal) in \cref{tab:validation-besser}.
