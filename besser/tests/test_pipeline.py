@@ -84,3 +84,17 @@ def test_schedule_written_back_into_the_problem_model(tmp_path):
         students = {e.name: {s.name for s in model_io.linked(e, "students")} for e in exams}
         clashes = sum(slot[a] == slot[b] and bool(students[a] & students[b]) for a in slot for b in slot if a < b)
         assert clashes == conflicts
+
+
+def test_saved_metamodels_keep_classes_associations_and_constraints(tmp_path):
+    model_io.save_metamodels(tmp_path)
+    config = json.loads((tmp_path / "solver_config_dsl.json").read_text())
+    elements = {e["name"]: e for e in config["elements"].values()}
+    assert elements["SolverConfig"]["type"] == "Class" and elements["layers_match_depth"]["type"] == "ClassOCLConstraint"
+    (layers,) = (r for r in config["relationships"].values() if r["name"] == "SolverConfig_QAOALayer")
+    assert layers["type"] == "ClassComposition" and layers["target"]["role"] == "config"
+    problem = json.loads((tmp_path / "problem_dsl.json").read_text())
+    assert {e["name"] for e in problem["elements"].values() if e["type"] == "Class"} == {"Exam", "Student", "TimeSlot"}
+    first = (tmp_path / "problem_dsl.json").read_text()
+    model_io.save_metamodels(tmp_path)
+    assert (tmp_path / "problem_dsl.json").read_text() == first  # W8: the same file on every run

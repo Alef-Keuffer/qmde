@@ -14,7 +14,8 @@ go in; output/<name>/ gets one file per step, all generated, never edited by han
     5_solutions.json                          counts decoded into schedules
     6_validation.json                         the classical baseline (brute force) and the metrics
     7_problem_solved.py/.json                 bonus: the best schedule written back into the problem model
-When every instance runs, output/summary.md gets one table with all of them.
+When every instance runs, output/summary.md gets one table with all of them. Every run also writes
+output/metamodels/<name>.json: each metamodel, in the JSON of BESSER's web editor (the report draws it from there).
 """
 
 import contextlib
@@ -144,6 +145,7 @@ def summary(runs: list) -> str:
 if __name__ == "__main__":
     instances = sorted(p.stem for p in (ROOT / "instances").glob("*.py"))
     names = sys.argv[1:] or instances
+    model_io.save_metamodels(ROOT / "output" / "metamodels")
     table = summary([run(instance) for instance in names])
     print("\n" + table)
     if names == instances:

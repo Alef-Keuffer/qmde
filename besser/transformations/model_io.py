@@ -20,6 +20,8 @@ Workarounds for the fork jacomecunha/BESSER @ 9cf7a90 (BESSER 7.18.0):
       seed of the Solver Configuration.
   W7  project_to_code() writes sets (links, association ends, set literals) in memory order, so one model gives
       a different file on every run: save_models() sorts what has no meaning in its order (_canonical).
+  W8  class_buml_to_json() (the web editor's converter) gives every element a fresh uuid4, so one metamodel gives
+      a different file on every run: save_metamodels() renumbers the ids in order of first appearance.
 """
 
 import contextlib
@@ -36,6 +38,9 @@ from besser.BUML.metamodel.object import ObjectModel
 from besser.BUML.metamodel.project import Project
 from besser.BUML.metamodel.structural import DomainModel, Metadata
 from besser.utilities.buml_code_builder.project_builder import project_to_code
+from besser.utilities.web_modeling_editor.backend.services.converters.buml_to_json.class_diagram_converter import (
+    class_buml_to_json,
+)
 from bocl.OCLWrapper import OCLWrapper
 
 ROOT = Path(__file__).resolve().parent.parent  # besser/, from where this file is (not the working directory)
@@ -174,6 +179,22 @@ def save_models(stem: Path, domain_model: DomainModel, model: ObjectModel, descr
     path = stem.with_suffix(".py")
     path.write_text(_canonical(path.read_text(encoding="utf-8")), encoding="utf-8")  # W7
     stem.with_suffix(".json").write_text(json.dumps(to_json(model), indent=2) + "\n", encoding="utf-8")
+
+
+_UUID = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
+
+
+def save_metamodels(folder: Path) -> None:
+    """Save each metamodel of the chain as <folder>/<name>.json, in the JSON of BESSER's web editor (the report
+    draws its class diagrams from these files)."""
+    folder = Path(folder)
+    folder.mkdir(parents=True, exist_ok=True)
+    for name, domain_model in [("problem_dsl", problem_metamodel()), ("solution_dsl", solution_metamodel()),
+                               ("solver_config_dsl", config_metamodel())]:
+        text = json.dumps(class_buml_to_json(domain_model), indent=1, ensure_ascii=False)
+        ids = {}
+        text = _UUID.sub(lambda m: ids.setdefault(m[0], str(len(ids))), text)  # W8
+        (folder / f"{name}.json").write_text(text + "\n", encoding="utf-8")
 
 
 _SET_OF_NAMES = re.compile(r"\{([A-Za-z_]\w*(?:, [A-Za-z_]\w*)+)\}")
