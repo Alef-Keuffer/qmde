@@ -7,7 +7,8 @@ description: Fact-check the report's prose (docs/report_2/report_2.tex and the s
 
 `docs/report_2/verify.py` splits the prose of `report_2.tex` and of the `sections/*.tex` it `\input`s into
 claims (sentences, list items, captions, table rows; placeholders excluded) and re-checks, on every build, the
-evidence that `claims.json` gives each one. Its docstring defines the evidence kinds. You supply the judgement it cannot: is the claim true, and does the evidence say so?
+evidence that `claims.json` gives each one. Its docstring defines the evidence kinds. You supply the judgement
+it cannot: is the claim true, and does the evidence say so?
 
 **Independence.** If you wrote or edited any of the prose in this session, do not verify it yourself: hand this
 skill to a fresh subagent. A writer reads its own intent into the sources.

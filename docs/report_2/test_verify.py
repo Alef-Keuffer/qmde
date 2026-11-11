@@ -26,6 +26,7 @@ With $A$ above every weight, it costs less.
 \end{itemize}
 \begin{figure}
 	\begin{tikzpicture}\node {Not a claim.};\end{tikzpicture}
+	\includegraphics[width=\linewidth]{../imgs/chain-1.png}
 	\caption{A caption, \texttt{x}.}\label{fig:x}
 \end{figure}
 \begin{tabular}{@{}lr@{}}

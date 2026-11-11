@@ -82,8 +82,8 @@ def claims(tex):
     body = drop(body, "caption", 1, keep_last=True)
     for note in ("sidenote", "footnote"):  # a claim of its own
         body = drop(body, note, 1, keep_last=True, around="\n\n")
-    body = re.sub(r"^\s*\\(?:begin|end|input|VerbatimInput|[a-z]*rule|footnotesize|small|maketitle|tableofcontents"
-                  r"|appendix|printbibliography)\b.*$", "", body, flags=re.M)
+    body = re.sub(r"^\s*\\(?:begin|end|input|includegraphics|VerbatimInput|[a-z]*rule|footnotesize|small|maketitle"
+                  r"|tableofcontents|appendix|printbibliography)\b.*$", "", body, flags=re.M)
     body = re.sub(r"([.!?])\s*\\\]", r"\1\\]", body)  # a sentence ending in display maths ends after it
     units = re.split(r"\n\s*\n|\\item\b|\\\\|(?:(?<=[.!?])|(?<=[.!?]\\\]))\s+(?=[A-Za-z])", body)
     units = [" ".join(u.split()) for u in units]
