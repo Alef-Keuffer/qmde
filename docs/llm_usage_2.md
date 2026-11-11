@@ -172,3 +172,77 @@
   the IDE (Eclipse was started to rerun the setup, but the session ended before
   the import or the Problems view was seen, so `headless-problems` did not
   cover it either); whether the warnings are also on `main`; CI on #40.
+
+## Logging AI usage at the end of each session ([#41](https://github.com/Alef-Keuffer/qmde/pull/41)) (2026-11-11)
+
+- **Who:** Alef Keuffer.
+- **Tool:** Claude Code (Claude Opus 5.5).
+- **What we asked:** to add my AI usage to this log automatically at the end of
+  each session; then whether the changes were on `main`, and to get the test
+  entry there.
+- **What the assistant produced:** `.claude/hooks/ai-log.sh`, registered in
+  `.claude/settings.local.json` as the end-of-session hook: it condenses the
+  session's transcript and has a headless Claude append an entry to this file
+  in the background, uncommitted; it skips sessions with fewer than two real
+  prompts, trivial ones, ones that wrote their own entry and work already
+  logged. Both files are listed in `.git/info/exclude`. A test entry for #38
+  and PR #40, committed as `b4f28f1` on `alef/ai-log-38`, cut from
+  `origin/main`, and opened as PR #41; this entry, written by the hook.
+- **Decisions we made:** the #38 entry goes in its own PR off `main`, since #40
+  was already merged. The assistant chose, for me to review: the hook stays in
+  this clone only, not committed for the team; the hook never commits; "Who"
+  comes from `git config user.name`.
+- **Assumptions we accepted:** sessions in `.claude/worktrees/` are not logged,
+  since those folders lack the settings file; two sessions ending at the same
+  moment could lose an entry; every session end costs one extra headless run;
+  the failed background task "Wait for the IDE to import the tests project"
+  came from the #38 session and needs no action.
+- **Corrections we made:** none.
+- **How we checked it:** the hook was run on the #38 session's transcript; its
+  entry was accurate and confirmed both commits with `git show`. The commit on
+  `alef/ai-log-38` was compared with the clone's file before the uncommitted
+  copy was dropped. Not checked: the hook firing on a real session end, and CI
+  on #41 (CI does not read this file).
+
+## Replacing the Conflict Graph's Batch class with nBatches ([#42](https://github.com/Alef-Keuffer/qmde/pull/42)) (2026-11-11)
+
+- **Who:** Alef Keuffer.
+- **Tool:** Claude Code (Claude Opus 5.5).
+- **What we asked:** why `conflictgraph.ecore` has a `Batch` class rather than
+  an `nBatches` attribute as in Problem; then to make the change, commit it,
+  push it and open the PR; then why the PR showed merge conflicts, whether the
+  force-push touched only the PR's branch, and to fix it.
+- **What the assistant produced:** the history of `Batch`: in `7bab69c` the
+  Hamiltonian's x[Exam, Batch] variables pointed at batch objects, and since
+  ADR-0007 removed that metamodel its only use was `main.mtl` counting them;
+  `ConflictGraph.nBatches : EInt [1]` with `atLeastOneBatch` in place of the
+  `Batch` class and `batchesNumberedFromOne`, the ATL copying the count (the
+  `range` helper and `NewBatch` rule deleted), `main.mtl` and `CONTEXT.md` to
+  match; commit `f04343f` on `alef/conflictgraph-nbatches` and PR #42; after a
+  rebase onto `origin/main` in a scratch worktree, `de45d80` (the `emf/`
+  change, keeping `main`'s citation comments) and `4b68b4a` (the report's ATL
+  paragraph, that claim and its evidence in `claims.json`, and the regenerated
+  Conflict Graph figure and Appendix A), force-pushed with
+  `--force-with-lease`; a memory note to branch from `origin/main` and to
+  search the report for code it changes.
+- **Decisions we made:** I chose to make the change, to push it, and to rebase
+  and force-push. The assistant chose, for me to review: a plain branch rather
+  than `gh stack`, since the change built on no unmerged branch; two commits,
+  since the pre-commit hook keeps `emf/` commits apart; the rebase in a
+  worktree, since my checkout's untracked `docs/report_2/` clashes with the
+  tracked one; dropping the `NewBatch` citation rather than moving it, as it
+  had proposed.
+- **Assumptions we accepted:** the existing `[Paper §5.3, Eq. (4)]` comment
+  covers the `nBatches` line; the genmodel needs no change, since it lists no
+  classes; CI's IDE job stands in for `tools/headless-problems`.
+- **Corrections we made:** I reported the merge conflicts on #42. The assistant
+  had cut the branch from my local `main`, about 40 commits behind
+  `origin/main`, without fetching, and so had also missed that the report on
+  `main` quotes the deleted ATL lines.
+- **How we checked it:** `emf/build.sh` before and after the rebase: the model
+  code regenerated with no `Batch*.java` left, `conflictgraph.xmi` writing
+  `nBatches`, the same `N_BATCHES` values, all 8 runs optimal; `verify.py`
+  failed on the expected claim, then reported 52 claims, none with problems,
+  after the rewording; the report's 13 unit tests passed; on #42, no conflicts
+  and the `build`, `eclipse` and `verify` CI checks passed. Not checked:
+  `tools/headless-problems` locally; `report_2.pdf`, which was not rebuilt.
