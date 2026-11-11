@@ -20,7 +20,7 @@ paper's course conflict matrix~$C$ \cites[§5.2, Algorithm 1, Eq. (3)]{Paper}[ce
 \paragraph{Acceleo.} A template generates \texttt{solve\_<name>.py} from the \term{Conflict Graph} and the
 \term{Solver Configuration}: both as Python data, then the notebook's pyqubo construction
 \cites[cells 11--13]{Notebook}{pyqubo} (\texttt{emf/docs/adr/0007}), made the weighted set packing of
-\cref{sec:strategy} (\texttt{emf/docs/adr/0009}). Each
+\cref{app:formulation} (\texttt{emf/docs/adr/0009}). Each
 \term{Constraint} is labelled in domain terms, \texttt{at-most-one-batch-<exam>} or
 \texttt{conflict-<exam>-<exam>-batch-<k>}, so a broken one names its \term{exams}. pyqubo compiles $H$ into the
 \term{QUBO} and its Ising form, so the chain models neither.

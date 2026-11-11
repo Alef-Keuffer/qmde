@@ -1,0 +1,38 @@
+% Appendix: the formulation both chains solve, summarised by fig:strategy and fig:clique; \input by report_2.tex.
+\section{Formulation}\label{app:formulation}
+
+A \term{Problem} lists \term{students}, the \term{exams} each of them sits, and a fixed number of \term{batches}; all \term{exams} of a \term{batch}
+take place at once. Two \term{exams} that share a \term{student} are in \term{Conflict} and must not share a \term{batch}
+\cite[§5.2, Algorithm 1]{Paper}. Each \term{exam} carries a \term{Weight}, its priority; in the EMF chain, the cost of
+leaving it unscheduled.
+
+Both chains follow \cref{fig:strategy}. The \term{Problem} is formulated as a \term{QUBO} over one \term{Assignment Variable}
+$x_{ik}$ per \term{exam}~$i$ and \term{batch}~$k$, $1$ when \term{exam}~$i$ is in \term{batch}~$k$ \cite[§5.3, Eq. (4)]{Paper}, with a
+penalty per \term{Constraint}. A \term{Method} samples the \term{QUBO}, and a sample is decoded into a \term{Schedule}: the
+lowest-energy one in the EMF chain, the most frequent optimal one in BESSER's. Independently of the \term{QUBO}, a
+\term{Baseline} enumerates every \term{schedule} to find the optimum (the EMF chain's stops at about $10^6$,
+\cref{sec:limitations}), and
+every sample, not only the best, is judged against it (\cref{sec:validation}).
+
+The chains implement two formulations. The paper's \cite[§5.3, Eqs. (5)--(10)]{Paper}, which the BESSER
+chain implements, places each \term{exam} in exactly one \term{batch} and has penalties only: a sample of energy zero is a
+\term{schedule} without \term{conflicts}, and nothing ranks one \term{exam} above another. The EMF chain implements a weighted
+one (\texttt{emf/docs/adr/0009}): each \term{exam} in at most one \term{batch} \cite[§4.2, Eq. (30)]{Lucas}, with every
+scheduled \term{exam} earning its \term{weight}, a weighted set packing \cite[§4.2]{Glover}:
+\[
+	H = -\sum_i w_i \sum_k x_{ik}
+	+ A \Bigl( \sum_i \sum_{k<l} x_{ik} x_{il} + \sum_{(i,j)\ \mathrm{in\ Conflict}} \sum_k x_{ik} x_{jk} \Bigr).
+\]
+With the \term{Penalty Coefficient} $A$ above every \term{weight}, leaving an \term{exam} unscheduled always costs less than
+breaking a \term{Constraint} \cite[§4.2]{Lucas}, so the optimum is a \term{feasible} \term{Schedule} of least \term{Cost}, the total
+\term{weight} of its \term{Unscheduled Exams}. The two optima differ wherever not every \term{exam} fits. On four mutually
+conflicting \term{exams} in three \term{batches} (BESSER's \texttt{none}, EMF's \texttt{clique}), the paper's
+formulation, with the penalty BESSER derives for an \term{exam} left out, above the most \term{conflicts} placing it can add, accepts one
+\term{Conflict}, two \term{exams} in one \term{batch}; the weighted one leaves the lightest \term{exam}, Statistics, unscheduled at \term{Cost}~1.
+
+The paper samples its \term{QUBO} on D-Wave's quantum annealer, its Leap Hybrid Sampler and, classically, by
+\term{simulated annealing} \cite[§5.4]{Paper}, as the notebook does \cite[cells 15--17]{Notebook}. The EMF chain
+samples its own \term{QUBO} by \term{simulated annealing} or by QAOA on a simulator; the BESSER chain by QAOA only.
+\term{Simulated annealing} needs no D-Wave account, so CI reruns the EMF chain's runs (\cref{tab:results-emf}), and
+it gives QAOA a yardstick on the same \term{QUBO}. Quantum annealing
+itself is issue~\#23.

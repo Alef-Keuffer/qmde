@@ -151,6 +151,11 @@ feasible and optimal:
 | clique | 12 | QAOA, depth 2, COBYLA, 150 iterations, 4096 shots | 1, Statistics | 1 | 0.042 | 1.000 |
 | path | 12 | QAOA, depth 2, Nelder-Mead, 150 iterations, 4096 shots | 0, none | 0 | 0.00024 | 1.000 |""")
 
+    def test_validation_plot_places_each_method_on_its_instance_and_skips_a_missing_run(self):
+        plot = generate.validation_plot(generate.load_runs(self.results, self.instances), "https://x/runs/42")
+        qaoa, annealing = [line for line in plot.splitlines() if line.startswith(r"\addplot")][1:]
+        self.assertIn("(0.0419921875,clique) (0.000244140625,path)", qaoa)
+        self.assertTrue(annealing.endswith("{(0.94,clique)};"))
 
     def test_splice_replaces_only_what_is_between_the_markers(self):
         text = "Intro.\n\n<!-- results:begin -->\nold table\n<!-- results:end -->\n\nThe rest.\n"

@@ -4,7 +4,8 @@
 - generated/metamodel-<name>.tex: Appendix C, a class diagram of each EMF .ecore
 - generated/glossary.tex: the Glossary appendix, from emf/GLOSSARY.md
 - generated/glossary-terms.tex: what \\term looks up: each glossary term and its plural, in lower case
-- with --results: generated/validation-emf.tex (Section 4) and generated/results-emf.tex (Appendix B),
+- with --results: generated/validation-emf-plot.tex (Section 4), generated/validation-emf.tex and
+  generated/results-emf.tex (Appendix B),
   and, when the results come from CI (--run-url), emf/CONTEXT.md's results table
 """
 import argparse
@@ -295,18 +296,60 @@ def times_chance(run):
     return rf"{prob(run['p_optimal'])} ({run['p_optimal'] / run['random_p_optimal']:.0f}$\times$)"
 
 
-def validation_table(runs, run_url):
-    """Section 4's table: P(optimal) of each Method on each instance, against chance."""
-    origin, placeholder = source(run_url)
-    by_problem = {}
+def by_problem(runs):
+    """Each instance's runs, by Method: {name: {"QAOA": run, "ANNEALING": run}}."""
+    problems = {}
     for r in runs:
-        by_problem.setdefault(base(r["instance"]), {})[r["solver"]["method"]] = r
+        problems.setdefault(base(r["instance"]), {})[r["solver"]["method"]] = r
+    return problems
+
+
+def validation_plot(runs, run_url):
+    """Section 4's chart: P(optimal) of each Method on each instance against chance, on a log axis."""
+    origin, placeholder = source(run_url)
+    problems = by_problem(runs)
+    names = list(problems)
+
+    def points(p_of):
+        return " ".join(f"({p_of(pair)},{tex(name)})" for name, pair in problems.items()
+                        if p_of(pair))  # a skipped run, or P = 0, has no place on a log axis
+
+    def method(m):
+        return lambda pair: pair.get(m) and pair[m]["p_optimal"]
+
+    def chance(pair):
+        return next(iter(pair.values()))["random_p_optimal"]
+
+    return "\n".join([
+        placeholder,
+        r"\begin{figure}",
+        r"\centering",
+        r"\begin{tikzpicture}",
+        rf"\begin{{semilogxaxis}}[width=0.8\linewidth, height={0.75 * len(names) + 1.5:g}cm, xmax=1.5,",
+        rf"  symbolic y coords={{{','.join(tex(n) for n in reversed(names))}}}, ytick=data, y dir=normal,",
+        r"  enlarge y limits=0.08, xlabel={P(optimal)}, xmajorgrids, grid style={black!12},",
+        r"  tick label style={font=\footnotesize}, legend style={font=\footnotesize, at={(0.5,1.02)}, anchor=south,",
+        r"  legend columns=3, draw=none}, legend cell align=left]",
+        rf"\addplot[only marks, mark=|, mark size=4pt, very thick, oigrey] coordinates {{{points(chance)}}};",
+        rf"\addplot[only marks, mark=*, oiblue] coordinates {{{points(method('QAOA'))}}};",
+        rf"\addplot[only marks, mark=square*, oiorange] coordinates {{{points(method('ANNEALING'))}}};",
+        r"\legend{random bit string, QAOA, simulated annealing}",
+        r"\end{semilogxaxis}",
+        r"\end{tikzpicture}",
+        r"\caption{P(optimal) of the EMF chain on each test instance (\cref{app:instances}) by Method, against a "
+        r"uniformly random bit string's, on a log scale; the numbers in \cref{tab:validation-emf}. Solver Configurations "
+        rf"in \cref{{tab:results-emf}}; from {origin}.}}\label{{fig:validation-emf}}",
+        r"\end{figure}"])
+
+
+def validation_table(runs, run_url):
+    """Appendix B's table: the numbers of Section 4's chart, with how many times chance."""
+    origin, _ = source(run_url)
     rows = [rf"{tex(name)} & {next(iter(pair.values()))['variables']} "
             rf"& {prob(next(iter(pair.values()))['random_p_optimal'])} "
             rf"& {times_chance(pair.get('QAOA'))} & {times_chance(pair.get('ANNEALING'))} \\"
-            for name, pair in by_problem.items()]
+            for name, pair in by_problem(runs).items()]
     return "\n".join([
-        placeholder,
         r"\begin{table}",
         r"\caption{P(optimal) of the EMF chain on each test instance (\cref{app:instances}) by Method, against a "
         r"uniformly random bit string's; in brackets, how many times chance. Solver Configurations in \cref{tab:results-emf}; "
@@ -488,6 +531,7 @@ def main():
     if args.results:
         runs = load_runs(args.results, EMF / "instances")
         write("validation-emf.tex", validation_table(runs, args.run_url))
+        write("validation-emf-plot.tex", validation_plot(runs, args.run_url))
         write("results-emf.tex", results_tables(runs, args.run_url))
         if args.run_url:
             context = EMF / "CONTEXT.md"

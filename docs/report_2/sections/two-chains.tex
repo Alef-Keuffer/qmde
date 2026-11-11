@@ -2,5 +2,44 @@
 
 The strategy is implemented twice, independently: the EMF chain in \texttt{emf/}, with Xtext, ATL and Acceleo
 (\cref{sec:emf}), and the BESSER chain in \texttt{besser/}, with Python transformations over B-UML models and
-BESSER's Qiskit generator (\cref{sec:besser}). They solve the two formulations above, so only the EMF chain's
+BESSER's Qiskit generator (\cref{sec:besser}). They solve the two formulations of \cref{app:formulation}, so only the EMF chain's
 results depend on the \term{Weight}.
+
+\begin{figure}
+	\begin{tikzpicture}[
+			exam/.style={circle, draw, thick, minimum size=1.55cm, align=center, font=\footnotesize, inner sep=1pt},
+			conflict/.style={draw=black!40},
+			broken/.style={draw=oivermillion, line width=2pt},
+			b1/.style={exam, fill=oiorange!60}, b2/.style={exam, fill=oisky!60}, b3/.style={exam, fill=oigreen!60},
+			unscheduled/.style={exam, dashed, draw=oigrey, text=oigrey, fill=white}]
+		\begin{scope}
+			\node[b1] (a) at (0, 2.2) {Algebra\\4};
+			\node[b2] (c) at (2.2, 2.2) {Calculus\\3};
+			\node[b3] (p) at (0, 0) {Physics\\2};
+			\node[b3] (s) at (2.2, 0) {Statistics\\1};
+			\draw[conflict] (a) -- (c) (a) -- (p) (a) -- (s) (c) -- (p) (c) -- (s);
+			\draw[broken] (p) -- (s);
+			\node[font=\small, align=center] at (1.1, -1.4) {paper's formulation:\\every \term{exam} placed, one \term{Conflict}};
+		\end{scope}
+		\begin{scope}[xshift=5.5cm]
+			\node[b1] (a) at (0, 2.2) {Algebra\\4};
+			\node[b2] (c) at (2.2, 2.2) {Calculus\\3};
+			\node[b3] (p) at (0, 0) {Physics\\2};
+			\node[unscheduled] (s) at (2.2, 0) {Statistics\\1};
+			\draw[conflict] (a) -- (c) (a) -- (p) (c) -- (p);
+			\draw[conflict, dashed, draw=oigrey] (a) -- (s) (c) -- (s) (p) -- (s);
+			\node[font=\small, align=center] at (1.1, -1.4) {weighted formulation:\\Statistics an \term{Unscheduled Exam}, \term{Cost}~1};
+		\end{scope}
+		\begin{scope}[xshift=10.4cm, yshift=1.6cm, every node/.style={font=\footnotesize, anchor=west}]
+			\node[draw, fill=oiorange!60, minimum size=3mm, label={[font=\footnotesize]right:\term{batch} 1}] at (0, 0) {};
+			\node[draw, fill=oisky!60, minimum size=3mm, label={[font=\footnotesize]right:\term{batch} 2}] at (0, -0.5) {};
+			\node[draw, fill=oigreen!60, minimum size=3mm, label={[font=\footnotesize]right:\term{batch} 3}] at (0, -1) {};
+			\draw[broken] (0, -1.5) -- (0.4, -1.5) node[right] {broken \term{Conflict}};
+		\end{scope}
+	\end{tikzpicture}
+	\caption{The two formulations' optima on \texttt{clique}: four \term{exams}, with their \term{weights}, that all
+		share every \term{student}, in three \term{batches}. A node's colour is its \term{batch}; an edge, a
+		\term{Conflict}. The paper's formulation places every \term{exam} and breaks one \term{Conflict}, any two
+		\term{exams} sharing a \term{batch} at the same energy; the weighted one leaves the lightest \term{exam},
+		Statistics, an \term{Unscheduled Exam}, at \term{Cost}~1.}\label{fig:clique}
+\end{figure}
