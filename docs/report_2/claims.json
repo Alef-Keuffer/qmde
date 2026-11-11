@@ -879,7 +879,7 @@
 		]
 	},
 	{
-		"claim": "Every step reads a model and writes a new one, and every model it generates is saved in \\texttt{besser/output/<instance>/}, so each step can be opened and checked independently. \\Cref{fig:besser-chain} illustrates the smallest example, \\texttt{tiny} (3 exams, 3 time slots, 9 qubits).",
+		"claim": "Every step writes its result to \\texttt{besser/output/<instance>/}, one file per step, so each step can be opened and checked independently. \\Cref{fig:besser-chain} illustrates the smallest example, \\texttt{tiny} (3 exams, 3 time slots, 9 qubits).",
 		"evidence": null
 	},
 	{
@@ -1246,7 +1246,7 @@
 		]
 	},
 	{
-		"claim": "The whole chain runs with one command, \\texttt{cd besser \\&\\& python pipeline.py}, taking about two seconds for the five instances.",
+		"claim": "The whole chain runs with one command, \\texttt{cd besser \\&\\& python pipeline.py}, in a few seconds for the five instances.",
 		"evidence": null
 	},
 	{
@@ -1293,17 +1293,12 @@
 		]
 	},
 	{
-		"claim": "Before examining the quantum results, the chain verifies that the penalty points from T1 yield the right answer: the schedules with the fewest points must be exactly the best schedules found by the reference.",
+		"claim": "The chain also checks T1 against the reference: the lowest number of points must be $w$ times the fewest conflicts, and exactly as many bit strings must reach it as the reference has best schedules.",
 		"evidence": null
 	},
 	{
-		"claim": "To achieve this, it computes the points for every one of the $2^n$ bit strings.",
-		"evidence": [
-			{
-				"path": "besser/tests/baseline.py",
-				"quote": "spectrum() evaluates the QUBO on all 2^n bit strings"
-			}
-		]
+		"claim": "To do this, it computes the points of every one of the $2^n$ bit strings.",
+		"evidence": null
 	},
 	{
 		"claim": "This holds on all five instances (\\cref{tab:validation-besser}, column ``QUBO = baseline'').",
@@ -1470,23 +1465,23 @@
 		]
 	},
 	{
-		"claim": "limit & 18 & 12 of 729 & yes & 0.0098 & 0.0098 & 0.000046 & 0.911 & 0.750",
+		"claim": "limit & 18 & 12 of 729 & yes & 0.0098 & 0.0098 & 4.6e-05 & 0.911 & 0.750",
 		"evidence": null
 	},
 	{
-		"claim": "On every instance, the circuit finds a best schedule far more often than chance, ranging from about 14 times (\\texttt{tiny}) to about 200 times (\\texttt{limit}), but less often as the problem grows.",
+		"claim": "On every instance, the circuit finds a best schedule far more often than chance (\\cref{tab:validation-besser}), but less often as the problem grows.",
 		"evidence": null
 	},
 	{
-		"claim": "The instance \\texttt{none} has no valid schedule at all, so P(valid) is 0 there; its best schedules have one conflict, and the circuit finds them in 27\\% of the shots.",
+		"claim": "The instance \\texttt{none} has no valid schedule at all, so P(valid) is 0 there; its best schedules have one conflict, and the circuit finds them in a fraction 0.2698 of the shots.",
 		"evidence": null
 	},
 	{
-		"claim": "47 tests (\\texttt{cd besser \\&\\& python -m pytest}) verify each step individually: that the penalty points are zero exactly for valid schedules, that the quantum form of the QUBO gives the same value as the QUBO on every bit string, that the generated Qiskit code gives each schedule the phase its penalty predicts, that the bits are read in Qiskit's order (right to left), and that two runs produce exactly the same files.",
+		"claim": "47 tests (\\texttt{cd besser \\&\\& python -m pytest}) check each step on its own: that the penalty points are zero exactly for the valid schedules (on \\texttt{tiny}), that the quantum form of the QUBO gives the same value as the QUBO on every bit string (on \\texttt{tiny} and \\texttt{medium}), that the generated Qiskit code gives each schedule the phase its penalty predicts (on \\texttt{tiny}), that the bits are read in Qiskit's order (right to left), and that two runs of \\texttt{tiny} produce exactly the same files.",
 		"evidence": null
 	},
 	{
-		"claim": "To confirm that the tests really catch mistakes, we intentionally reintroduced three typical errors: a penalty for a missing slot as weak as a conflict caused 17 tests to fail, a flipped sign caused 3, and bits read in the wrong order caused 2.",
+		"claim": "To confirm that the tests really catch mistakes, \\texttt{besser/tests/mutations.py} puts three typical mistakes back, one at a time, into a temporary copy of the chain: the one-hot weight as weak as a conflict makes 17 of the 47 tests fail, the flipped sign of the cost layer 4, and count keys read left to right 2 (\\texttt{besser/README.md}).",
 		"evidence": null
 	},
 	{
