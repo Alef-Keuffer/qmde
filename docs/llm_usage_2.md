@@ -246,3 +246,94 @@
   after the rewording; the report's 13 unit tests passed; on #42, no conflicts
   and the `build`, `eclipse` and `verify` CI checks passed. Not checked:
   `tools/headless-problems` locally; `report_2.pdf`, which was not rebuilt.
+
+## Showing BESSER's instances in the report's Test instances appendix ([#44](https://github.com/Alef-Keuffer/qmde/issues/44), [#47](https://github.com/Alef-Keuffer/qmde/pull/47), [#48](https://github.com/Alef-Keuffer/qmde/issues/48)) (2026-11-11)
+
+- **Who:** Alef Keuffer.
+- **Tool:** Claude Code (Claude Opus 5.5), with the `implement`, `code-review`,
+  `verify-report` and `pr` skills.
+- **What we asked:** to implement #44; then to push and open the PR; whether
+  #46 affected it; to update it once #46 was merged; to open an issue so that
+  `verify.py` follows `\input`.
+- **What the assistant produced:** on `alef/report-besser-instances`, cut from
+  `origin/main`, four commits: `982225c` (the grilling record for BESSER's
+  instances), `aacc7d3` (`emf/CONTEXT.md` results from CI run 43071895789, the
+  run on `main` with #43's instances), `6625c03` (the Test instances appendix
+  showing `5-tiny` to `8-limit`, with one sentence saying they are BESSER's
+  instances in the Exam DSL and that `2-cycle` is BESSER's `medium`; the
+  BESSER-instances `\placeholder` removed; the tables and PDF rebuilt from that
+  run) and `0960777` (that sentence's evidence in `claims.json`, written by a
+  fresh subagent running `verify-report`); PR #47; an analysis of #46 against
+  #47 (no overlap in `report_2.tex`, only `report_2.pdf` would conflict); after
+  #46 merged, a rebase onto `origin/main` with the PDF rebuilt; issue #48,
+  labelled `ready-for-agent`, for `verify.py` to follow
+  `\input{sections/...}` but not `\input{generated/...}`.
+- **Decisions we made:** I chose to push and open the PR, and to update #47 by
+  force-pushing the rebased branch rather than merging `main` into it. The
+  assistant chose, for me to review: calling the appendix D, not A as the
+  ticket said (A is the traceability appendix), rewriting its two unpushed
+  commit messages with `git filter-branch` but leaving "Appendix A" in the
+  grilling record, as it records the session; keeping "Exam DSL", which the
+  ticket and the `.exam` files use; removing the placeholder, which the new
+  content fills; leaving `generated/` out of #48's scope; leaving the
+  "BESSER's `none`, EMF's `clique`" wording (`report_2.tex` lines 81–83) to
+  the comparison ticket.
+- **Assumptions we accepted:** the new instances' table rows from run
+  43071895789 are correct, as the run passed; the grilling record's use of
+  "qubits", "slots" and "settings", which `emf/GLOSSARY.md` says to avoid,
+  can stay; since #46, its prose in `sections/besser-*.tex` is not
+  fact-checked by `verify.py`, which #48 tracks.
+- **Corrections we made:** none. My `!` force-push did not go through, so the
+  assistant ran the same command after checking that the remote still had the
+  old commit.
+- **How we checked it:** a fresh subagent verified the new sentence against the
+  `.exam` files and `besser/instances/`; `verify.py` reported 53 claims, none
+  with problems, before and after the rebase; the report's 13 unit tests
+  passed; a review by two subagents (standards and spec) found the wrong
+  appendix letter and no missing requirements; GitHub showed #47 mergeable
+  after the force-push. Not checked: the rendered PDF; CI on #47; #46's
+  prose, which `verify.py` does not read.
+
+## Planning BESSER's instances in the EMF chain ([#43](https://github.com/Alef-Keuffer/qmde/issues/43), [#44](https://github.com/Alef-Keuffer/qmde/issues/44)) (2026-11-11)
+
+- **Who:** Alef Keuffer.
+- **Tool:** Claude Code (Claude Opus 5.5), with the `grill-with-docs` skill
+  (grilling + domain modeling) and the `to-tickets` skill.
+- **What we asked:** whether BESSER's instance examples, which differ from
+  EMF's, could be added to ours so the two chains can be compared later; then
+  to turn the plan into tickets. Session record (questions, recommendations and
+  my answers):
+  [grilling-besser-instances.md](assets/grilling-besser-instances.md).
+- **What the assistant produced:** a comparison of the two instance sets
+  (BESSER's `medium`, `many`, `none` and `limit` are ports of `2-cycle`,
+  `1-path`, `3-clique` and `4-semester`, without weights and, for `many`, with
+  3 slots; only `tiny` is new); two rounds of numbered questions with
+  recommendations; an _Avoid_ line for BESSER's *valid* under **Feasible** in
+  `emf/GLOSSARY.md` (later committed as `18b6b68` by #43); the session record
+  (later committed as `982225c` by #44); issues #43 (eight `.exam` files and a
+  comment on both `2-cycle` files) and #44 (Appendix A and the tables, blocked
+  by #43, with a note that #34 should follow it), both `ready-for-agent`; this
+  entry.
+- **Decisions we made:** only `emf/` changes; this work only adds the
+  instances, the comparison waits; an unweighted 3-batch twin for each BESSER
+  instance with no identical EMF instance (`tiny`, the path, the clique, the
+  semester), while `medium` is `2-cycle` as it is; the two chains interpret and
+  solve the problem differently by our choice, so on `none` BESSER's optimum
+  (1 conflict) and ours (1 unscheduled exam) differ, recorded as a note rather
+  than an exactly-one switch; Glossary words only, *valid* mapped to feasible
+  with no unscheduled exam; each new problem with an annealing and a `-qaoa`
+  twin (8 files); BESSER's names (`5-tiny` to `8-limit`) so the comparison can
+  join by name; our standard QAOA line, not BESSER's fixed angles at depth 3;
+  the new problems in Appendix A with one sentence; no ADR; two tickets with
+  one edge, #44 blocked by #43.
+- **Assumptions we accepted:** on feasible unit-weight instances BESSER's valid
+  schedules are exactly our feasible schedules with no unscheduled exam;
+  `none` (256 schedules) stays under the brute-force limit; CI time for four
+  more QAOA runs is small, the largest being 18 qubits like `4-semester-qaoa`.
+- **Corrections we made:** none; I took every recommendation.
+- **How we checked it:** the instance comparison and the facts in the record
+  (`build.sh`, CI and `generate.py` pick up every `.exam` file; the twin test
+  in `python/test_instances.py`; both chains' QAOA settings) were read from the
+  code. Not checked: nothing was run; the brute-force limit and CI time were
+  not measured; "Blocked by" in #44 is plain text, not GitHub's dependency
+  link.
