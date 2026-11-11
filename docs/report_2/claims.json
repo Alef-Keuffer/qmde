@@ -880,7 +880,20 @@
 	},
 	{
 		"claim": "Every step writes its result to \\texttt{besser/output/<instance>/}, one file per step, so each step can be opened and checked independently. \\Cref{fig:besser-chain} illustrates the smallest example, \\texttt{tiny} (3 exams, 3 time slots, 9 qubits).",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/pipeline.py",
+				"quote": "output/<name>/ gets one file per step, all generated, never edited by hand"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "writes `output/<instance>/`, one file per step"
+			},
+			{
+				"path": "besser/instances/tiny.py",
+				"quote": "3 exams and 3 time slots, so 3 x 3 = 9 binary variables (9 qubits)"
+			}
+		]
 	},
 	{
 		"claim": "The BESSER chain on the \\texttt{tiny} instance: each step (left) and the model it saves (right).",
@@ -1247,7 +1260,16 @@
 	},
 	{
 		"claim": "The whole chain runs with one command, \\texttt{cd besser \\&\\& python pipeline.py}, in a few seconds for the five instances.",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/README.md",
+				"quote": "~/venv-qmde-fork/bin/python pipeline.py          # every instance in instances/ (a few seconds)"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "the problems: `tiny` (Part I example, 9 qubits), `many` (24 valid schedules, 12), `none` (no valid schedule, 12), `medium` (15), `limit` (18)"
+			}
+		]
 	},
 	{
 		"claim": "The BESSER chain is validated in two ways: every run is compared against a classical answer that is known to be correct, and a set of automated tests verifies each transformation individually.",
@@ -1294,11 +1316,25 @@
 	},
 	{
 		"claim": "The chain also checks T1 against the reference: the lowest number of points must be $w$ times the fewest conflicts, and exactly as many bit strings must reach it as the reference has best schedules.",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "T1 checked against the baseline: the QUBO's minimum is w x the fewest conflicts, reached exactly by\n        # the optimal schedules (one bit string per schedule, since every ground state is one-hot)\n        \"qubo_matches_baseline\": bool(np.isclose(energies[\"e_min\"], conflict_weight * baseline[\"optimum_conflicts\"])\n                                      and energies[\"ground_states\"] == baseline[\"optimal\"]),"
+			}
+		]
 	},
 	{
 		"claim": "To do this, it computes the points of every one of the $2^n$ bit strings.",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "spectrum() evaluates the QUBO on all 2^n bit strings"
+			},
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "The QUBO's energy on every one of the 2^n bit strings"
+			}
+		]
 	},
 	{
 		"claim": "This holds on all five instances (\\cref{tab:validation-besser}, column ``QUBO = baseline'').",
@@ -1466,23 +1502,108 @@
 	},
 	{
 		"claim": "limit & 18 & 12 of 729 & yes & 0.0098 & 0.0098 & 4.6e-05 & 0.911 & 0.750",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| limit | 18 | 12 of 729 | 0 | yes | 0.0098 | 0.0098 | 4.6e-05 | 0.911 | 0.750 |"
+			}
+		]
 	},
 	{
 		"claim": "On every instance, the circuit finds a best schedule far more often than chance (\\cref{tab:validation-besser}), but less often as the problem grows.",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| tiny | 9 | 12 of 27 | 0 | yes | 0.3250 | 0.3250 | 0.023 | 0.910 | 0.750 |"
+			},
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| many | 12 | 24 of 81 | 0 | yes | 0.2012 | 0.2012 | 0.0059 | 0.908 | 0.750 |"
+			},
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| none | 12 | 0 of 81 | 1 | yes | 0.0000 | 0.2698 | 0.0088 | 0.918 | 0.759 |"
+			},
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| medium | 15 | 30 of 243 | 0 | yes | 0.0779 | 0.0779 | 0.00092 | 0.901 | 0.750 |"
+			},
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| limit | 18 | 12 of 729 | 0 | yes | 0.0098 | 0.0098 | 4.6e-05 | 0.911 | 0.750 |"
+			}
+		]
 	},
 	{
 		"claim": "The instance \\texttt{none} has no valid schedule at all, so P(valid) is 0 there; its best schedules have one conflict, and the circuit finds them in a fraction 0.2698 of the shots.",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| none | 12 | 0 of 81 | 1 | yes | 0.0000 | 0.2698 | 0.0088 | 0.918 | 0.759 |"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "`none` (no valid schedule, 12)"
+			}
+		]
 	},
 	{
 		"claim": "47 tests (\\texttt{cd besser \\&\\& python -m pytest}) check each step on its own: that the penalty points are zero exactly for the valid schedules (on \\texttt{tiny}), that the quantum form of the QUBO gives the same value as the QUBO on every bit string (on \\texttt{tiny} and \\texttt{medium}), that the generated Qiskit code gives each schedule the phase its penalty predicts (on \\texttt{tiny}), that the bits are read in Qiskit's order (right to left), and that two runs of \\texttt{tiny} produce exactly the same files.",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/README.md",
+				"quote": "`python -m pytest` runs 47 tests: `47 passed`."
+			},
+			{
+				"path": "besser/tests/test_t1.py",
+				"quote": "def test_energy_is_zero_exactly_on_valid_schedules(tiny_t1):"
+			},
+			{
+				"path": "besser/tests/test_t2.py",
+				"quote": "@pytest.mark.parametrize(\"name\", [\"tiny\", \"medium\"])\ndef test_ising_equals_qubo_on_every_state(name):"
+			},
+			{
+				"path": "besser/tests/test_t2.py",
+				"quote": "def test_generated_cost_layer_carries_the_energy_as_phase(tmp_path):\n    \"\"\"One cost layer and no mixing (beta = 0): the state is exp(+i gamma H/s)|s>, so the phase of basis state i,\n    relative to state 0, is gamma (E_i - E_0)/s. This pins the sign convention (C = -H) and the bit order.\"\"\""
+			},
+			{
+				"path": "besser/tests/test_pipeline.py",
+				"quote": "the decoding with\nQiskit's little-endian bit order"
+			},
+			{
+				"path": "besser/tests/test_pipeline.py",
+				"quote": "def test_decoding_reads_the_key_right_to_left(tmp_path):"
+			},
+			{
+				"path": "besser/tests/test_pipeline.py",
+				"quote": "def test_reproducible_from_the_seed(tmp_path):\n    \"\"\"Two runs write the same bytes in every file (the seed fixes the counts; W7 fixes the order of saved sets).\"\"\"\n    pipeline.run(\"tiny\", out_root=tmp_path / \"a\")\n    pipeline.run(\"tiny\", out_root=tmp_path / \"b\")"
+			}
+		]
 	},
 	{
 		"claim": "To confirm that the tests really catch mistakes, \\texttt{besser/tests/mutations.py} puts three typical mistakes back, one at a time, into a temporary copy of the chain: the one-hot weight as weak as a conflict makes 17 of the 47 tests fail, the flipped sign of the cost layer 4, and count keys read left to right 2 (\\texttt{besser/README.md}).",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/README.md",
+				"quote": "`tests/mutations.py` puts three typical mistakes back, one at a\ntime, into a temporary copy of `besser/` (the real files are never changed), runs the tests there and counts the\nfailures:"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "| the one-hot weight as weak as a conflict (lambda = w) | `t1_problem2solution.py`, R4 | 17 of 47 |"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "| the flipped sign of the cost layer (C = +H, fields and couplings) | `t2_solution2quantum.py`, Q4 | 4 of 47 |"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "| count keys read left to right | `map_back.py`, `bits_of` | 2 of 47 |"
+			},
+			{
+				"path": "besser/tests/mutations.py",
+				"quote": "Puts three typical mistakes back, one at a time, into a temporary copy of besser/,\nruns the tests there and prints how many fail. The real files are never changed."
+			}
+		]
 	},
 	{
 		"claim": "The EMF chain with other QAOA settings, every one reaching the optimal cost.",
@@ -1698,23 +1819,196 @@
 	},
 	{
 		"claim": "tiny & 9 & 2 & 3 & 207 & 269 & Mon\\_0900: Chemistry; Mon\\_1400: Physics; Tue\\_0900: Math & 130 & 0",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| tiny | 9 | 12 of 27 | 0 | yes | 0.3250 | 0.3250 | 0.023 | 0.910 | 0.750 | 207 | 269 |"
+			},
+			{
+				"path": "besser/output/tiny/2_trace.json",
+				"quote": "\"max_degree\": 2"
+			},
+			{
+				"path": "besser/output/tiny/2_trace.json",
+				"quote": "\"one_hot_weight\": 3.0"
+			},
+			{
+				"path": "besser/output/tiny/7_problem_solved.py",
+				"quote": "metadata = Metadata(description=\"Problem model of tiny with the schedule measured 130 times\")"
+			},
+			{
+				"path": "besser/output/tiny/7_problem_solved.py",
+				"quote": "chemistry_obj.timeSlot = mon_0900_obj"
+			},
+			{
+				"path": "besser/output/tiny/7_problem_solved.py",
+				"quote": "physics_obj.timeSlot = mon_1400_obj"
+			},
+			{
+				"path": "besser/output/tiny/7_problem_solved.py",
+				"quote": "math_obj.timeSlot = tue_0900_obj"
+			}
+		]
 	},
 	{
 		"claim": "many & 12 & 2 & 3 & 285 & 846 & Mon\\_0900: Physics; Mon\\_1400: Algebra, Chemistry; Tue\\_0900: Calculus & 44 & 0",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| many | 12 | 24 of 81 | 0 | yes | 0.2012 | 0.2012 | 0.0059 | 0.908 | 0.750 | 285 | 846 |"
+			},
+			{
+				"path": "besser/output/many/2_trace.json",
+				"quote": "\"max_degree\": 2"
+			},
+			{
+				"path": "besser/output/many/2_trace.json",
+				"quote": "\"one_hot_weight\": 3.0"
+			},
+			{
+				"path": "besser/output/many/7_problem_solved.py",
+				"quote": "metadata = Metadata(description=\"Problem model of many with the schedule measured 44 times\")"
+			},
+			{
+				"path": "besser/output/many/7_problem_solved.py",
+				"quote": "physics_obj.timeSlot = mon_0900_obj"
+			},
+			{
+				"path": "besser/output/many/7_problem_solved.py",
+				"quote": "algebra_obj.timeSlot = mon_1400_obj"
+			},
+			{
+				"path": "besser/output/many/7_problem_solved.py",
+				"quote": "chemistry_obj.timeSlot = mon_1400_obj"
+			},
+			{
+				"path": "besser/output/many/7_problem_solved.py",
+				"quote": "calculus_obj.timeSlot = tue_0900_obj"
+			}
+		]
 	},
 	{
 		"claim": "none & 12 & 3 & 4 & 366 & 855 & Mon\\_0900: Calculus, Physics; Mon\\_1400: Statistics; Tue\\_0900: Algebra & 46 & 1",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| none | 12 | 0 of 81 | 1 | yes | 0.0000 | 0.2698 | 0.0088 | 0.918 | 0.759 | 366 | 855 |"
+			},
+			{
+				"path": "besser/output/none/2_trace.json",
+				"quote": "\"max_degree\": 3"
+			},
+			{
+				"path": "besser/output/none/2_trace.json",
+				"quote": "\"one_hot_weight\": 4.0"
+			},
+			{
+				"path": "besser/output/none/7_problem_solved.py",
+				"quote": "metadata = Metadata(description=\"Problem model of none with the schedule measured 46 times\")"
+			},
+			{
+				"path": "besser/output/none/7_problem_solved.py",
+				"quote": "calculus_obj.timeSlot = mon_0900_obj"
+			},
+			{
+				"path": "besser/output/none/7_problem_solved.py",
+				"quote": "physics_obj.timeSlot = mon_0900_obj"
+			},
+			{
+				"path": "besser/output/none/7_problem_solved.py",
+				"quote": "statistics_obj.timeSlot = mon_1400_obj"
+			},
+			{
+				"path": "besser/output/none/7_problem_solved.py",
+				"quote": "algebra_obj.timeSlot = tue_0900_obj"
+			}
+		]
 	},
 	{
 		"claim": "medium & 15 & 2 & 3 & 390 & 1787 & Mon\\_0900: Algebra, Physics; Mon\\_1400: Chemistry; Tue\\_0900: Calculus, Programming & 17 & 0",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| medium | 15 | 30 of 243 | 0 | yes | 0.0779 | 0.0779 | 0.00092 | 0.901 | 0.750 | 390 | 1787 |"
+			},
+			{
+				"path": "besser/output/medium/2_trace.json",
+				"quote": "\"max_degree\": 2"
+			},
+			{
+				"path": "besser/output/medium/2_trace.json",
+				"quote": "\"one_hot_weight\": 3.0"
+			},
+			{
+				"path": "besser/output/medium/7_problem_solved.py",
+				"quote": "metadata = Metadata(description=\"Problem model of medium with the schedule measured 17 times\")"
+			},
+			{
+				"path": "besser/output/medium/7_problem_solved.py",
+				"quote": "algebra_obj.timeSlot = mon_0900_obj"
+			},
+			{
+				"path": "besser/output/medium/7_problem_solved.py",
+				"quote": "physics_obj.timeSlot = mon_0900_obj"
+			},
+			{
+				"path": "besser/output/medium/7_problem_solved.py",
+				"quote": "chemistry_obj.timeSlot = mon_1400_obj"
+			},
+			{
+				"path": "besser/output/medium/7_problem_solved.py",
+				"quote": "calculus_obj.timeSlot = tue_0900_obj"
+			},
+			{
+				"path": "besser/output/medium/7_problem_solved.py",
+				"quote": "programming_obj.timeSlot = tue_0900_obj"
+			}
+		]
 	},
 	{
 		"claim": "limit & 18 & 3 & 4 & 522 & 2826 & Mon\\_0900: Algebra, Chemistry; Mon\\_1400: Physics, Programming; Tue\\_0900: Calculus, Databases & 6 & 0",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| limit | 18 | 12 of 729 | 0 | yes | 0.0098 | 0.0098 | 4.6e-05 | 0.911 | 0.750 | 522 | 2826 |"
+			},
+			{
+				"path": "besser/output/limit/2_trace.json",
+				"quote": "\"max_degree\": 3"
+			},
+			{
+				"path": "besser/output/limit/2_trace.json",
+				"quote": "\"one_hot_weight\": 4.0"
+			},
+			{
+				"path": "besser/output/limit/7_problem_solved.py",
+				"quote": "metadata = Metadata(description=\"Problem model of limit with the schedule measured 6 times\")"
+			},
+			{
+				"path": "besser/output/limit/7_problem_solved.py",
+				"quote": "algebra_obj.timeSlot = mon_0900_obj"
+			},
+			{
+				"path": "besser/output/limit/7_problem_solved.py",
+				"quote": "chemistry_obj.timeSlot = mon_0900_obj"
+			},
+			{
+				"path": "besser/output/limit/7_problem_solved.py",
+				"quote": "physics_obj.timeSlot = mon_1400_obj"
+			},
+			{
+				"path": "besser/output/limit/7_problem_solved.py",
+				"quote": "programming_obj.timeSlot = mon_1400_obj"
+			},
+			{
+				"path": "besser/output/limit/7_problem_solved.py",
+				"quote": "calculus_obj.timeSlot = tue_0900_obj"
+			},
+			{
+				"path": "besser/output/limit/7_problem_solved.py",
+				"quote": "databases_obj.timeSlot = tue_0900_obj"
+			}
+		]
 	},
 	{
 		"claim": "On every instance, the chain found and wrote back a best schedule: a valid one on the four instances that have one, and on \\texttt{none}, which has none, a schedule with a single conflict (Calculus and Physics in the same slot), which is the best possible there.",
@@ -1779,7 +2073,28 @@
 	},
 	{
 		"claim": "As the problem grows, the 4096 shots spread across more and more bit strings (from 269 on \\texttt{tiny} to 2826 on \\texttt{limit}), so the schedule found appears fewer times: 130 shots on \\texttt{tiny}, only 6 on \\texttt{limit}.",
-		"evidence": null
+		"evidence": [
+			{
+				"path": "besser/config/tiny.py",
+				"quote": "attributes(name=\"tiny\", conflictWeight=1.0, depth=3, shots=4096, seed=7)"
+			},
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| tiny | 9 | 12 of 27 | 0 | yes | 0.3250 | 0.3250 | 0.023 | 0.910 | 0.750 | 207 | 269 |"
+			},
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| limit | 18 | 12 of 729 | 0 | yes | 0.0098 | 0.0098 | 4.6e-05 | 0.911 | 0.750 | 522 | 2826 |"
+			},
+			{
+				"path": "besser/output/tiny/7_problem_solved.py",
+				"quote": "metadata = Metadata(description=\"Problem model of tiny with the schedule measured 130 times\")"
+			},
+			{
+				"path": "besser/output/limit/7_problem_solved.py",
+				"quote": "metadata = Metadata(description=\"Problem model of limit with the schedule measured 6 times\")"
+			}
+		]
 	},
 	{
 		"claim": "The chain still finds it, but with fewer shots it could be missed; this reflects the trend of P(optimal) in \\cref{tab:validation-besser}.",
