@@ -1,6 +1,6 @@
 # Generate the notebook's pyqubo formulation; no Hamiltonian, QUBO or Ising models
 
-Acceleo generates `solve_<name>.py` from the Conflict Graph and the Solver Configuration: the exam names, the batch count and the conflicts as data, followed by the reference notebook's pyqubo construction (`Array.create`, the exactly-once and conflict constraints as `for` loops, `H = profit + A·(constraint1 + constraint2)`, `H.compile()`). pyqubo derives the QUBO and its Ising form, so the chain no longer models them: the Hamiltonian, QUBO and Ising metamodels and their ATL steps are removed. The compiled model is sampled either by simulated annealing (`neal`, as in the notebook) or by QAOA on the Qiskit Aer simulator, chosen by the Solver Configuration's `method`. This supersedes ADR-0004.
+Acceleo generates `solve_<name>.py` from the Conflict Graph and the Solver Configuration: the exam names, the batch count and the conflicts as data, followed by the reference notebook's pyqubo construction (`Array.create`, the exactly-once and conflict constraints as `for` loops, `H = profit + A·(constraint1 + constraint2)`, `H.compile()`). pyqubo derives the QUBO and its Ising form, so the chain no longer models them: the Hamiltonian, QUBO and Ising metamodels and their ATL steps are removed. The compiled model is sampled by simulated annealing (`neal`, as in the notebook), by quantum annealing on D-Wave Leap (ADR-0010), or by QAOA on the Qiskit Aer simulator, chosen by the Solver Configuration's `method`. This supersedes ADR-0004.
 
 ## Considered Options
 

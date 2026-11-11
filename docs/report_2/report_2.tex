@@ -83,10 +83,12 @@ formulation, with the penalty BESSER derives for an \term{exam} left out, above 
 
 The paper samples its \term{QUBO} on D-Wave's quantum annealer, its Leap Hybrid Sampler and, classically, by
 \term{simulated annealing} \cite[§5.4]{Paper}, as the notebook does \cite[cells 15--17]{Notebook}. The EMF chain
-samples its own \term{QUBO} by \term{simulated annealing} or by QAOA on a simulator; the BESSER chain by QAOA only.
-\term{Simulated annealing} needs no D-Wave account, so CI reruns the EMF chain's runs (\cref{tab:results-emf}), and
-it gives QAOA a yardstick on the same \term{QUBO}. Quantum annealing
-itself is issue~\#23.
+samples its own \term{QUBO} by \term{simulated annealing}, by \term{quantum annealing} on Leap, or by QAOA on a
+simulator; the BESSER chain by QAOA only.
+\term{Simulated annealing} needs no D-Wave account, so CI reruns those runs (\cref{tab:results-emf}), and it gives
+QAOA a yardstick on the same \term{QUBO}. \term{Quantum annealing} needs a Leap token, so CI skips it and, when
+present, copies committed JSON from \texttt{emf/recorded/quantum\_annealing/} (ADR-0010; issue~\#23); none is
+committed yet.
 
 \begin{figure}
 	\begin{tikzpicture}[node distance=6mm and 7mm, >={Stealth[]},
@@ -95,8 +97,8 @@ itself is issue~\#23.
 		\node[stage] (problem) {\textbf{\term{Problem}}\\\footnotesize \term{students}, \term{exams} and their \term{weights}, \term{batches}};
 		\node[stage, right=of problem] (qubo) {\textbf{\term{QUBO}}\\\footnotesize an \term{Assignment Variable} per
 			\term{exam} and \term{batch}, a penalty per \term{Constraint}};
-		\node[stage, right=of qubo] (method) {\textbf{\term{Method}}\\\footnotesize QAOA on a simulator, or
-			\term{simulated annealing} (EMF)};
+		\node[stage, right=of qubo] (method) {\textbf{\term{Method}}\\\footnotesize QAOA, \term{simulated annealing}, or
+			\term{quantum annealing} (EMF)};
 		\node[stage, right=of method] (schedule) {\textbf{\term{Schedule}}\\\footnotesize a sample, decoded};
 		\node[stage, below=of qubo] (baseline) {\textbf{\term{Baseline}}\\\footnotesize every \term{schedule}
 			enumerated: the optimum};
@@ -144,7 +146,7 @@ formulation in every run: a sample's energy is minus the \term{weight} it places
 	      \term{Solver Configuration}. From there a deeper circuit raises \term{P(feasible)} on path and cycle, but
 	      there \term{P(optimal)} stays between 0.028 and 0.062 whatever the depth or optimiser
 	      (\cref{tab:results-emf,tab:other-settings-emf}): the extra \term{feasible} \term{schedules} leave an \term{exam} out.
-	\item The \term{simulated annealing} is classical: no quantum annealer was used (issue~\#23).
+	\item \term{Quantum annealing} needs a D-Wave Leap account; CI skips it and copies recorded results when present (ADR-0010).
 	\item The \term{Baseline} enumerates every \term{schedule}, so validation stops at about $10^6$ \term{schedules}.
 	\item The \term{Schedule} the generated script writes is not validated against its metamodel's OCL.
 	\item The BESSER chain's own.

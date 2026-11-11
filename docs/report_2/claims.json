@@ -138,7 +138,7 @@
 		"evidence": [
 			{
 				"path": "emf/GLOSSARY.md",
-				"quote": "How the compiled formulation is sampled: QAOA or simulated annealing."
+				"quote": "How the compiled formulation is sampled: QAOA, *simulated annealing* or *quantum annealing*."
 			},
 			{
 				"path": "emf/python/examschedule.py",
@@ -363,58 +363,98 @@
 		]
 	},
 	{
-		"claim": "The EMF chain samples its own \\term{QUBO} by \\term{simulated annealing} or by QAOA on a simulator; the BESSER chain by QAOA only.",
+		"claim": "The EMF chain samples its own \\term{QUBO} by \\term{simulated annealing}, by \\term{quantum annealing} on Leap, or by QAOA on a simulator; the BESSER chain by QAOA only.",
 		"evidence": [
 			{
-				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
-				"quote": "The compiled model is sampled either by simulated annealing (`neal`, as in the notebook) or by QAOA on the Qiskit Aer simulator"
-			},
-			{
-				"path": "besser/README.md",
-				"quote": "a\nQiskit script that runs on Aer"
-			},
-			{
-				"path": "besser/README.md",
-				"quote": "through T2 (M2M) to a QAOA circuit in BESSER's quantum metamodel"
-			}
-		]
-	},
-	{
-		"claim": "\\term{Simulated annealing} needs no D-Wave account, so CI reruns the EMF chain's runs (\\cref{tab:results-emf}), and it gives QAOA a yardstick on the same \\term{QUBO}.",
-		"evidence": [
-			{
-				"cite": "Notebook",
-				"quote": "sa = neal.SimulatedAnnealingSampler()"
-			},
-			{
-				"cite": "Notebook",
-				"quote": "Provide your D-Wave token here"
+				"path": "emf/GLOSSARY.md",
+				"quote": "How the compiled formulation is sampled: QAOA, *simulated annealing* or *quantum annealing*."
 			},
 			{
 				"path": "emf/GLOSSARY.md",
-				"quote": "The classical sampler the notebook uses (`neal`)"
+				"quote": "Sampling the compiled *QUBO* on D-Wave Leap"
 			},
 			{
-				"path": ".github/workflows/emf.yml",
-				"quote": "- run: ./build.sh"
+				"path": "emf/python/examschedule.py",
+				"quote": "METHODS = {\n    \"ANNEALING\": anneal,\n    \"QUANTUM_ANNEALING\": quantum_anneal,\n    \"QAOA\": qaoa,\n}"
 			},
 			{
-				"path": "emf/README.md",
-				"quote": "runs the chain headlessly on every `.exam` file in `instances/`"
+				"path": "emf/CONTEXT.md",
+				"quote": "solving: QAOA (Quantum Approximate Optimization Algorithm) simulated on Qiskit Aer, simulated annealing (`neal`) as in the notebook, or quantum annealing on D-Wave Leap"
 			},
 			{
-				"path": ".github/workflows/emf.yml",
-				"quote": "Every run's results, for the tables of docs/report_2"
+				"path": "besser/README.md",
+				"quote": "through T2 (M2M) to a QAOA circuit in BESSER's quantum metamodel, through T3 (BESSER's `QiskitGenerator`) to a\nQiskit script that runs on Aer"
 			},
 			{
-				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
-				"quote": "Both share the compiled model"
+				"path": "besser/pipeline.py",
+				"quote": "# T2: QUBO -> QAOA circuit (BESSER quantum metamodel)"
 			}
 		]
 	},
 	{
-		"claim": "Quantum annealing itself is issue~\\#23.",
+		"claim": "\\term{Simulated annealing} needs no D-Wave account, so CI reruns those runs (\\cref{tab:results-emf}), and it gives QAOA a yardstick on the same \\term{QUBO}.",
 		"evidence": [
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "[Notebook cell 15]: simulated annealing (neal) on the BQM, then pyqubo decodes every read."
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "sampleset = neal.SimulatedAnnealingSampler().sample(bqm, num_reads=config.reads, num_sweeps=config.sweeps,\n                                                       seed=config.seed)"
+			},
+			{
+				"path": "emf/docs/adr/0010-quantum-annealing-on-dwave.md",
+				"quote": "The classical *simulated annealing* Method keeps the name `annealing` in `.exam` files"
+			},
+			{
+				"path": "emf/docs/adr/0010-quantum-annealing-on-dwave.md",
+				"quote": "the chain otherwise compares QAOA only to a classical stand-in (issue #23)."
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "Builds every EMF bundle, runs the chain on every instance and runs the generated scripts (emf/build.sh)."
+			},
+			{
+				"path": "emf/CONTEXT.md",
+				"quote": "Test instances (variables = exams × batches), each solved by QAOA and simulated annealing"
+			},
+			{
+				"path": "docs/report_2/generated/results-emf.tex",
+				"quote": "path & 8 & annealing, 50 reads × 10000 sweeps"
+			}
+		]
+	},
+	{
+		"claim": "\\term{Quantum annealing} needs a Leap token, so CI skips it and, when present, copies committed JSON from \\texttt{emf/recorded/quantum\\_annealing/} (ADR-0010; issue~\\#23); none is committed yet.",
+		"evidence": [
+			{
+				"path": "emf/python/run_generated.py",
+				"quote": "Quantum annealing needs a D-Wave Leap token (ADR-0010). Without DWAVE_API_TOKEN / DWAVE_TOKEN,\nthose scripts are skipped and any committed JSON under recorded/quantum_annealing/ is copied into\nthe matching out/ folder so CI still uploads a full emf-results artifact."
+			},
+			{
+				"path": "emf/python/run_generated.py",
+				"quote": "if is_quantum_annealing(script) and not token:\n            print(\"skip: quantum annealing needs DWAVE_API_TOKEN (ADR-0010)\", flush=True)\n            copy_recorded(recorded, root, script.parent.name)"
+			},
+			{
+				"path": "emf/python/run_generated.py",
+				"quote": "src = recorded / f\"results_{name}.json\"\n    if not src.is_file():\n        print(f\"  no recorded result at {src}\", flush=True)\n        return False"
+			},
+			{
+				"path": "emf/docs/adr/0010-quantum-annealing-on-dwave.md",
+				"quote": "Generated scripts need `DWAVE_API_TOKEN` (or `DWAVE_TOKEN`) at run time. Without it, `python/run_generated.py` skips them and, when present, copies committed JSON from `recorded/quantum_annealing/` into `out/`, so CI still uploads a full `emf-results` artifact."
+			},
+			{
+				"path": "emf/docs/adr/0010-quantum-annealing-on-dwave.md",
+				"quote": "Rejected: the paper's results come from quantum annealing, and the chain otherwise compares QAOA only to a classical stand-in (issue #23)."
+			},
+			{
+				"path": "emf/recorded/quantum_annealing/README.md",
+				"quote": "CI and `./build.sh` without `DWAVE_API_TOKEN` (or `DWAVE_TOKEN`) skip every\n`method='QUANTUM_ANNEALING'` script and copy JSON from this folder into\n`out/<name>/`"
+			},
+			{
+				"path": "emf/recorded/quantum_annealing/README.md",
+				"quote": "Copy each `out/<name>/results_<name>.json` here."
+			},
 			{
 				"issue": 23,
 				"state": "OPEN"
@@ -438,7 +478,7 @@
 			},
 			{
 				"path": "emf/GLOSSARY.md",
-				"quote": "The fraction of QAOA shots or annealing reads that decode to an optimal schedule."
+				"quote": "The fraction of QAOA shots or annealing reads (simulated or quantum) that decode to an *optimal* *schedule*."
 			},
 			{
 				"path": "besser/tests/baseline.py",
@@ -682,35 +722,43 @@
 		]
 	},
 	{
-		"claim": "Python at run time: pyqubo builds the \\term{QUBO}, then QAOA or annealing samples it, writing \\texttt{schedule\\_path.xmi} and a printed report; the \\term{schedule} conforms to \\texttt{schedule.ecore}.",
+		"claim": "Python at run time: pyqubo builds the \\term{QUBO}, then QAOA, \\term{simulated annealing} or \\term{quantum annealing} samples it, writing \\texttt{schedule\\_path.xmi} and a printed report; the \\term{schedule} conforms to \\texttt{schedule.ecore}.",
 		"evidence": [
 			{
-				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
-				"quote": "pyqubo derives the QUBO and its Ising form"
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "from pyqubo import Array, Constraint, Placeholder"
 			},
 			{
-				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
-				"quote": "The compiled model is sampled either by simulated annealing (`neal`, as in the notebook) or by QAOA on the Qiskit Aer simulator"
-			},
-			{
-				"path": "emf/python/examschedule.py",
-				"quote": "Write the decoded schedule as a Schedule model (schedule.ecore)."
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/codegen/main.mtl",
+				"quote": "model = H.compile()"
 			},
 			{
 				"path": "emf/python/examschedule.py",
-				"quote": "path = Path(path or f\"schedule_{problem.name}.xmi\")"
+				"quote": "parts: sampling the compiled model by simulated annealing, quantum annealing or QAOA, decoding, the\nclassical baseline, the report and writing the Schedule model (ADR-0005, ADR-0007, ADR-0010)."
 			},
 			{
 				"path": "emf/python/examschedule.py",
-				"quote": "def report(problem, description, a, schedule, energy, count, total, optimum, optimal_count, feasible_count):"
+				"quote": "METHODS = {\n    \"ANNEALING\": anneal,\n    \"QUANTUM_ANNEALING\": quantum_anneal,\n    \"QAOA\": qaoa,\n}"
 			},
 			{
-				"path": "emf/CONTEXT.md",
-				"quote": "─► lowest-energy sample ─► Schedule.xmi + report in domain terms"
+				"path": "emf/python/examschedule.py",
+				"quote": "report(problem, description, feed_dict[\"A\"], schedule, best.energy, count, total, optimum,\n           optimal_count, feasible_count)\n    write_schedule(problem, schedule)"
 			},
 			{
-				"path": "emf/instances/1-path.exam",
-				"quote": "problem path batches 2"
+				"path": "emf/python/examschedule.py",
+				"quote": "def write_schedule(problem, schedule, path=None):\n    \"\"\"Write the decoded schedule as a Schedule model (schedule.ecore).\"\"\"\n    path = Path(path or f\"schedule_{problem.name}.xmi\")"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "' xmlns:schedule=\"https://pt/up/feup/examschedule/schedule\"'"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.model/model/schedule.ecore",
+				"quote": "xmlns:ecore=\"http://www.eclipse.org/emf/2002/Ecore\" name=\"schedule\" nsURI=\"https://pt/up/feup/examschedule/schedule\""
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.model/model/schedule.ecore",
+				"quote": "<eClassifiers xsi:type=\"ecore:EClass\" name=\"Schedule\">"
 			}
 		]
 	},
@@ -2565,7 +2613,7 @@
 			},
 			{
 				"path": "emf/python/examschedule.py",
-				"quote": "run = anneal if config.method == \"ANNEALING\" else qaoa"
+				"quote": "METHODS = {\n    \"ANNEALING\": anneal,\n    \"QUANTUM_ANNEALING\": quantum_anneal,\n    \"QAOA\": qaoa,\n}"
 			},
 			{
 				"cite": "Glover",
@@ -2723,7 +2771,7 @@
 		"evidence": [
 			{
 				"path": "emf/CONTEXT.md",
-				"quote": "Test instances (variables = exams × batches), each solved by both methods"
+				"quote": "Test instances (variables = exams × batches), each solved by QAOA and simulated annealing"
 			}
 		]
 	},
@@ -2732,11 +2780,11 @@
 		"evidence": [
 			{
 				"path": "emf/CONTEXT.md",
-				"quote": "`<n>-<name>.exam` and its twin `<n>-<name>-qaoa.exam` or `<n>-<name>-annealing.exam`, the same problem"
+				"quote": "`<n>-<name>.exam` and its twin `<n>-<name>-qaoa.exam` or `<n>-<name>-annealing.exam`, plus a Leap companion `<n>-<name>-quantum_annealing.exam`"
 			},
 			{
 				"path": "emf/CONTEXT.md",
-				"quote": "each solved by both methods"
+				"quote": "each solved by QAOA and simulated annealing"
 			}
 		]
 	},

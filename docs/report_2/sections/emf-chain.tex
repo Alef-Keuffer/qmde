@@ -18,8 +18,9 @@ happens to it, in order:
 	      \texttt{conflictgraph.xmi}, which conforms to \texttt{conflictgraph.ecore}.
 	\item OCL validation, then Acceleo \texttt{main.mtl} (model~$\to$~text) yields
 	      \texttt{solve\_path.py}.
-	\item Python at run time: pyqubo builds the \term{QUBO}, then QAOA or annealing samples it, writing
-	      \texttt{schedule\_path.xmi} and a printed report; the \term{schedule} conforms to \texttt{schedule.ecore}.
+	\item Python at run time: pyqubo builds the \term{QUBO}, then QAOA, \term{simulated annealing} or
+	      \term{quantum annealing} samples it, writing \texttt{schedule\_path.xmi} and a printed report; the
+	      \term{schedule} conforms to \texttt{schedule.ecore}.
 \end{enumerate}
 
 The Java that glues the first three arrows is one class,
