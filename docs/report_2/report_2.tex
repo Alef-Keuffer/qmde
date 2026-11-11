@@ -46,16 +46,22 @@
 
 \maketitle
 
+\section{Introduction}\label{sec:introduction}
+
+The problem given to our group represents a lists students, the exams each of them has to take, and a fixed number of batches to fit them in.
+All exams of a batch take place at once.
+Two exams that share a student are in Conflict and must not share a batch\cite[§5.2, Algorithm 1]{Paper}. 
+Each exam carries a Weight, which represents its priority, which in the EMF chain, represents the cost of leaving it unscheduled.
+
+We decided to implement two chains, one using Besser, and one using EMF, this was 
+done to compare the different technologies and to get the whole team familiarized with the problem and implementation process. 
+More details on the chains can be found in \cref{sec:emf-chain,sec:besser-chain}.
+
 \section{Strategy}\label{sec:strategy}
 
 Terms are those of the EMF chain's glossary, \texttt{emf/GLOSSARY.md}.\footnote{BESSER's metamodels, from
 Part~I, call a Batch a \emph{TimeSlot} (or slot); its chain calls a schedule \emph{valid} when it places every exam
 in one slot without a Conflict.}
-
-A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch
-take place at once. Two exams that share a student are in Conflict and must not share a batch
-\cite[§5.2, Algorithm 1]{Paper}. Each exam carries a Weight, its priority; in the EMF chain, the cost of
-leaving it unscheduled.
 
 Both chains follow \cref{fig:strategy}. The Problem is formulated as a QUBO over one Assignment Variable
 $x_{ik}$ per exam~$i$ and batch~$k$, $1$ when exam~$i$ is in batch~$k$ \cite[§5.3, Eq. (4)]{Paper}, with a
@@ -231,6 +237,15 @@ Instances 5 to 8 are the BESSER chain's instances, \texttt{besser/instances/}, w
 	      \texttt{emf/requirements.txt}. CI runs the same on every pull request and push to main that changes \texttt{emf/}
 	      (\texttt{.github/workflows/emf.yml})
 	      and uploads the results as the \texttt{emf-results} artifact.
+	\item The BESSER chain (Python 3.12), from the repository root:
+	      \begin{Verbatim}[fontsize=\footnotesize]
+python3.12 -m venv ~/venv-qmde-fork
+cd besser
+~/venv-qmde-fork/bin/pip install -r requirements.txt
+~/venv-qmde-fork/bin/python pipeline.py
+	      \end{Verbatim}
+	      The last command runs every instance; generated files, including the results table, are in
+	      \texttt{besser/output/}.
 	\item This report: \texttt{docs/report\_2/build.sh} (TeX Live, \texttt{gh}) fetches those results from
 	      CI, generates its tables, \cref{app:traceability} and the diagrams of \cref{app:metamodels}, and
 	      runs latexmk; it does not run the chains.
@@ -239,8 +254,5 @@ Instances 5 to 8 are the BESSER chain's instances, \texttt{besser/instances/}, w
 	      with the session records it links in \texttt{docs/assets/}, and
 	      \href{https://github.com/Alef-Keuffer/qmde/blob/main/besser/docs/llm_usage_2.md}{\texttt{besser/docs/llm\_usage\_2.md}}.
 \end{itemize}
-
-\placeholder{the BESSER rework}{How to reproduce the BESSER chain's results}{\texttt{besser/README.md}'s
-commands, once the chain settles.}
 
 \end{document}

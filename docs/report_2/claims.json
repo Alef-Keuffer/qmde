@@ -1,5 +1,62 @@
 [
 	{
+		"claim": "The problem given to our group represents a lists students, the exams each of them has to take, and a fixed number of batches to fit them in.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "One instance to be scheduled: a set of students, a set of exams, and the number of batches available."
+			}
+		]
+	},
+	{
+		"claim": "All exams of a batch take place at once.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "One of a fixed number of exam periods; all exams in the same batch take place simultaneously. The \"slot\" in the problem's name, Exam-Slot Assignment, is a batch."
+			}
+		]
+	},
+	{
+		"claim": "Two exams that share a student are in Conflict and must not share a batch\\cite[§5.2, Algorithm 1]{Paper}.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "A relation between two distinct exams that share at least one student, so they must not be in the same batch."
+			},
+			{
+				"cite": "Paper",
+				"quote": "To avoid conflicting courses being scheduled in the same batch of examination"
+			}
+		]
+	},
+	{
+		"claim": "Each exam carries a Weight, which represents its priority, which in the EMF chain, represents the cost of leaving it unscheduled.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "The priority of an exam: the cost of leaving it unscheduled. Always positive; 1 when not given, so by default a schedule places as many exams as it can."
+			}
+		]
+	},
+	{
+		"claim": "We decided to implement two chains, one using Besser, and one using EMF, this was done to compare the different technologies and to get the whole team familiarized with the problem and implementation process.",
+		"evidence": [
+			{
+				"path": "AGENTS.md",
+				"quote": "Two independent implementations of the chain live side by side:"
+			},
+			{
+				"path": "README.md",
+				"quote": "`emf/` holds an implementation of the chain for exam-slot assignment in Eclipse EMF (Ecore + OCL, Xtext, ATL, Acceleo), independent of BESSER: a `.exam` problem goes through a Conflict Graph to a generated Python script that builds the reference paper's QUBO with pyqubo and solves it with QAOA or simulated annealing."
+			}
+		]
+	},
+	{
+		"claim": "More details on the chains can be found in \\cref{sec:emf-chain,sec:besser-chain}.",
+		"evidence": []
+	},
+	{
 		"claim": "Terms are those of the EMF chain's glossary, \\texttt{emf/GLOSSARY.md}.",
 		"evidence": [
 			{
@@ -38,69 +95,6 @@
 			{
 				"path": "besser/transformations/map_back.py",
 				"quote": "whether it is a valid schedule (every exam in exactly one slot, no two\n    conflicting exams in one slot)"
-			}
-		]
-	},
-	{
-		"claim": "A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch take place at once.",
-		"evidence": [
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "One instance to be scheduled: a set of students, a set of exams, and the number of batches available."
-			},
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "A single final exam sat by one or more students"
-			},
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "One of a fixed number of exam periods; all exams in the same batch take place simultaneously."
-			},
-			{
-				"path": "metamodels/buml/problem_dsl.py",
-				"quote": "TimeSlot = Class(name=\"TimeSlot\")"
-			},
-			{
-				"path": "metamodels/buml/problem_dsl.py",
-				"quote": "Exam_Student: BinaryAssociation"
-			}
-		]
-	},
-	{
-		"claim": "Two exams that share a student are in Conflict and must not share a batch \\cite[§5.2, Algorithm 1]{Paper}.",
-		"evidence": [
-			{
-				"cite": "Paper",
-				"quote": "as detailed in Algorithm 1, the matrix A is converted to the course conflict matrix C to detect examination scheduling conflicts"
-			},
-			{
-				"cite": "Paper",
-				"quote": "edges connect courses that cannot be scheduled simultaneously due to student examination conflicts"
-			},
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "A relation between two distinct exams that share at least one student, so they must not be in the same batch."
-			}
-		]
-	},
-	{
-		"claim": "Each exam carries a Weight, its priority; in the EMF chain, the cost of leaving it unscheduled.",
-		"evidence": [
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "The priority of an exam: the cost of leaving it unscheduled."
-			},
-			{
-				"path": "metamodels/buml/problem_dsl.py",
-				"quote": "Exam_weight: Property = Property(name=\"weight\", type=IntegerType)"
-			},
-			{
-				"path": "docs/report_1.md",
-				"quote": "weights are added to each exam to establish priorities"
-			},
-			{
-				"path": "besser/transformations/t1_problem2solution.py",
-				"quote": "Exam.weight of Part I is not used: the paper has no exam weights"
 			}
 		]
 	},
@@ -2854,6 +2848,57 @@
 			{
 				"path": ".github/workflows/emf.yml",
 				"quote": "name: emf-results\n          path: emf/out/*/results_*.json"
+			}
+		]
+	},
+	{
+		"claim": "The BESSER chain (Python 3.12), from the repository root:",
+		"evidence": [
+			{
+				"path": "besser/README.md",
+				"quote": "## Setup (Python 3.12)"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "cd besser                                            # every command runs from this folder"
+			}
+		]
+	},
+	{
+		"claim": "python3.12 -m venv ~/venv-qmde-fork cd besser ~/venv-qmde-fork/bin/pip install -r requirements.txt ~/venv-qmde-fork/bin/python pipeline.py",
+		"evidence": [
+			{
+				"path": "besser/README.md",
+				"quote": "python3.12 -m venv ~/venv-qmde-fork"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "cd besser"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "~/venv-qmde-fork/bin/pip install -r requirements.txt"
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "~/venv-qmde-fork/bin/python pipeline.py"
+			}
+		]
+	},
+	{
+		"claim": "The last command runs every instance; generated files, including the results table, are in \\texttt{besser/output/}.",
+		"evidence": [
+			{
+				"path": "besser/README.md",
+				"quote": "~/venv-qmde-fork/bin/python pipeline.py          # every instance in instances/"
+			},
+			{
+				"path": "besser/pipeline.py",
+				"quote": "When every instance runs, output/summary.md gets one table with all of them."
+			},
+			{
+				"path": "besser/README.md",
+				"quote": "It prints, per instance, the schedule found and the metrics, and writes `output/<instance>/`, one file per step, all generated (never edited by hand)"
 			}
 		]
 	},
