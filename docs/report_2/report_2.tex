@@ -14,8 +14,6 @@
 \usepackage{fancyvrb}
 \usepackage{tikz}
 \usetikzlibrary{positioning, graphdrawing, arrows.meta, quotes}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
 \usegdlibrary{layered}
 % BibTeX, not biber: TeX Live 2026's universal biber cannot unpack itself where lipo lacks -extract_family.
 \usepackage[style=numeric, backend=bibtex]{biblatex}
@@ -116,22 +114,16 @@ own words: \emph{slot} for a \term{Batch}, \emph{valid} for a \term{schedule} th
 
 \section{Validation}\label{sec:validation}
 
-\placeholder{the team}{How the chains are validated}{What every run measures: the \term{Schedule} found, whether
-it is \term{feasible} and \term{optimal} against the \term{Baseline}, \term{P(optimal)} and \term{P(feasible)} over every shot or read, and
-the odds of a uniformly random bit string, the bar a \term{Method} must clear. The EMF chain also checks its
-formulation in every run: a sample's energy is minus the \term{weight} it places exactly when it breaks no
-\term{Constraint}. Each chain is measured on its own instances (\cref{app:instances}); every run is in
-\cref{app:results}.}
-
-\input{generated/validation-emf-plot}
+\input{sections/emf-validation}
 
 \input{sections/besser-validation}
 
 \section{Limitations}\label{sec:limitations}
 
-\placeholder{the team}{The limitations}{%
+\subsection*{EMF}
+
 \begin{itemize}[nosep]
-	\item QAOA is far behind \term{simulated annealing} (\cref{fig:validation-emf}), and only simulated, on at
+	\item QAOA is far behind \term{simulated annealing} (\cref{tab:validation-emf}), and only simulated, on at
 	      most 18 qubits.
 	\item QAOA starts from a fixed ramp of angles on the annealing path \cite[§VI]{Farhi}, not set by the
 	      \term{Solver Configuration}. From there a deeper circuit raises \term{P(feasible)} on path and cycle, but
@@ -140,8 +132,22 @@ formulation in every run: a sample's energy is minus the \term{weight} it places
 	\item The \term{simulated annealing} is classical: no quantum annealer was used (issue~\#23).
 	\item The \term{Baseline} enumerates every \term{schedule}, so validation stops at about $10^6$ \term{schedules}.
 	\item The \term{Schedule} the generated script writes is not validated against its metamodel's OCL.
-	\item The BESSER chain's own.
-\end{itemize}}
+\end{itemize}
+
+\subsection*{BESSER}
+
+\begin{itemize}[nosep]
+	\item The angles of QAOA are fixed: one linear ramp for every instance, chosen by a coarse scan on the small
+	      instances, and no optimiser tunes them. The circuit finds a best \term{schedule} less often as the
+	      \term{problem} grows, from 0.3250 of the shots on \texttt{tiny} (9 qubits) to 0.0098 on \texttt{limit}
+	      (18 qubits) (\cref{tab:validation-besser}).
+	\item QAOA is only simulated, on Aer, on at most 18 qubits, and it is the only \term{Method}.
+	\item The reference answer tries every \term{schedule}, one slot per \term{exam}: $s^e$ of them for $e$
+	      \term{exams} in $s$ slots, so validation is limited to small instances.
+	\item Every \term{exam} must get a slot, a modelling choice of Part~I that this chain inherits: where no valid
+	      \term{schedule} exists (\texttt{none}), the best the chain can return has a \term{conflict}, not fewer
+	      \term{exams} without one.
+\end{itemize}
 
 \printbibliography
 

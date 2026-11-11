@@ -1,0 +1,43 @@
+\subsection*{EMF}
+
+Every run of the EMF chain is judged as in \cref{fig:validation-emf}. The \term{Baseline} enumerates every
+\term{schedule} straight from the \term{problem}'s data, independently of the \term{QUBO}: it gives the \term{optimal}
+\term{cost} and, since each \term{schedule} is exactly one bit string, the \term{Random Odds}. Every sample is checked
+against the formulation, its energy being minus the \term{weight} it places exactly when it breaks no
+\term{Constraint}, or the run fails; decoded, it counts towards \term{P(feasible)} and \term{P(optimal)}, the
+shares of the samples whose \term{schedule} is \term{feasible} or \term{optimal}. Every run is in
+\cref{tab:results-emf}, and its \term{P(optimal)} as a multiple of the \term{Random Odds} in \cref{tab:validation-emf}.
+
+\begin{figure}
+	\begin{tikzpicture}[node distance=10mm and 7mm, >={Stealth[]},
+			stage/.style={draw, rounded corners, align=center, text width=2.9cm, font=\small, inner sep=4pt},
+			flow/.style={font=\scriptsize, midway}]
+		\node[stage] (problem) {\textbf{\term{Problem}}\\\footnotesize a test instance};
+		\node[stage, below=of problem] (method) {\textbf{\term{Method}}\\\footnotesize every QAOA shot or annealing
+			read is a sample};
+		\node[stage, right=of method] (check) {\textbf{Energy check}\\\footnotesize energy $= -$\term{weight} placed
+			exactly when no \term{Constraint} is broken, or the run fails};
+		\node[stage, right=of check] (decode) {\textbf{Decode}\\\footnotesize each sample to a \term{schedule}:
+			\term{feasible}? \term{optimal}?};
+		\node[stage, right=of decode] (metrics) {\textbf{\term{P(feasible)}, \term{P(optimal)}}\\\footnotesize the
+			shares of the samples};
+		\node[stage] (baseline) at (problem -| decode) {\textbf{\term{Baseline}}\\\footnotesize every
+			\term{schedule}; skipped above $10^6$};
+		\node[stage] (odds) at (problem -| metrics) {\textbf{\term{Random Odds}}\\\footnotesize the same shares
+			among all $2^n$ bit strings};
+		\node[stage, below=of decode] (schedule) {\textbf{\term{Schedule}}\\\footnotesize the lowest-energy sample:
+			\term{optimal}?};
+		\draw[->] (problem) -- (method);
+		\draw[->] (problem) -- (baseline);
+		\draw[->] (method) -- (check);
+		\draw[->] (check) -- (decode);
+		\draw[->] (decode) -- (metrics);
+		\draw[->] (decode) -- (schedule);
+		\draw[->] (baseline) -- node[flow, right] {optimal \term{cost}} (decode);
+		\draw[->] (baseline) -- (odds);
+		\draw[->] (odds) -- node[flow, right] {the bar} (metrics);
+	\end{tikzpicture}
+	\caption{How each run of the EMF chain is validated: every sample is checked against the formulation and
+		decoded, and the shares that are \term{feasible} and \term{optimal} are set against the \term{Random Odds},
+		both from the \term{Baseline}.}\label{fig:validation-emf}
+\end{figure}

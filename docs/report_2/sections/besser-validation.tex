@@ -1,35 +1,33 @@
 \subsection*{BESSER}
 
-The BESSER chain is validated in two ways: every run is compared against a classical answer that is known to be correct, and a set of automated tests verifies each transformation individually.
+The BESSER chain is validated by comparing every run against a classical answer that is known to be correct.
 
 \paragraph{The reference answer.} A classical program (\texttt{besser/tests/baseline.py}) tries every possible \term{schedule}, assigning one slot to each \term{exam}, and identifies the valid ones (no \term{student} with two \term{exams} in the same slot) and the best ones (the fewest \term{conflicts}). This is only feasible because the instances are small, but it provides an answer we can trust.
 
 \paragraph{Is the \term{QUBO} correct?} The chain also checks T1 against the reference: the lowest number of points must be $w$ times the fewest \term{conflicts}, and exactly as many bit strings must reach it as the reference has best \term{schedules}. To do this, it computes the points of every one of the $2^n$ bit strings. This holds on all five instances (\cref{tab:validation-besser}, column ``QUBO = baseline'').
 
-\paragraph{How good is the circuit?} Every bit string measured by the simulator is decoded into a \term{schedule}, and three metrics are computed across all 4096 shots:
+\paragraph{How good is the circuit?} Every bit string measured by the simulator is decoded into a \term{schedule}, and two metrics are computed across all 4096 shots:
 \begin{itemize}[nosep]
 	\item \textbf{P(valid)}: how often the circuit produced a valid \term{schedule};
-	\item \textbf{P(optimal)}: how often it produced one of the best \term{schedules};
-	\item \textbf{the approximation ratio}: the average penalty of the samples on a scale where 1 is the best possible bit string and 0 the worst, $(E_{\max} - \langle E\rangle)/(E_{\max} - E_{\min})$.
+	\item \textbf{P(optimal)}: how often it produced one of the best \term{schedules}.
 \end{itemize}
 Each metric is compared with picking a bit string at random, which is the baseline the circuit must beat.
 
 \begin{table}
 	\caption{The BESSER chain on its instances: QAOA with the fixed angles of each \term{Solver Configuration} (depth 3, 4096 shots, seed 7), against a bit string drawn at random from all $2^n$. From \texttt{besser/output/summary.md}.}\label{tab:validation-besser}
 	\footnotesize
-	\begin{tabular}{@{}lrrcrrrrr@{}}
+	\begin{tabular}{@{}lrrcrrr@{}}
 		\toprule
-		Instance & Qubits & Valid \term{schedules} & \term{QUBO} = baseline & P(valid) & P(optimal) & P(optimal), random & Ratio & Ratio, random \\
+		Instance & Qubits & Valid \term{schedules} & \term{QUBO} = baseline & P(valid) & P(optimal) & P(optimal), random \\
 		\midrule
-		tiny     & 9      & 12 of 27        & yes             & 0.3250   & 0.3250     & 0.023              & 0.910 & 0.750         \\
-		many     & 12     & 24 of 81        & yes             & 0.2012   & 0.2012     & 0.0059             & 0.908 & 0.750         \\
-		none     & 12     & 0 of 81         & yes             & 0        & 0.2698     & 0.0088             & 0.918 & 0.759         \\
-		medium   & 15     & 30 of 243       & yes             & 0.0779   & 0.0779     & 0.00092            & 0.901 & 0.750         \\
-		limit    & 18     & 12 of 729       & yes             & 0.0098   & 0.0098     & 4.6e-05           & 0.911 & 0.750         \\
+		tiny     & 9      & 12 of 27        & yes             & 0.3250   & 0.3250     & 0.023              \\
+		many     & 12     & 24 of 81        & yes             & 0.2012   & 0.2012     & 0.0059             \\
+		none     & 12     & 0 of 81         & yes             & 0        & 0.2698     & 0.0088             \\
+		medium   & 15     & 30 of 243       & yes             & 0.0779   & 0.0779     & 0.00092            \\
+		limit    & 18     & 12 of 729       & yes             & 0.0098   & 0.0098     & 4.6e-05           \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
 On every instance, the circuit finds a best \term{schedule} far more often than chance (\cref{tab:validation-besser}), but less often as the \term{problem} grows. The instance \texttt{none} has no valid \term{schedule} at all, so P(valid) is 0 there; its best \term{schedules} have one \term{conflict}, and the circuit finds them in a fraction 0.2698 of the shots.
 
-\paragraph{Automated tests.} 47 tests (\texttt{cd besser \&\& python -m pytest}) check each step on its own: that the penalty points are zero exactly for the valid \term{schedules} (on \texttt{tiny}), that the quantum form of the \term{QUBO} gives the same value as the \term{QUBO} on every bit string (on \texttt{tiny} and \texttt{medium}), that the generated Qiskit code gives each \term{schedule} the phase its penalty predicts (on \texttt{tiny}), that the bits are read in Qiskit's order (right to left), and that two runs of \texttt{tiny} produce exactly the same files. To confirm that the tests really catch mistakes, \texttt{besser/tests/mutations.py} puts three typical mistakes back, one at a time, into a temporary copy of the chain: the one-hot weight as weak as a \term{conflict} makes 17 of the 47 tests fail, the flipped sign of the cost layer 4, and count keys read left to right 2 (\texttt{besser/README.md}).
