@@ -21,8 +21,25 @@
 		]
 	},
 	{
-		"claim": "BESSER's metamodels, from Part~I, call a Batch a \\emph{TimeSlot} (or slot) and a feasible Schedule \\emph{valid}.",
-		"evidence": null
+		"claim": "BESSER's metamodels, from Part~I, call a Batch a \\emph{TimeSlot} (or slot); its chain calls a schedule \\emph{valid} when it places every exam in one slot without a Conflict.",
+		"evidence": [
+			{
+				"path": "besser/README.md",
+				"quote": "It reads Part I's metamodels from `../metamodels/`"
+			},
+			{
+				"path": "metamodels/buml/problem_dsl.py",
+				"quote": "TimeSlot = Class(name=\"TimeSlot\")"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "_Avoid_: slot, time slot, TimeSlot, period"
+			},
+			{
+				"path": "besser/transformations/map_back.py",
+				"quote": "whether it is a valid schedule (every exam in exactly one slot, no two\n    conflicting exams in one slot)"
+			}
+		]
 	},
 	{
 		"claim": "A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch take place at once.",
@@ -151,8 +168,41 @@
 		]
 	},
 	{
-		"claim": "Independently of the QUBO, a Baseline enumerates every schedule, up to about $10^6$ (\\cref{sec:limitations}), to find the optimum, and every sample, not only the best, is judged against it (\\cref{sec:validation}).",
-		"evidence": null
+		"claim": "Independently of the QUBO, a Baseline enumerates every schedule to find the optimum (the EMF chain's stops at about $10^6$, \\cref{sec:limitations}), and every sample, not only the best, is judged against it (\\cref{sec:validation}).",
+		"evidence": [
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "brute_force() enumerates every schedule (each exam in one of the k slots: k^N schedules) straight from the\nproblem model"
+			},
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "not from the QUBO"
+			},
+			{
+				"path": "besser/tests/baseline.py",
+				"quote": "P(optimal)  share of shots that decode to a schedule"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "Classical baseline straight from the problem data: the cost of every feasible schedule"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "for batch in itertools.product((None, *range(problem.n_batches)), repeat=n)"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "BASELINE_LIMIT = 10**6  # skip brute force above this many schedules"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "schedules = [(schedule_of(problem, d), c) for d, c in samples]"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "optimal_count = sum(c for s, c in schedules if is_optimal(s, optimum))"
+			}
+		]
 	},
 	{
 		"claim": "The chains implement two formulations.",
@@ -260,8 +310,41 @@
 		]
 	},
 	{
-		"claim": "On four mutually conflicting exams in three batches (BESSER's \\texttt{none}, EMF's \\texttt{clique}), the paper's formulation, with the penalty BESSER derives for an exam left out, above any number of conflicts, accepts one Conflict, two exams in one batch; the weighted one leaves the lightest exam, Statistics, unscheduled at Cost~1.",
-		"evidence": null
+		"claim": "On four mutually conflicting exams in three batches (BESSER's \\texttt{none}, EMF's \\texttt{clique}), the paper's formulation, with the penalty BESSER derives for an exam left out, above the most conflicts placing it can add, accepts one Conflict, two exams in one batch; the weighted one leaves the lightest exam, Statistics, unscheduled at Cost~1.",
+		"evidence": [
+			{
+				"path": "besser/instances/none.py",
+				"quote": "4 exams sat by the same 3 students, so every pair conflicts (a 4-clique), and only 3 slots"
+			},
+			{
+				"path": "besser/instances/none.py",
+				"quote": "the best schedules put two exams together\nand have 1 conflict"
+			},
+			{
+				"path": "emf/instances/3-clique.exam",
+				"quote": "four exams that all conflict, three batches"
+			},
+			{
+				"path": "emf/instances/3-clique.exam",
+				"quote": "problem clique batches 3"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "The QUBO is the paper's H = lambda * H_const1 + w * H_const2 [Zhou eq. (10)]"
+			},
+			{
+				"path": "besser/transformations/t1_problem2solution.py",
+				"quote": "an exam left out of every slot costs lambda; putting it in any slot\n    removes that cost and adds at most D conflicts, so at most D * w"
+			},
+			{
+				"path": "besser/output/summary.md",
+				"quote": "| none | 12 | 0 of 81 | 1 | yes |"
+			},
+			{
+				"path": "emf/instances/3-clique.exam",
+				"quote": "the\n// lowest-weight exam, Statistics, is left unscheduled, at cost 1"
+			}
+		]
 	},
 	{
 		"claim": "The paper samples its QUBO on D-Wave's quantum annealer, its Leap Hybrid Sampler and, classically, by simulated annealing \\cite[§5.4]{Paper}, as the notebook does \\cite[cells 15--17]{Notebook}.",
@@ -310,8 +393,37 @@
 		]
 	},
 	{
-		"claim": "Simulated annealing needs no D-Wave account, so CI reruns the EMF chain's runs (\\cref{tab:results-emf}), and it gives QAOA, which a simulator limits to small instances, a yardstick on the same QUBO.",
-		"evidence": null
+		"claim": "Simulated annealing needs no D-Wave account, so CI reruns the EMF chain's runs (\\cref{tab:results-emf}), and it gives QAOA a yardstick on the same QUBO.",
+		"evidence": [
+			{
+				"cite": "Notebook",
+				"quote": "sa = neal.SimulatedAnnealingSampler()"
+			},
+			{
+				"cite": "Notebook",
+				"quote": "Provide your D-Wave token here"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "The classical sampler the notebook uses (`neal`)"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "- run: ./build.sh"
+			},
+			{
+				"path": "emf/README.md",
+				"quote": "runs the chain headlessly on every `.exam` file in `instances/`"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "Every run's results, for the tables of docs/report_2"
+			},
+			{
+				"path": "emf/docs/adr/0007-generate-pyqubo-formulation.md",
+				"quote": "Both share the compiled model"
+			}
+		]
 	},
 	{
 		"claim": "Quantum annealing itself is issue~\\#23.",
@@ -647,8 +759,65 @@
 		]
 	},
 	{
-		"claim": "QAOA \\cite{Farhi} builds the QAOA Circuit from the Ising form, with $p$ alternating cost and mixer layers on the uniform superposition \\cite[Eqs. (2)--(6)]{Farhi}, runs it on Qiskit Aer \\cite{Qiskit}, and lets a classical optimiser tune the $2p$ angles to minimise the expected energy (Farhi et al.\\ maximise theirs) \\cite[Eqs. (7)--(8)]{Farhi}, starting on the annealing path \\cite[§VI]{Farhi}.",
-		"evidence": null
+		"claim": "QAOA \\cite{Farhi} builds the QAOA Circuit from the Ising form, with $p$ alternating cost and mixer layers on the uniform superposition \\cite[Eqs. (2)--(6)]{Farhi}, runs it with Qiskit \\cite{Qiskit} on the Aer simulator, and lets a classical optimiser tune the $2p$ angles to minimise the expected energy (Farhi et al.\\ maximise theirs) \\cite[Eqs. (7)--(8)]{Farhi}, starting on the annealing path \\cite[§VI]{Farhi}.",
+		"evidence": [
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "fields, couplings, _ = model.to_ising(feed_dict=feed_dict)"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "qc.h(range(n))  # [Farhi Eq. (5)]: |s>, the uniform superposition"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "# [Farhi Eq. (6)]: p alternating cost and mixer layers."
+			},
+			{
+				"cite": "Farhi",
+				"quote": "The initial state |si will be the uniform superposition over\ncomputational basis states"
+			},
+			{
+				"cite": "Farhi",
+				"quote": "|γ, βi = U(B, βp ) U(C, γp ) · · · U(B, β1 ) U(C, γ1) |si"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "simulator = AerSimulator(seed_simulator=config.seed)"
+			},
+			{
+				"cite": "Qiskit",
+				"quote": "We describe Qiskit, a software development kit for quantum information science."
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "# [Farhi Eq. (8)]: the classical loop optimises the 2p angles."
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "result = minimize(expected_energy, theta0"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "with C = H and\n    the expectation minimised, where Farhi maximises it."
+			},
+			{
+				"cite": "Farhi",
+				"quote": "Let Fp be the expectation of C in this state"
+			},
+			{
+				"cite": "Farhi",
+				"quote": "let Mp be the maximum of Fp over the angles"
+			},
+			{
+				"path": "emf/python/examschedule.py",
+				"quote": "# [Farhi §VI]: a linear ramp (gamma grows, |beta| shrinks) on the Trotterised adiabatic path"
+			},
+			{
+				"cite": "Farhi",
+				"quote": "A Trotterized approximation to the evolution consists of an alternation of the operators U(C, γ)\nand U(B, β)"
+			}
+		]
 	},
 	{
 		"claim": "The runtime then decodes the lowest-energy sample into a Schedule model \\cite[§5.5]{Paper}, runs the Baseline, and writes the run's results, from which \\cref{tab:results-emf} is generated.",
@@ -846,12 +1015,54 @@
 		]
 	},
 	{
-		"claim": "The Python packages, pyqubo \\cite{pyqubo}, Qiskit and Qiskit Aer \\cite{Qiskit} and dwave-neal among them, are pinned in \\texttt{emf/requirements.txt}.",
-		"evidence": null
+		"claim": "The Python packages, pyqubo \\cite{pyqubo}, Qiskit \\cite{Qiskit}, Qiskit Aer and dwave-neal among them, are pinned in \\texttt{emf/requirements.txt}.",
+		"evidence": [
+			{
+				"path": "emf/requirements.txt",
+				"quote": "pyqubo==1.5.0"
+			},
+			{
+				"path": "emf/requirements.txt",
+				"quote": "qiskit==2.6.2"
+			},
+			{
+				"path": "emf/requirements.txt",
+				"quote": "qiskit-aer==0.18.2"
+			},
+			{
+				"path": "emf/requirements.txt",
+				"quote": "dwave-neal==0.6.0"
+			},
+			{
+				"cite": "Qiskit",
+				"quote": "We describe Qiskit, a software development kit for quantum information science."
+			}
+		]
 	},
 	{
-		"claim": "CI runs the same on every push (\\texttt{.github/workflows/emf.yml}) and uploads the results as the \\texttt{emf-results} artifact.",
-		"evidence": null
+		"claim": "CI runs the same on every pull request and push to main that changes \\texttt{emf/} (\\texttt{.github/workflows/emf.yml}) and uploads the results as the \\texttt{emf-results} artifact.",
+		"evidence": [
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "branches: [main]"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "pull_request:\n    paths: ['emf/**', '.github/workflows/emf.yml']"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "working-directory: emf"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "- run: ./build.sh"
+			},
+			{
+				"path": ".github/workflows/emf.yml",
+				"quote": "name: emf-results\n          path: emf/out/*/results_*.json"
+			}
+		]
 	},
 	{
 		"claim": "This report: \\texttt{docs/report\\_2/build.sh} (TeX Live, \\texttt{gh}) fetches those results from CI, generates its tables, \\cref{app:traceability} and the diagrams of \\cref{app:metamodels}, and runs latexmk; it does not run the chains.",
