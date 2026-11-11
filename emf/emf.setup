@@ -112,6 +112,10 @@
           name="org.eclipse.acceleo.aql.feature.feature.group"/>
       <requirement
           name="org.eclipse.acceleo.query.feature.group"/>
+      <requirement
+          name="junit-platform-suite-engine"/>
+      <requirement
+          name="junit-jupiter-engine"/>
       <repositoryList
           name="2026-09">
         <repository
