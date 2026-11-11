@@ -642,7 +642,7 @@
 		]
 	},
 	{
-		"claim": "The Java that glues the first three arrows is one class, \\texttt{emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java}.",
+		"claim": "The Java that glues the first three arrows is one class, \\texttt{ChainApplication.java} in the chain bundle (\\path{emf/bundles/pt.up.feup.examschedule.chain/}).",
 		"evidence": [
 			{
 				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
@@ -651,6 +651,30 @@
 			{
 				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
 				"quote": "public class ChainApplication implements IApplication"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "private static boolean run(File input, File outRoot) throws IOException {"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "Resource source = resourceSet.getResource(URI.createFileURI(input.getPath()), true);"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "Resource problem = save(resourceSet, outDir, \"problem.xmi\", problemRoot);"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "Atl.transform(\"problem2conflictgraph\","
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java",
+				"quote": "Acceleo.generate(CODEGEN_MODULE, conflictGraph, outDir);"
+			},
+			{
+				"path": "emf/bundles/pt.up.feup.examschedule.chain/META-INF/MANIFEST.MF",
+				"quote": "Bundle-SymbolicName: pt.up.feup.examschedule.chain;singleton:=true"
 			}
 		]
 	},

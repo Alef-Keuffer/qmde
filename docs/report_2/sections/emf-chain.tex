@@ -23,9 +23,10 @@ happens to it, in order:
 \end{enumerate}
 
 The Java that glues the first three arrows is one class,
-\texttt{emf/bundles/pt.up.feup.examschedule.chain/src/pt/up/feup/examschedule/chain/ChainApplication.java}.
-Its \texttt{run} method is the chain above: parse, validate, save, ATL, save, validate, Acceleo. The
-grammar, ATL module, Acceleo template and runtime are expanded in \cref{app:emf}.
+\texttt{ChainApplication.java} in the chain bundle
+(\path{emf/bundles/pt.up.feup.examschedule.chain/}). Its \texttt{run} method is the chain above: parse,
+validate, save, ATL, save, validate, Acceleo. The grammar, ATL module, Acceleo template and runtime are
+expanded in \cref{app:emf}.
 
 \paragraph{Three metalevels.}
 Each \texttt{.xmi} file is a \emph{model}. It is only meaningful because it \emph{conforms to} a
