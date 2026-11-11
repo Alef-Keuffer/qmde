@@ -160,10 +160,7 @@ its reference in a comment beside it, as
 
 \section{BESSER chain}\label{sec:besser}
 
-\placeholder{the BESSER rework}{The BESSER chain}{T1 (Problem $\to$ QUBO, rules R1--R6), T2 (QUBO $\to$
-QAOA circuit in BESSER's quantum metamodel, rules Q1--Q7), T3 (BESSER's \texttt{QiskitGenerator}) and the
-mapping of samples back to Schedules, with the reference of each rule. BESSER's code cites the paper as
-\texttt{[Zhou]}; with \texttt{[Paper \dots]} tags, \cref{app:traceability} could list its rules too.}
+\input{sections/besser-chain}
 
 \section{Validation}\label{sec:validation}
 
@@ -176,8 +173,7 @@ Constraint. Each chain is measured on its own instances (\cref{app:instances}); 
 
 \input{generated/validation-emf}
 
-\placeholder{the BESSER rework}{The BESSER chain's table, P(optimal) against chance on its instances}{From
-\texttt{besser/output/<instance>/6\_validation.json} once the chain settles.}
+\input{sections/besser-validation}
 
 \section{Limitations}\label{sec:limitations}
 
@@ -194,6 +190,8 @@ Constraint. Each chain is measured on its own instances (\cref{app:instances}); 
 	\item The Schedule the generated script writes is not validated against its metamodel's OCL.
 	\item The BESSER chain's own.
 \end{itemize}}
+
+\input{sections/besser-limitations}
 
 \printbibliography
 
@@ -231,8 +229,7 @@ Constraint. Each chain is measured on its own instances (\cref{app:instances}); 
 	\end{tabular}
 \end{table}
 
-\placeholder{the BESSER rework}{The BESSER chain's full results}{Every instance's metrics, from
-\texttt{besser/output/summary.md} or its JSONs.}
+\input{sections/besser-results}
 
 \section{Metamodels}\label{app:metamodels}
 
