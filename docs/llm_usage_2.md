@@ -337,3 +337,136 @@
   code. Not checked: nothing was run; the brute-force limit and CI time were
   not measured; "Blocked by" in #44 is plain text, not GitHub's dependency
   link.
+
+## The glossary as a generated appendix ([#57](https://github.com/Alef-Keuffer/qmde/issues/57), [#61](https://github.com/Alef-Keuffer/qmde/pull/61)) (2026-11-11)
+
+- **Who:** Alef Keuffer.
+- **Tool:** Claude Code (Claude Opus 5.5), with the `implement`, `tdd` and
+  `code-review` skills, and subagents for claim verification and review.
+- **What we asked:** to implement #57; then to publish it.
+- **What the assistant produced:** `glossary()` in `docs/report_2/generate.py`,
+  which renders the Language section of `emf/GLOSSARY.md` into
+  `generated/glossary.tex` on every build (groups in the glossary's order,
+  entry names in bold, Avoid lines in small italics) and stops the build,
+  naming the line, on Markdown the glossary does not use (lists, tables, links,
+  headings, `---`/`===` lines, quotes, emphasis, HTML and entities, code
+  blocks, stray text, an Avoid line before its definition); tests for it in
+  `test_generate.py`, written first; the Glossary appendix (Appendix E) in
+  `report_2.tex`, with the TimeSlot/valid footnote replaced by a Strategy
+  sentence pointing to it; the `build.sh` header comment; commit `74998b7` on
+  `alef/glossary-appendix-57`, cut from `origin/main`, which also carries
+  ADR-0001 and the grilling record; PR #61, pushed with `gh stack`, with the
+  title and body rewritten by the assistant.
+- **Decisions we made:** the Strategy sentence differs from the ticket. A
+  verification subagent found "each links to its entry" false, since nothing
+  links yet, so I chose to drop it; #58 adds it back with `\term`. A second
+  one found "Terms are those of the glossary" false for the BESSER sections
+  (they say slot, valid, solver, reference answer), so I chose to scope it:
+  "The EMF chain's terms are those of the glossary; the BESSER chain's
+  sections keep its own words: *slot* for a Batch, *valid* for a schedule that
+  places every exam without a Conflict." The assistant chose to apply two
+  standards-review nits (the code-block pattern on its own, the `## Language`
+  index computed once) and to leave entries as positional lists.
+- **Assumptions we accepted:** the parser rejecting every `*` is fine until #58,
+  which has to allow `*Term*`; the BESSER prose keeps its own words rather than
+  being rewritten in glossary terms.
+- **Corrections we made:** none by me. The spec review found that the first
+  parser let group headings and entry names skip the checks, and let
+  `---`/`===` lines and `&amp;` through; the assistant fixed these.
+- **How we checked it:** the tests failed before the parser and passed after
+  it (17 at the end); adding a list item to `GLOSSARY.md` stopped the build;
+  the PDF built with no missing glyphs, read through `pdftotext`; three fresh
+  subagents verified the Strategy sentence in turn, the last recording its
+  evidence in `claims.json`, and `verify.py` reported 147 claims, 0 with
+  problems; a standards and a spec review by two subagents. Not checked: the
+  appendix visually in a PDF viewer; the Reproducing appendix still does not
+  mention the glossary; CI on #61.
+
+## `\term` links glossary terms to their entries ([#58](https://github.com/Alef-Keuffer/qmde/issues/58), [#62](https://github.com/Alef-Keuffer/qmde/pull/62)) (2026-11-11)
+
+- **Who:** Alef Keuffer.
+- **Tool:** Claude Code (Claude Opus 5.5), with the `implement`, `tdd` and
+  `code-review` skills, and two review subagents.
+- **What we asked:** to implement #58; then whether it was a PR stacked on
+  #61; then to push it as a PR stacked on #61.
+- **What the assistant produced:** `docs/report_2/term.sty`, defining
+  `\term{…}`: any case or regular plural of a glossary term, in italics
+  (`\emph`), linked invisibly to its entry, and an unknown name stops the
+  build naming it; in `generate.py`, the plural rule, the lookup table
+  `generated/glossary-terms.tex` (a plural that is another term stops the
+  build), an anchor on each entry, and `*Term*` in `GLOSSARY.md` rendered
+  through `\term`; `\term` working in headings and captions, with the PDF
+  bookmark getting the plain text; `\usepackage{term}` in `report_2.tex`;
+  tests in `test_generate.py`, written first, for the plural rule, the table
+  and a small LuaLaTeX document; 71 `*Term*` marks in `emf/GLOSSARY.md`; the
+  convention in `AGENTS.md` and the verify-report skill; commits `ede10e3`
+  (the glossary marks; the local hook keeps `emf/` in its own commit) and
+  `b76947c` (the rest, closing #58); branch `alef/term-macro-58`, stacked on
+  `alef/glossary-appendix-57` with `gh stack`, and PR #62 with its title and
+  body written by the assistant.
+- **Decisions we made:** the assistant chose to make `\term` work in headings
+  and captions rather than forbid it, and to stop the build on a plural that
+  is another term, which the ticket did not ask for. After the review it
+  skipped the LuaLaTeX test where `lualatex` is missing (the CI report job
+  has no TeX), aligned the `AGENTS.md` wording with ADR-0001 ("no automated
+  check"), and fixed long lines, a variable name, a repeated `anchor()` call,
+  a docstring and a test case asserting "Quizes". It left the glossary parsed
+  twice per build, kept `\emph` (chosen in the planning session, Q18) though
+  it sets a term upright inside the italic Avoid lines, and left Weight's
+  "cost" and the half-marked Feasible Avoid line as they are. It deleted a
+  Finder `.DS_Store` in `.git/worktrees` that made `gh stack` fail.
+- **Assumptions we accepted:** a term in a heading would nest a link inside
+  the entry's own link if a table of contents is ever added; it builds without
+  error. The verify-report skill checks marking only on prose `verify.py`
+  flags as new or changed.
+- **Corrections we made:** the assistant had committed the #58 work on top of
+  #57's branch, `alef/glossary-appendix-57`; I asked for a PR stacked on #61,
+  so it moved the two commits to their own branch and reset the #57 branch
+  locally to `74998b7` (origin was already there, so nothing was
+  force-pushed).
+- **How we checked it:** the new tests failed before the code and passed
+  after it (21 at the end); the LuaLaTeX test needed a second pass for the
+  bookmarks; the skip was checked by running the test with `lualatex` hidden
+  from `PATH`; `verify.py` reported 0 claims with problems; the report built
+  cleanly with `latexmk`; a standards and a spec review by two subagents.
+  Not checked: `./build.sh` (the PDF was rebuilt from the committed tables);
+  CI on #62; the glossary's intro paragraph, which the appendix does not
+  render, is left unmarked.
+
+## The body's domain uses marked with `\term` ([#59](https://github.com/Alef-Keuffer/qmde/issues/59), [#64](https://github.com/Alef-Keuffer/qmde/pull/64)) (2026-11-11)
+
+- **Who:** Alef Keuffer.
+- **Tool:** Claude Code (Claude Opus 5.5), with the `implement`, `tdd` and
+  `code-review` skills, and two review subagents.
+- **What we asked:** to implement #59, stacked on #62; then to open it as a
+  PR stacked on #62, with this log.
+- **What the assistant produced:** `\term{…}` around every domain use of a
+  glossary term in the report's body (Strategy to Limitations, in
+  `report_2.tex` and `sections/two-chains.tex`, `emf-chain.tex`,
+  `besser-chain.tex`, `besser-validation.tex`), including the placeholders, the
+  hand-drawn strategy figure and its caption, and the hand-written tables'
+  prose and headers; in `verify.py`, a sentence that starts with `\term{` is
+  its own claim (a test written first); `claims.json` with each re-marked
+  claim carrying its old evidence, and two quotes of `besser-chain.tex`
+  updated; the rebuilt PDF; commit `1b221f5` on `alef/term-body-59`, added on
+  top of `alef/term-macro-58` with `gh stack add`, and the PR with its body
+  written by the assistant.
+- **Decisions we made:** the assistant chose to leave plain BESSER's slot,
+  valid, and its P(optimal) and best schedules (fewest conflicts, which on
+  `none` are infeasible), "the problem model", the OCL constraints, the Java
+  `run` method, the cost layer, the one-hot weight and the baseline of chance;
+  to keep the existing capitals (`\term{Batch}`); to carry the claims' evidence
+  over mechanically, since only markup changed, rather than re-verify each
+  fact; and to turn `\emph{the problem}` into "the `\term{problem}`", since
+  `\term` inside `\emph` sets the word upright.
+- **Assumptions we accepted:** the Strategy sentence names only slot and valid
+  as BESSER's own words, though P(optimal) and best are now plain there too.
+- **Corrections we made:** none by me. The two reviews found two unmarked
+  "QUBO" in `besser-validation.tex`, its hand-written table header and "our
+  Solver Configuration metamodel" left plain inconsistently; the assistant
+  marked them, and added a comment on why only `\term` starts a sentence.
+- **How we checked it:** the new test failed before the `verify.py` change and
+  passed after it (21 tests); `verify.py` reported 147 claims, 0 with problems
+  and none unverified; `latexmk` built the report with no errors; a standards
+  and a spec review by two subagents. Not checked: a fresh verify-report pass
+  over the facts; `./build.sh`; CI.
