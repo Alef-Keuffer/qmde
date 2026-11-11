@@ -27,6 +27,9 @@ skill to a fresh subagent. A writer reads its own intent into the sources.
    - a citation `\cite[locator]{Key}`: the reference itself, at that locator. `verify.py` makes its text in
      `docs/report_2/sources/<Key>.txt` (the notebook's cells marked `[cell N]`). The locator must name the
      part that says it, not merely a part of the same reference.
+   - glossary terms: each domain use of an `emf/GLOSSARY.md` term is `\term{…}`, and a word in another
+     sense is not (`docs/adr/0001`; no check catches either). Report a slip as in step 5, with the claim's
+     sentence corrected.
 3. Record the outcome in the claim's entry in `claims.json`:
    - **true**: `evidence` lists quotes copied verbatim from those sources, short, the words that say it,
      and together containing every number of the claim. Cover every assertion; a claim only partly

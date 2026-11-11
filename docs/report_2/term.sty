@@ -1,0 +1,18 @@
+% \term{<text>}: a domain use of a glossary term, in any case or plural (\term{batches}, \term{Conflict Graph}),
+% set in italics and linked to its entry in the Glossary appendix. A name generated/glossary-terms.tex (from
+% generate.py) does not list stops the build. Load after hyperref.
+\ProvidesPackage{term}
+\ExplSyntaxOn
+\prop_new:N \g__term_prop
+\cs_generate_variant:Nn \prop_get:NnNTF { Ne }
+\msg_new:nnn { term } { unknown } { `#1'~is~not~a~glossary~term,~nor~its~plural. }
+\NewDocumentCommand \glossaryterm { m m } { \prop_gput:Nnn \g__term_prop {#1} {#2} }
+\NewDocumentCommand \term { m }
+	{
+		\prop_get:NeNTF \g__term_prop { \str_casefold:n {#1} } \l_tmpa_tl
+			{ \hyperlink { \l_tmpa_tl } { \emph {#1} } }
+			{ \msg_error:nnn { term } { unknown } {#1} }
+	}
+\ExplSyntaxOff
+\pdfstringdefDisableCommands{\def\term#1{#1}} % PDF bookmarks: the text alone
+\input{generated/glossary-terms}
