@@ -46,19 +46,16 @@
 
 \maketitle
 
-\section{Introduction}\label{sec:introduction}
-
-A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch
-take place at once.
-Two exams that share a student are in Conflict and must not share a batch
-\cite[§5.2, Algorithm 1]{Paper}. Each exam carries a Weight, its priority; in the EMF chain, the cost of
-leaving it unscheduled.
-
 \section{Strategy}\label{sec:strategy}
 
 Terms are those of the EMF chain's glossary, \texttt{emf/GLOSSARY.md}.\footnote{BESSER's metamodels, from
 Part~I, call a Batch a \emph{TimeSlot} (or slot); its chain calls a schedule \emph{valid} when it places every exam
 in one slot without a Conflict.}
+
+A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch
+take place at once. Two exams that share a student are in Conflict and must not share a batch
+\cite[§5.2, Algorithm 1]{Paper}. Each exam carries a Weight, its priority; in the EMF chain, the cost of
+leaving it unscheduled.
 
 Both chains follow \cref{fig:strategy}. The Problem is formulated as a QUBO over one Assignment Variable
 $x_{ik}$ per exam~$i$ and batch~$k$, $1$ when exam~$i$ is in batch~$k$ \cite[§5.3, Eq. (4)]{Paper}, with a

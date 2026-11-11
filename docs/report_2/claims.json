@@ -1,5 +1,47 @@
 [
 	{
+		"claim": "Terms are those of the EMF chain's glossary, \\texttt{emf/GLOSSARY.md}.",
+		"evidence": [
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "## Language"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "**Batch**:"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "**Schedule**:"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "**Baseline**:"
+			}
+		]
+	},
+	{
+		"claim": "BESSER's metamodels, from Part~I, call a Batch a \\emph{TimeSlot} (or slot); its chain calls a schedule \\emph{valid} when it places every exam in one slot without a Conflict.",
+		"evidence": [
+			{
+				"path": "besser/README.md",
+				"quote": "It reads Part I's metamodels from `../metamodels/`"
+			},
+			{
+				"path": "metamodels/buml/problem_dsl.py",
+				"quote": "TimeSlot = Class(name=\"TimeSlot\")"
+			},
+			{
+				"path": "emf/GLOSSARY.md",
+				"quote": "_Avoid_: slot, time slot, TimeSlot, period"
+			},
+			{
+				"path": "besser/transformations/map_back.py",
+				"quote": "whether it is a valid schedule (every exam in exactly one slot, no two\n    conflicting exams in one slot)"
+			}
+		]
+	},
+	{
 		"claim": "A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch take place at once.",
 		"evidence": [
 			{
@@ -59,48 +101,6 @@
 			{
 				"path": "besser/transformations/t1_problem2solution.py",
 				"quote": "Exam.weight of Part I is not used: the paper has no exam weights"
-			}
-		]
-	},
-	{
-		"claim": "Terms are those of the EMF chain's glossary, \\texttt{emf/GLOSSARY.md}.",
-		"evidence": [
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "## Language"
-			},
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "**Batch**:"
-			},
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "**Schedule**:"
-			},
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "**Baseline**:"
-			}
-		]
-	},
-	{
-		"claim": "BESSER's metamodels, from Part~I, call a Batch a \\emph{TimeSlot} (or slot); its chain calls a schedule \\emph{valid} when it places every exam in one slot without a Conflict.",
-		"evidence": [
-			{
-				"path": "besser/README.md",
-				"quote": "It reads Part I's metamodels from `../metamodels/`"
-			},
-			{
-				"path": "metamodels/buml/problem_dsl.py",
-				"quote": "TimeSlot = Class(name=\"TimeSlot\")"
-			},
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "_Avoid_: slot, time slot, TimeSlot, period"
-			},
-			{
-				"path": "besser/transformations/map_back.py",
-				"quote": "whether it is a valid schedule (every exam in exactly one slot, no two\n    conflicting exams in one slot)"
 			}
 		]
 	},
