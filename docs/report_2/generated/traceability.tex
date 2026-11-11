@@ -11,7 +11,6 @@ Unit & What it implements, as its comment says \\
 \texttt{rule Problem2ConflictGraph} & \cite[§5.3, Eq. (4)]{Paper}: X has only M columns, so the M batches bound the schedule. \\
 \texttt{rule Exam2Exam} & \cite[§5.2, Fig. 3]{Paper}: each exam is a node of G. \\
 \texttt{rule Exam2Exam} & \cite[§4.2]{Glover}: the weight w\_j of the set packing objective, the exam's priority (ADR-0009). \\
-\texttt{rule NewBatch} & \cite[§5.3, Eq. (4)]{Paper}: batch k is column k of X, k = 1..M. \\
 \texttt{helper sharesStudentWith} & \cite[§5.2, Algorithm 1, Eq. (3)]{Paper}: C[i,j] = 1 iff some student sits both exam i and exam j. \\
 \texttt{lazy rule Conflict} & \cite[§5.2, Fig. 3]{Paper}: one edge of G per pair with C[i,j] = 1, emitted once, in problem order. \\
 \midrule
