@@ -171,5 +171,55 @@ class MetamodelTest(unittest.TestCase):
         self.assertIn("method: Method = QAOA", tikz)
 
 
+GLOSSARY = """\
+# Exam-Slot Assignment
+
+Scheduling exams, with a `code` intro that is not rendered.
+
+## Language
+
+### Problem
+
+**Batch**:
+One of a fixed number of exam periods; the "slot" in
+the problem's name.
+_Avoid_: slot, `TimeSlot`
+
+### Solution
+
+**Cost** (of a schedule):
+The total weight: x[Exam, Batch] & 100%.
+"""
+
+
+class GlossaryTest(unittest.TestCase):
+
+    def test_groups_entries_and_avoid_lines_in_order(self):
+        self.assertEqual(generate.glossary(GLOSSARY), r"""\subsection*{Problem}
+\begin{description}
+\item[Batch] One of a fixed number of exam periods; the \enquote{slot} in the problem's name.\par
+{\small\itshape Avoid: slot, \texttt{TimeSlot}}
+\end{description}
+\subsection*{Solution}
+\begin{description}
+\item[Cost {\normalfont(of a schedule)}] The total weight: x[Exam, Batch] \& 100\%.
+\end{description}""")
+
+    def test_the_glossary_renders(self):
+        self.assertIn(r"\item[Batch]", generate.glossary((generate.EMF / "GLOSSARY.md").read_text(encoding="utf-8")))
+
+    def test_markdown_the_glossary_does_not_use_is_rejected(self):
+        for name, line in [("a list", "- one"), ("a list", "1. one"), ("a table", "| a | b |"),
+                           ("a link", "See [the paper](https://x)."), ("a heading", "#### Deeper"),
+                           ("a quote", "> said"), ("emphasis", "a *word*"), ("emphasis", "a __word__"),
+                           ("HTML", "<br>"), ("HTML", "a &amp; b"), ("a code block", "```"), ("a heading", "---"),
+                           ("a heading", "==="), ("emphasis", "### A *b*"), ("a link", "**[a](b)**:"),
+                           ("text outside an entry", "### G\nstray"),
+                           ("an Avoid line before the definition", "**U**:\n_Avoid_: x")]:
+            with self.subTest(line=line):
+                with self.assertRaisesRegex(SystemExit, f"GLOSSARY.md line \\d+: {name}"):
+                    generate.glossary(f"## Language\n\n### G\n\n**T**:\ntext\n{line}\n")
+
+
 if __name__ == "__main__":
     unittest.main()

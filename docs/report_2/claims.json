@@ -1,43 +1,30 @@
 [
 	{
-		"claim": "Terms are those of the EMF chain's glossary, \\texttt{emf/GLOSSARY.md}.",
+		"claim": "The EMF chain's terms are those of the glossary (\\cref{app:glossary}); the BESSER chain's sections keep its own words: \\emph{slot} for a Batch, \\emph{valid} for a schedule that places every exam without a Conflict.",
 		"evidence": [
 			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "## Language"
+				"path": "docs/report_2/generate.py",
+				"quote": "generated/glossary.tex: the Glossary appendix, from emf/GLOSSARY.md"
+			},
+			{
+				"path": "docs/report_2/report_2.tex",
+				"quote": "\\section{Glossary}\\label{app:glossary}"
 			},
 			{
 				"path": "emf/GLOSSARY.md",
-				"quote": "**Batch**:"
+				"quote": "The \"slot\" in the problem's name, Exam-Slot Assignment, is a batch."
 			},
 			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "**Schedule**:"
+				"path": "docs/report_2/sections/besser-chain.tex",
+				"quote": "There is one yes/no variable for each pair (exam, slot)"
 			},
 			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "**Baseline**:"
-			}
-		]
-	},
-	{
-		"claim": "BESSER's metamodels, from Part~I, call a Batch a \\emph{TimeSlot} (or slot); its chain calls a schedule \\emph{valid} when it places every exam in one slot without a Conflict.",
-		"evidence": [
-			{
-				"path": "besser/README.md",
-				"quote": "It reads Part I's metamodels from `../metamodels/`"
-			},
-			{
-				"path": "metamodels/buml/problem_dsl.py",
-				"quote": "TimeSlot = Class(name=\"TimeSlot\")"
-			},
-			{
-				"path": "emf/GLOSSARY.md",
-				"quote": "_Avoid_: slot, time slot, TimeSlot, period"
+				"path": "docs/report_2/sections/besser-chain.tex",
+				"quote": "A schedule with zero points is a valid one."
 			},
 			{
 				"path": "besser/transformations/map_back.py",
-				"quote": "whether it is a valid schedule (every exam in exactly one slot, no two\n    conflicting exams in one slot)"
+				"quote": "whether it is a valid schedule (every exam in exactly one slot, no two"
 			}
 		]
 	},

@@ -48,9 +48,8 @@
 
 \section{Strategy}\label{sec:strategy}
 
-Terms are those of the EMF chain's glossary, \texttt{emf/GLOSSARY.md}.\footnote{BESSER's metamodels, from
-Part~I, call a Batch a \emph{TimeSlot} (or slot); its chain calls a schedule \emph{valid} when it places every exam
-in one slot without a Conflict.}
+The EMF chain's terms are those of the glossary (\cref{app:glossary}); the BESSER chain's sections keep its
+own words: \emph{slot} for a Batch, \emph{valid} for a schedule that places every exam without a Conflict.
 
 A Problem lists students, the exams each of them sits, and a fixed number of batches; all exams of a batch
 take place at once. Two exams that share a student are in Conflict and must not share a batch
@@ -203,6 +202,10 @@ OCL invariant.
 \placeholder{the BESSER rework}{The BESSER chain's metamodels}{Part~I's diagrams
 (\texttt{docs/imgs/problem-dsl-01.png}, \texttt{docs/imgs/solution-dsl-01.png}) once BESSER settles, with
 its Solver Configuration and quantum metamodels.}
+
+\section{Glossary}\label{app:glossary}
+
+\input{generated/glossary}
 
 \section{Test instances}\label{app:instances}
 
