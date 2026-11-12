@@ -122,6 +122,20 @@ For each test instances (at least three, small enough to simulate, roughly up to
 4. [ ] A small report (about 2 pages) explaining the transformations and their references, the validation results and the limitations of your approach.
 5. [ ] The LLM usage log for this part
 
+# Sources that might be useful to us
+
+- [Quantum approximate optimization algorithm by IBM Platform](https://quantum.cloud.ibm.com/docs/en/tutorials/quantum-approximate-optimization-algorithm)
+- [List of QUBO formulations by Daniel](https://blog.xa0.de/post/List-of-QUBO-formulations/)
+- [A Tutorial on Formulating and Using QUBO Models](https://arxiv.org/pdf/1811.11538)
+- [Quadratic Unconstrained Binary Optimization (QUBO) at gurobi-optimods](https://gurobi-optimods.readthedocs.io/en/stable/mods/qubo.html)
+- [Tutorial - Solving Flight Scheduling Optimization using QAOA](https://nordiquest.net/application-library/training-material/qas2024/notebooks/flight_scheduling_optimization_qaoa.html)
+- [An Introduction to the Quantum Approximate Optimization Algorithm](https://arxiv.org/pdf/2511.18377)
+- [QUBO.jl for solving QUBO with Julia](https://juliaqubo.github.io/QUBO.jl/QUBO.jl/stable/#QUBO-in-Brief)
+
+For something MDE:
+
+- [See Umple](https://try.umple.org/umpleonline/)
+
 # Problem classes
 
 ## Graph Optimisation
