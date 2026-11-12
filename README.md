@@ -131,6 +131,7 @@ For each test instances (at least three, small enough to simulate, roughly up to
 - [Tutorial - Solving Flight Scheduling Optimization using QAOA](https://nordiquest.net/application-library/training-material/qas2024/notebooks/flight_scheduling_optimization_qaoa.html)
 - [An Introduction to the Quantum Approximate Optimization Algorithm](https://arxiv.org/pdf/2511.18377)
 - [QUBO.jl for solving QUBO with Julia](https://juliaqubo.github.io/QUBO.jl/QUBO.jl/stable/#QUBO-in-Brief)
+- [JuMP as a baseline](https://jump.dev/JuMP.jl/stable/)
 
 For something MDE:
 
